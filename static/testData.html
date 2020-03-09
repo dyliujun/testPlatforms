@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:width="http://www.w3.org/1999/xhtml" xmlns:white-space="http://www.w3.org/1999/xhtml" lang="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <!-- 引入vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
+
+    <!-- 引入element -->
+    <script src="//unpkg.com/element-ui@2.11.0/lib/index.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入vue-resource -->
+    <script src="//cdn.bootcss.com/vue-resource/1.0.3/vue-resource.js" type="text/javascript" charset="utf-8"></script>
+    <title>时光序接口测试管理</title>
+</head>
+<body style="background-color: #c8c6d4">
+<div id="app" style="margin: 0">
+    <el-menu
+            :default-active="activeIndex2"
+            class="el-menu-demo"
+            mode="horizontal"
+            @select="handleSelect"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b">
+        <el-menu-item index="1" style="color: #21aeff;font-weight: bold;font-size: 18px">时光序测试平台</el-menu-item>
+        <el-menu-item index="1">首页</el-menu-item>
+        <el-submenu index="2">
+            <template slot="title">测试用例管</template>
+            <el-menu-item index="2-1">Android测试用例</el-menu-item>
+            <el-menu-item index="2-2">IOS测试用例</el-menu-item>
+            <el-menu-item index="2-3">web端测试用例</el-menu-item>
+        </el-submenu>
+        <el-menu-item index="3"><a href="/index">接口自动化管理</a></el-menu-item>
+        <el-menu-item index="4"><a href="/performance">接口性能测试管理</a></el-menu-item>
+        <el-menu-item index="5"><a href="/plan">测试计划管理</a></el-menu-item>
+        <el-menu-item index="6">缺陷统计</el-menu-item>
+        <el-menu-item index="7">测试报告</el-menu-item>
+        <el-menu-item index="8"><a href="/sqlIndex">SqL操作</a></el-menu-item>
+        <el-menu-item index="9">Redis操作</el-menu-item>
+        <el-menu-item index="10"><a href="../static/testData.html">测试资源&数据</a></el-menu-item>
+        <el-menu-item index="11">测试技术分享</el-menu-item>
+        <button type="button" class="btn btn-danger" style="line-height: 2.8;position: absolute;right: 1px;">退出登陆
+        </button>
+    </el-menu>
+</div>
+
+<div style="margin: 20px;padding: 2px;background-color: #828b86">
+    <h2 style="margin-left: 5px">数据库环境</h2>
+    <h5 style="margin-left: 15px">测试环境</h5>
+        <p style="margin-left:25px">地址：192.168.16.8</p>
+        <p style="margin-left: 25px">端口：3306</p>
+        <p style="margin-left: 25px">账号：planadmin</p>
+        <p style="margin-left: 25px">密码：pL%5^an3a$4in</p>
+    <h5 style="margin-left: 15px">开发环境</h5>
+        <p style="margin-left:25px">地址：192.168.34.206</p>
+        <p style="margin-left: 25px">端口：3306</p>
+        <p style="margin-left: 25px">账号：planadmin</p>
+        <p style="margin-left: 25px">密码：pL%5^an3a$4in</p>
+</div>
+
+
+
+
+<script src="../static/js/testData.js" type="text/javascript"></script>
+</body>
+
+</html>

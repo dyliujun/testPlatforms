@@ -1,0 +1,11 @@
+swaggerUrl: http://tapi.shiguangxu.com #测试环境
+
+host1: 192.168.16.8
+user1: planadmin
+passwd1: pL%5^an3a$4in
+db1: testplatform
+
+host2: 47.115.35.45
+user2: gjdev
+passwd2: "12345678"
+db2: automation
