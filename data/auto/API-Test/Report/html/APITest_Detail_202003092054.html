@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta content="shanhe.me" name="Author"><title>JMeter Test Results</title><style type="text/css">
+            
+                * { margin: 0; padding: 0 }
+                html, body { width: 100%; height: 100%; background: #b4b4b4; font-size: 12px }
+                table { border: none; border-collapse: collapse; table-layout: fixed }
+                td { vertical-align: baseline; font-size: 12px }
+                #left-panel { position: absolute; left: 0; top: 0; bottom: 0; width: 300px; overflow: auto; background: #dee4ea }
+                #left-panel li.navigation { font-weight: bold; cursor: default; color: #9da8b2; line-height: 18px; background-position: 12px 5px; background-repeat: no-repeat; padding: 0 0 0 25px; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAICAYAAAArzdW1AAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sDEBQqGbO7BEcAAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAAKRJREFUGNN1zM0KgkAYheF3RvtXSsGyWhRNaILS7bdt11W0KgJvoPwZp0UlBPUtz3nOJw7Hk7necv5dOA2Qaazo2vZP0LEt9olCVtqQROufKNmuqBuBNAYW4QzXGX6B0bDPcjGnMQYJ8Cg12U59oSzaUJQa4IUAXMclDHwAAn/MxPMw765FZd2QRgopBWmsKCrdfhXnS/4ZYElBXdyxewN008Y8AephLAkqz613AAAAAElFTkSuQmCC) }
+                #left-panel li.success { color: #565b60 }
+                #left-panel li.failure { color: red }
+                #left-panel li { list-style: none; color: black; cursor: pointer }
+                #left-panel li.selected { background-repeat: repeat-x; color: white; background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAUCAYAAABMDlehAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sDEBQxLTs5O2gAAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAAEdJREFUCNc1y7ERgEAMA0GNUhIyGqM2uqKgtyWZhE9v53A/7/A6D7BkMDNgy2AroB2wHTCZv5UMOgFLG1bvd7XBckBlwCXjA5wMOF5iOX/MAAAAAElFTkSuQmCC) }
+                #left-panel div { line-height: 20px; background-position: 25px 3px; background-repeat: no-repeat; padding: 0 0 0 45px }
+                #left-panel div.success { background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAOCAYAAADwikbvAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sDEBULEEc6wzcAAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAAiNJREFUKM99kktIVGEYhp/jzJl08lI6logp2Y2EFkbtaqlFROsWrlq4ioJWQRs37VoUVItWkYEVRGSBlhleCpywDEWxTEuxcURTZ6YzxzP/5WshCOHUt36f93kXnyMi5Lsnb4clI4s4fhkXzp5w8mWcfHBvfEpUxVdCUUU6lUPNHuD86cYtBQX5GhPrM7hRg7GaSDRg2vuUd90WuOPVsOyqy6FFo2yOQHlU1S9z9dZT+S/8I7GCLlkAN4eyAf56mnT6Fy1HLnGuuYa++MS/4e74qMRqfXLaJ9BpfnsrLC0m2BYuoqwUbj/+274JD43OEqmexwvW8NUKXnaZtVSS1pNtAAyOvyC6v48HnUNb4Z7PH8UtTlIQWA5tb2RhYY7kz3l2FleytJYg/qWb8t2KZ/0PN+1hgI6uEUr2jpHKpGlquExVaS0VbjUZL7WxaqIXK6ADQ0n9GNfv9XCttWnD/O57t0TKFklnF3g5fJ/seoaa2D4O1x0F4PlgO9oIftbgFgYMfLgjACGqj0vlsddoUnj+Kt/mxunq72RP+UGqYjWMTA7R+b6dUCSEGEF5hoJQip6BaFs4HJtCyRrKs6wHCovDip/kys0WWpovMpOYBCtoT2N9B5uzWG0Zid8gnFrVFEQDtBaUrxEgXBimaEeER2/uIiK4roPOaMRYjBKsFly3fOO3G06dETGCWIsYjckprMphtEKMAQtgsMYi1mJMQHJ6xvkDKQoyphCzkl0AAAAASUVORK5CYII=) }
+                #left-panel div.failure { background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAOCAYAAADwikbvAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sDEBUJOEC5CU8AAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAAeVJREFUKM+NkDtok2EUhp8vl9ZLo/EyKI6KFgqCKC4OClrBWUQEcRRx1cGpk3WyInWrgoMZKkW8thYaEYQ0i7WC2ngrNDTERHJvkv/L/3//dxwc7F8jeOAsh/c973OOEhG61aPnaen7maXYt4MLZ4+pbppQt+F06jNH3QWOb8pxUs+SmJzjv83hxY8SVy3wNdtVneiHqe54IhLoB4/TUkyMyOrKj5yXoVtPZK02kLyYK7OnlqFWzgcCGtUC/YUJ3n5a/jd28tU7ORTN0myUA6Jms8bpWIa798elqzn1fokjThrpVBC3ETzNbYAuca59j/Hp+b/N869Tsk8tgVMCXQk+RlfQuk1/tMLMwzsSMCcm5zjhvoR2AdpF0GuwO4aqttS05ZSbZHhsBoAIwI83Cdkd/460XDAOG02d24MxvlR8dsUUh3f2UHaEtgdbWCHz4oZwcVCp66PP5FLhKjEc8DXaCMsNy8DYn/SnZ+L0hhWOb/F8yLs9fDtwk8j+VpqwrlC34PrgGEu2bhlYhZ1b8dncq3AMeBaUr/k6NUyk4ChKzu+N2hc6Bqody+WDG8g2fLatD7F3axjPgmvAtYJvIbouhhIRrl0ZktnkBGIt1gqeMXQ8D2MMiCIUCqFEsFhEQMSykCuqX0MzLAUJTzRsAAAAAElFTkSuQmCC) }
+                #left-panel div.detail { display: none }
+                #right-panel { position: absolute; right: 0; top: 0; bottom: 0; left: 301px; overflow: auto; background: white }
+                #right-panel .group { font-size: 12px; font-weight: bold; line-height: 16px; padding: 0 0 0 18px; counter-reset: assertion; background-repeat: repeat-x; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAQCAYAAADXnxW3AAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sDEBUkDq8pxjkAAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAADdJREFUCNdVxrERwDAMAzGK0v47eS6Z927SpMFBAAbkvSvnRk5+7K5cVfLMyN39bWakJAjA5xw9R94jN3tVhVEAAAAASUVORK5CYII=) }
+                #right-panel .zebra { background-repeat: repeat; padding: 0 0 0 18px; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAmCAYAAAAFvPEHAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sDEBYWFlNztEcAAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAABdJREFUCNdjYKAtePv5338mBgYGBpoQAGy1BAJlb/y6AAAAAElFTkSuQmCC) }
+                #right-panel .data { line-height: 19px; white-space: nowrap }
+                #right-panel pre.data { white-space: pre }
+                #right-panel tbody.failure { color: red }
+                #right-panel td.key { min-width: 108px }
+                #right-panel td.delimiter { min-width: 18px }
+                #right-panel td.assertion:before { counter-increment: assertion; content: counter(assertion) ". " }
+                #right-panel td.assertion { color: black }
+                #right-panel .trail { border-top: 1px solid #b4b4b4 }
+                
+            </style><script type="text/javascript">
+            
+                var onclick_li = (function() {
+                    var last_selected = null;
+                    return function(li) {
+                        if( last_selected == li )
+                            return;
+                        if( last_selected )
+                            last_selected.className = "";
+                        last_selected = li;
+                        last_selected.className = "selected";
+                        document.getElementById("right-panel").innerHTML = last_selected.firstChild.nextSibling.innerHTML;
+                        return false;
+                    };
+                })();
+                
+                var patch_timestamp = function() {
+                    var spans = document.getElementsByTagName("span");
+                    var len = spans.length;
+                    for( var i = 0; i < len; ++i ) {
+                        var span = spans[i];
+                        if( "patch_timestamp" == span.className )
+                            span.innerHTML = new Date( parseInt( span.innerHTML ) );
+                    }
+                };
+                
+                var patch_navigation_class = (function() {
+                
+                    var set_class = function(el, flag) {
+                        if(el) {
+                            el.className += flag ? " success" : " failure";
+                        }
+                    };
+                
+                    var traverse = function(el, group_el, flag) {
+                        while(1) {
+                            if(el) {
+                                if(el.className == 'navigation') {
+                                    set_class(group_el, flag);
+                                    group_el = el;
+                                    flag = true;
+                                } else {
+                                    var o = el.firstChild;
+                                    o = o ? o.className : null;
+                                    flag = flag ? (o == 'success') : false;
+                                }
+                                el = el.nextSibling;
+                            } else {
+                                set_class(group_el, flag);
+                                break;
+                            }
+                        }
+                    };
+                    
+                    return function() {
+                        var o = document.getElementById("result-list");
+                        o = o ? o.firstChild : null;
+                        if(o)
+                            traverse(o, null, true);
+                    };
+                })();
+        
+                window.onload = function() {
+                    patch_timestamp();
+                    patch_navigation_class();
+                    var o = document.getElementById("result-list");
+                    o = o ? o.firstChild : null;
+                    o = o ? o.nextSibling : null;
+                    if(o)
+                        onclick_li(o);
+                };
+        
+            </script></head><body><div id="left-panel"><ol id="result-list"><li class="navigation">Thread: 流程测试引擎 1-1</li><li onclick="return onclick_li(this);"><div class="success">获取流程数据</div><div class="detail"><div class="group">Sampler</div><div class="zebra"><table><tr><td class="data key">Thread Name</td><td class="data delimiter">:</td><td class="data">流程测试引擎 1-1</td></tr><tr><td class="data key">Timestamp</td><td class="data delimiter">:</td><td class="data"><span class="patch_timestamp">1583758454357</span></td></tr><tr><td class="data key">Time</td><td class="data delimiter">:</td><td class="data">456 ms</td></tr><tr><td class="data key">Latency</td><td class="data delimiter">:</td><td class="data">454 ms</td></tr><tr><td class="data key">Bytes</td><td class="data delimiter">:</td><td class="data">69</td></tr><tr><td class="data key">Sample Count</td><td class="data delimiter">:</td><td class="data">1</td></tr><tr><td class="data key">Error Count</td><td class="data delimiter">:</td><td class="data">0</td></tr><tr><td class="data key">Response Code</td><td class="data delimiter">:</td><td class="data">200</td></tr><tr><td class="data key">Response Message</td><td class="data delimiter">:</td><td class="data">OK</td></tr></table></div><div class="trail"></div><div class="group">Request</div><div class="zebra"><table><tr><td class="data key">Method/Url</td><td class="data delimiter">:</td><td class="data"><pre class="data"> </pre></td></tr><tr><td class="data key">Query String</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr><tr><td class="data key">Cookies</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr><tr><td class="data key">Request Headers</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr></table></div><div class="trail"></div><div class="group">Response</div><div class="zebra"><table><tr><td class="data key">Response Headers</td><td class="data delimiter">:</td><td class="data"><pre class="data">shared:false, driver:com.mysql.jdbc.Driver, url:jdbc:mysql://47.115.35.45:3306?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true, user:gjdev</pre></td></tr><tr><td class="data key">Response Data</td><td class="data delimiter">:</td><td class="data"><pre class="data">flow_id	flow_name	account	password
+27	Base-管家	11100000782	123456
+</pre></td></tr><tr><td class="data key">Response File</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr></table></div><div class="trail"></div></div></li><li onclick="return onclick_li(this);"><div class="success">流程初始化预处理--1-Base-管家</div><div class="detail"><div class="group">Sampler</div><div class="zebra"><table><tr><td class="data key">Thread Name</td><td class="data delimiter">:</td><td class="data">流程测试引擎 1-1</td></tr><tr><td class="data key">Timestamp</td><td class="data delimiter">:</td><td class="data"><span class="patch_timestamp">1583758454829</span></td></tr><tr><td class="data key">Time</td><td class="data delimiter">:</td><td class="data">1730 ms</td></tr><tr><td class="data key">Latency</td><td class="data delimiter">:</td><td class="data">0 ms</td></tr><tr><td class="data key">Bytes</td><td class="data delimiter">:</td><td class="data">2403</td></tr><tr><td class="data key">Sample Count</td><td class="data delimiter">:</td><td class="data">1</td></tr><tr><td class="data key">Error Count</td><td class="data delimiter">:</td><td class="data">0</td></tr><tr><td class="data key">Response Code</td><td class="data delimiter">:</td><td class="data">200</td></tr><tr><td class="data key">Response Message</td><td class="data delimiter">:</td><td class="data">Number of samples in transaction : 3, number of failing samples : 0</td></tr></table></div><div class="trail"></div><div class="group">Request</div><div class="zebra"><table><tr><td class="data key">Method/Url</td><td class="data delimiter">:</td><td class="data"><pre class="data"> </pre></td></tr><tr><td class="data key">Query String</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr><tr><td class="data key">Cookies</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr><tr><td class="data key">Request Headers</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr></table></div><div class="trail"></div><div class="group">Response</div><div class="zebra"><table><tr><td class="data key">Response Headers</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr><tr><td class="data key">Response Data</td><td class="data delimiter">:</td><td class="data"><pre class="data">Non-TEXT response data, cannot record: ()</pre></td></tr><tr><td class="data key">Response File</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr></table></div><div class="trail"></div></div></li><li onclick="return onclick_li(this);"><div class="success">1-全量订阅小程序-订阅全部</div><div class="detail"><div class="group">Sampler</div><div class="zebra"><table><tr><td class="data key">Thread Name</td><td class="data delimiter">:</td><td class="data">流程测试引擎 1-1</td></tr><tr><td class="data key">Timestamp</td><td class="data delimiter">:</td><td class="data"><span class="patch_timestamp">1583758456749</span></td></tr><tr><td class="data key">Time</td><td class="data delimiter">:</td><td class="data">382 ms</td></tr><tr><td class="data key">Latency</td><td class="data delimiter">:</td><td class="data">382 ms</td></tr><tr><td class="data key">Bytes</td><td class="data delimiter">:</td><td class="data">360</td></tr><tr><td class="data key">Sample Count</td><td class="data delimiter">:</td><td class="data">1</td></tr><tr><td class="data key">Error Count</td><td class="data delimiter">:</td><td class="data">0</td></tr><tr><td class="data key">Response Code</td><td class="data delimiter">:</td><td class="data">200</td></tr><tr><td class="data key">Response Message</td><td class="data delimiter">:</td><td class="data"></td></tr></table></div><div class="trail"></div><div class="group">Assertion</div><div class="zebra"><table><tbody class=""><tr><td colspan="3" class="data assertion">返回值断言</td></tr><tr><td class="data key">Failure</td><td class="data delimiter">:</td><td class="data">false</td></tr><tr><td class="data key">Error</td><td class="data delimiter">:</td><td class="data">false</td></tr><tr><td class="data key">Failure Message</td><td class="data delimiter">:</td><td class="data">返回值断言匹配通过</td></tr></tbody><tbody class=""><tr><td colspan="3" class="data assertion">数据库校验</td></tr><tr><td class="data key">Failure</td><td class="data delimiter">:</td><td class="data">false</td></tr><tr><td class="data key">Error</td><td class="data delimiter">:</td><td class="data">false</td></tr><tr><td class="data key">Failure Message</td><td class="data delimiter">:</td><td class="data"></td></tr></tbody></table></div><div class="trail"></div><div class="group">Request</div><div class="zebra"><table><tr><td class="data key">Method/Url</td><td class="data delimiter">:</td><td class="data"><pre class="data">POST https://tapi.shiguangxu.com/base/manage/v1/applet/subscribe</pre></td></tr><tr><td class="data key">Query String</td><td class="data delimiter">:</td><td class="data"><pre class="data">{
+  "dataVersion": "V1",
+  "ids": [
+    "49","36","41","10","35","32","40","44","15","43","4","5","12","33","13","39","30","11","14","42","34","47","45","46","48","31","37"
+  ],
+  "position": "HOME"
+}</pre></td></tr><tr><td class="data key">Cookies</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr><tr><td class="data key">Request Headers</td><td class="data delimiter">:</td><td class="data"><pre class="data">Connection: keep-alive
+Content-Type: application/json;charset=UTF-8
+Accept-Encoding: gzip
+token: eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+User-Agent: okhttp/3.3.0
+sid: eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+Content-Length: 200
+Host: tapi.shiguangxu.com
+</pre></td></tr></table></div><div class="trail"></div><div class="group">Response</div><div class="zebra"><table><tr><td class="data key">Response Headers</td><td class="data delimiter">:</td><td class="data"><pre class="data">HTTP/1.1 200 
+Server: openresty/1.11.2.2
+Date: Mon, 09 Mar 2020 12:54:16 GMT
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Content-Encoding: gzip
+</pre></td></tr><tr><td class="data key">Response Data</td><td class="data delimiter">:</td><td class="data"><pre class="data">{"code":200,"msg":"操作成功","data":{"ids":["49","36","41","10","35","32","40","44","15","43","4","5","12","33","13","39","30","11","14","42","34","47","45","46","48","31","37"]}}</pre></td></tr><tr><td class="data key">Response File</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr></table></div><div class="trail"></div></div></li><li onclick="return onclick_li(this);"><div class="success">2-全量订阅小程序-取消订阅</div><div class="detail"><div class="group">Sampler</div><div class="zebra"><table><tr><td class="data key">Thread Name</td><td class="data delimiter">:</td><td class="data">流程测试引擎 1-1</td></tr><tr><td class="data key">Timestamp</td><td class="data delimiter">:</td><td class="data"><span class="patch_timestamp">1583758458192</span></td></tr><tr><td class="data key">Time</td><td class="data delimiter">:</td><td class="data">370 ms</td></tr><tr><td class="data key">Latency</td><td class="data delimiter">:</td><td class="data">370 ms</td></tr><tr><td class="data key">Bytes</td><td class="data delimiter">:</td><td class="data">295</td></tr><tr><td class="data key">Sample Count</td><td class="data delimiter">:</td><td class="data">1</td></tr><tr><td class="data key">Error Count</td><td class="data delimiter">:</td><td class="data">0</td></tr><tr><td class="data key">Response Code</td><td class="data delimiter">:</td><td class="data">200</td></tr><tr><td class="data key">Response Message</td><td class="data delimiter">:</td><td class="data"></td></tr></table></div><div class="trail"></div><div class="group">Assertion</div><div class="zebra"><table><tbody class=""><tr><td colspan="3" class="data assertion">返回值断言</td></tr><tr><td class="data key">Failure</td><td class="data delimiter">:</td><td class="data">false</td></tr><tr><td class="data key">Error</td><td class="data delimiter">:</td><td class="data">false</td></tr><tr><td class="data key">Failure Message</td><td class="data delimiter">:</td><td class="data">返回值断言匹配通过</td></tr></tbody><tbody class=""><tr><td colspan="3" class="data assertion">数据库校验</td></tr><tr><td class="data key">Failure</td><td class="data delimiter">:</td><td class="data">false</td></tr><tr><td class="data key">Error</td><td class="data delimiter">:</td><td class="data">false</td></tr><tr><td class="data key">Failure Message</td><td class="data delimiter">:</td><td class="data"></td></tr></tbody></table></div><div class="trail"></div><div class="group">Request</div><div class="zebra"><table><tr><td class="data key">Method/Url</td><td class="data delimiter">:</td><td class="data"><pre class="data">POST https://tapi.shiguangxu.com/base/manage/v1/applet/subscribe</pre></td></tr><tr><td class="data key">Query String</td><td class="data delimiter">:</td><td class="data"><pre class="data">{
+  "dataVersion": "V1",
+  "ids": [
+    "49","36"
+  ],
+  "position": "HOME"
+}</pre></td></tr><tr><td class="data key">Cookies</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr><tr><td class="data key">Request Headers</td><td class="data delimiter">:</td><td class="data"><pre class="data">Connection: keep-alive
+Content-Type: application/json;charset=UTF-8
+Accept-Encoding: gzip
+token: eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+User-Agent: okhttp/3.3.0
+sid: eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+Content-Length: 77
+Host: tapi.shiguangxu.com
+</pre></td></tr></table></div><div class="trail"></div><div class="group">Response</div><div class="zebra"><table><tr><td class="data key">Response Headers</td><td class="data delimiter">:</td><td class="data"><pre class="data">HTTP/1.1 200 
+Server: openresty/1.11.2.2
+Date: Mon, 09 Mar 2020 12:54:17 GMT
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Content-Encoding: gzip
+</pre></td></tr><tr><td class="data key">Response Data</td><td class="data delimiter">:</td><td class="data"><pre class="data">{"code":200,"msg":"操作成功","data":{"ids":["49","36"]}}</pre></td></tr><tr><td class="data key">Response File</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr></table></div><div class="trail"></div></div></li><li onclick="return onclick_li(this);"><div class="failure">3-增量订阅小程序-记账</div><div class="detail"><div class="group">Sampler</div><div class="zebra"><table><tr><td class="data key">Thread Name</td><td class="data delimiter">:</td><td class="data">流程测试引擎 1-1</td></tr><tr><td class="data key">Timestamp</td><td class="data delimiter">:</td><td class="data"><span class="patch_timestamp">1583758458638</span></td></tr><tr><td class="data key">Time</td><td class="data delimiter">:</td><td class="data">124 ms</td></tr><tr><td class="data key">Latency</td><td class="data delimiter">:</td><td class="data">124 ms</td></tr><tr><td class="data key">Bytes</td><td class="data delimiter">:</td><td class="data">291</td></tr><tr><td class="data key">Sample Count</td><td class="data delimiter">:</td><td class="data">1</td></tr><tr><td class="data key">Error Count</td><td class="data delimiter">:</td><td class="data">1</td></tr><tr><td class="data key">Response Code</td><td class="data delimiter">:</td><td class="data">200</td></tr><tr><td class="data key">Response Message</td><td class="data delimiter">:</td><td class="data"></td></tr></table></div><div class="trail"></div><div class="group">Assertion</div><div class="zebra"><table><tbody class="failure"><tr><td colspan="3" class="data assertion">返回值断言</td></tr><tr><td class="data key">Failure</td><td class="data delimiter">:</td><td class="data">true</td></tr><tr><td class="data key">Error</td><td class="data delimiter">:</td><td class="data">false</td></tr><tr><td class="data key">Failure Message</td><td class="data delimiter">:</td><td class="data">返回值断言匹配失败:{"code":200,"msg":"操作成功","data":{"appletId":"10","appletName":"记账","reminded"</td></tr></tbody><tbody class=""><tr><td colspan="3" class="data assertion">数据库校验</td></tr><tr><td class="data key">Failure</td><td class="data delimiter">:</td><td class="data">false</td></tr><tr><td class="data key">Error</td><td class="data delimiter">:</td><td class="data">false</td></tr><tr><td class="data key">Failure Message</td><td class="data delimiter">:</td><td class="data"></td></tr></tbody></table></div><div class="trail"></div><div class="group">Request</div><div class="zebra"><table><tr><td class="data key">Method/Url</td><td class="data delimiter">:</td><td class="data"><pre class="data">POST https://tapi.shiguangxu.com/base/manage/v1/applet/subscribeIncrement</pre></td></tr><tr><td class="data key">Query String</td><td class="data delimiter">:</td><td class="data"><pre class="data">{
+  "dataVersion": "V1",
+  "ids": [
+    "10"
+  ]
+}</pre></td></tr><tr><td class="data key">Cookies</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr><tr><td class="data key">Request Headers</td><td class="data delimiter">:</td><td class="data"><pre class="data">Connection: keep-alive
+Content-Type: application/json;charset=UTF-8
+Accept-Encoding: gzip
+token: eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+User-Agent: okhttp/3.3.0
+sid: eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+Content-Length: 50
+Host: tapi.shiguangxu.com
+</pre></td></tr></table></div><div class="trail"></div><div class="group">Response</div><div class="zebra"><table><tr><td class="data key">Response Headers</td><td class="data delimiter">:</td><td class="data"><pre class="data">HTTP/1.1 200 
+Server: openresty/1.11.2.2
+Date: Mon, 09 Mar 2020 12:54:17 GMT
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Content-Encoding: gzip
+</pre></td></tr><tr><td class="data key">Response Data</td><td class="data delimiter">:</td><td class="data"><pre class="data">{"code":200,"msg":"操作成功","data":{"ids":["10"]}}</pre></td></tr><tr><td class="data key">Response File</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr></table></div><div class="trail"></div></div></li><li onclick="return onclick_li(this);"><div class="success">Debug Sampler</div><div class="detail"><div class="group">Sampler</div><div class="zebra"><table><tr><td class="data key">Thread Name</td><td class="data delimiter">:</td><td class="data">流程测试引擎 1-1</td></tr><tr><td class="data key">Timestamp</td><td class="data delimiter">:</td><td class="data"><span class="patch_timestamp">1583758458828</span></td></tr><tr><td class="data key">Time</td><td class="data delimiter">:</td><td class="data">2 ms</td></tr><tr><td class="data key">Latency</td><td class="data delimiter">:</td><td class="data">0 ms</td></tr><tr><td class="data key">Bytes</td><td class="data delimiter">:</td><td class="data">6348</td></tr><tr><td class="data key">Sample Count</td><td class="data delimiter">:</td><td class="data">1</td></tr><tr><td class="data key">Error Count</td><td class="data delimiter">:</td><td class="data">0</td></tr><tr><td class="data key">Response Code</td><td class="data delimiter">:</td><td class="data">200</td></tr><tr><td class="data key">Response Message</td><td class="data delimiter">:</td><td class="data">OK</td></tr></table></div><div class="trail"></div><div class="group">Request</div><div class="zebra"><table><tr><td class="data key">Method/Url</td><td class="data delimiter">:</td><td class="data"><pre class="data"> </pre></td></tr><tr><td class="data key">Query String</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr><tr><td class="data key">Cookies</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr><tr><td class="data key">Request Headers</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr></table></div><div class="trail"></div><div class="group">Response</div><div class="zebra"><table><tr><td class="data key">Response Headers</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr><tr><td class="data key">Response Data</td><td class="data delimiter">:</td><td class="data"><pre class="data">JMeterVariables:
+JMeterThread.last_sample_ok=false
+JMeterThread.pack=org.apache.jmeter.threads.SamplePackage@4110f0a5
+M=1
+N=3
+NULL=NULL
+NULL_matchNr=0
+START.HMS=205413
+START.MS=1583758453239
+START.YMD=20200309
+TESTSTART.MS=1583758453744
+__jm__流程循环__idx=0
+__jm__流程测试引擎__idx=0
+__jm__节点循环__idx=0
+__jmeter.U_T__=流程测试引擎 1-1
+account_#=1
+account_1=11100000782
+afterOneDay=20200310
+afterThreeDay=20200312
+content=test
+currentDay=20200309
+currentMin=202003092057
+currentMin_add1=20200309205700
+currentMin_add2=20200309205800
+currentMin_add6=20200309210300
+currentTime=20200309205414  
+currentTimeByMM=202003092054  
+dbcheckpool=org.apache.jmeter.protocol.jdbc.config.DataSourceElement$DataSourceComponentImpl@41b5d982
+device={"deviceType":"1","appVersion":"2.1.2","deviceTag":"59db5d3aef9002a9","isRoot":false,"osVersion":27,"ip":"172.16.10.55","channel":"_360","deviceModel":"Meizu-16th Plus","channelName":"android","channelType":"sgx","deviceTagApp":"59db5d3aef9002a9"}
+deviceTagApp=59db5d3aef9002a9
+device_model=Meizu-16th Plus
+email=testbind@qq.com
+endDateTime=20991231235959
+envname=test
+expect_db_#=3
+expect_db_1=
+expect_db_2=
+expect_db_3=
+expect_response_#=3
+expect_response_1={"code":200,"msg":"操作成功","data":{"ids":["49","36","41","10","35","32","40","44","15","43","4","5","12","33","13","39","30","11","14","42","34","47","45","46","48","31","37"]}}
+expect_response_2={"code":200,"msg":"操作成功","data":{"ids":["49","36"]}}
+expect_response_3={"code":200,"msg":"操作成功","data":{"appletId":"10","appletName":"记账","reminded"
+flow_id_#=1
+flow_id_1=27
+flow_name_#=1
+flow_name_1=Base-管家
+importance=2
+ischechdb_#=3
+ischechdb_1=0
+ischechdb_2=0
+ischechdb_3=0
+isexcute_pre_sql_#=3
+isexcute_pre_sql_1=0
+isexcute_pre_sql_2=0
+isexcute_pre_sql_3=0
+method_#=3
+method_1=POST
+method_2=POST
+method_3=POST
+mobile=14400001111
+next_time_add3=2020-03-09 20:58:14
+node_code_#=3
+node_code_1=
+node_code_2=
+node_code_3=
+node_id_#=3
+node_id_1=887
+node_id_2=888
+node_id_3=883
+node_name_#=3
+node_name_1=全量订阅小程序-订阅全部
+node_name_2=全量订阅小程序-取消订阅
+node_name_3=增量订阅小程序-记账
+para={
+  "dataVersion": "V1",
+  "ids": [
+    "10"
+  ]
+}
+parameter_#=3
+parameter_1={
+  "dataVersion": "V1",
+  "ids": [
+    "49","36","41","10","35","32","40","44","15","43","4","5","12","33","13","39","30","11","14","42","34","47","45","46","48","31","37"
+  ],
+  "position": "HOME"
+}
+parameter_2={
+  "dataVersion": "V1",
+  "ids": [
+    "49","36"
+  ],
+  "position": "HOME"
+}
+parameter_3={
+  "dataVersion": "V1",
+  "ids": [
+    "10"
+  ]
+}
+password=123456
+password_#=1
+password_1=123456
+path_#=3
+path_1=/base/manage/v1/applet/subscribe
+path_2=/base/manage/v1/applet/subscribe
+path_3=/base/manage/v1/applet/subscribeIncrement
+port=443
+post_keys_#=3
+post_keys_1=NULL
+post_keys_2=NULL
+post_keys_3=NULL
+post_keys_default_#=3
+post_keys_default_1=NULL
+post_keys_default_2=NULL
+post_keys_default_3=NULL
+post_keys_extractor_#=3
+post_keys_extractor_1=NULL
+post_keys_extractor_2=NULL
+post_keys_extractor_3=NULL
+pre_keys_#=3
+pre_keys_1=
+pre_keys_2=
+pre_keys_3=
+pre_sql=
+pre_sql_out_#=3
+pre_sql_out_1=
+pre_sql_out_2=
+pre_sql_out_3=
+pre_sql_para_#=3
+pre_sql_para_1=
+pre_sql_para_2=
+pre_sql_para_3=
+pre_sql_str_#=3
+pre_sql_str_1=
+pre_sql_str_2=
+pre_sql_str_3=
+protocol=https
+pushToken=727c30653f5b5c982c8c1ba7a4c0fd90
+server=tapi.shiguangxu.com
+sleep_time_#=3
+sleep_time_1=1000
+sleep_time_2=0
+sleep_time_3=0
+sql=
+sql_para_#=3
+sql_para_1=
+sql_para_2=
+sql_para_3=
+sql_str_#=3
+sql_str_1=
+sql_str_2=
+sql_str_3=
+summaryDay=2020-03-09
+todoDay=9
+todoDay3=12
+todoDay_add3=202003122054
+todoHH=20
+todoHH2=20
+todoHH6=21
+todoHHRepeat=20
+todoHHRepeat2=20
+todoHHRepeat6=21
+todoMonth=3
+todomm=57
+todomm2=58
+todomm6=3
+todommRepeat=57
+todommRepeat2=58
+todommRepeat6=3
+todotime=20200309205414
+todotime_add15=202003092109
+todotime_add2=202003092058
+todotime_add6=202003092103
+token=eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+token;user_id=eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+token;user_id_g=1
+token;user_id_g0="token":"eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A"
+token;user_id_g1=eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+userid=3071454945868725272
+
+</pre></td></tr><tr><td class="data key">Response File</td><td class="data delimiter">:</td><td class="data"><pre class="data"></pre></td></tr></table></div><div class="trail"></div></div></li></ol></div><div id="right-panel"></div></body></html>

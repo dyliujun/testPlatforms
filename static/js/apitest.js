@@ -107,7 +107,7 @@ var vm = new Vue({
                     "method": "POST",
                     "path": "",
                     "parameter": "",
-                    "run_env": "",
+                    "run_env": ["test"],
                     "expect_response": "",
                     "sleep_time": 0,
                     "state": "1",
@@ -288,6 +288,7 @@ var vm = new Vue({
         },
         copyApi(nodeData,index,row){
             this.nodeDataDefault = [row];
+            console.log("this.nodeDataDefault--->",this.nodeDataDefault);
             this.dialogCopyNode = true;
         },
         startTask(){

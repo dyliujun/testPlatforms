@@ -181,7 +181,7 @@
                                     </span>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="测试账号" prop="account" id="account">
+                            <el-table-column label="测试账号" prop="account" width="120px" id="account">
                                 <template slot-scope="scope">
                                     <el-input size="mini" style="display: none;margin: 0;padding: 0"
                                               :placeholder="scope.row.account"
@@ -193,7 +193,7 @@
                                     </span>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="测试账号密码" prop="password" id="password">
+                            <el-table-column label="账号密码" prop="password" width="100px" id="password">
                                 <template slot-scope="scope">
                                     <el-input size="mini" style="display: none;margin: 0;padding: 0"
                                               :placeholder="scope.row.password"
@@ -217,7 +217,7 @@
                                     </span>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="可运行环境" prop="run_env" width="200px" id="run_env">
+                            <el-table-column label="可运行环境" prop="run_env" width="150px" id="run_env">
                                 <template slot-scope="scope">
                                     <el-input size="mini" style="display: none;margin: 0;padding: 0"
                                               :placeholder="scope.row.run_env"
@@ -229,7 +229,7 @@
                                     </span>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="swagger_url" prop="swagger_url" width="350px" id="swagger_url">
+                            <el-table-column label="swagger_url" prop="swagger_url" width="250px" id="swagger_url">
                                 <template slot-scope="scope">
                                     <el-input size="mini" style="display: none;margin: 0;padding: 0"
                                               :placeholder="scope.row.swagger_url"
@@ -949,7 +949,7 @@
                                         placeholder="请选择可运行环境">
                                     <el-option
                                             v-for="item in envOptions"
-                                            :key="item.value"
+                                            :key="item.label"
                                             :label="item.label"
                                             :value="item.value">
                                     </el-option>
@@ -1140,8 +1140,8 @@
                                         style="width: 78%"
                                         placeholder="请选择可运行环境">
                                     <el-option
-                                            v-for="item in nodeDataDefault.run_env"
-                                            :key="item.value"
+                                            v-for="item in envOptions"
+                                            :key="item.label"
                                             :label="item.label"
                                             :value="item.value">
                                     </el-option>

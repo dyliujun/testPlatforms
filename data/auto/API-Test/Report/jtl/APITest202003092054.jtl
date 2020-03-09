@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testResults version="1.2">
+<sample t="456" it="0" lt="454" ct="439" ts="1583758454357" s="true" lb="获取流程数据" rc="200" rm="OK" tn="流程测试引擎 1-1" dt="text" by="69" sby="0" sc="1" ec="0" ng="1" na="1" hn="LAPTOP-UO12M6SP">
+  <responseHeader class="java.lang.String">shared:false, driver:com.mysql.jdbc.Driver, url:jdbc:mysql://47.115.35.45:3306?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true, user:gjdev</responseHeader>
+  <requestHeader class="java.lang.String"></requestHeader>
+  <responseData class="java.lang.String">flow_id	flow_name	account	password
+27	Base-管家	11100000782	123456
+</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <samplerData class="java.lang.String">[Select Statement] select flow_id,flow_name,account,password from automation.testdata_flow_new where run_env like &apos;%test%&apos; and state = 1 and flow_id = 27 order by flow_code
+
+</samplerData>
+</sample>
+<sample t="1730" it="131" lt="0" ct="0" ts="1583758454829" s="true" lb="流程初始化预处理--1-Base-管家" rc="200" rm="Number of samples in transaction : 3, number of failing samples : 0" tn="流程测试引擎 1-1" dt="" by="2403" sby="540" sc="1" ec="0" ng="1" na="1" hn="LAPTOP-UO12M6SP">
+  <sample t="34" it="0" lt="33" ct="0" ts="1583758454829" s="true" lb="获取节点数据" rc="200" rm="OK" tn="流程测试引擎 1-1" dt="text" by="1178" sby="0" sc="1" ec="0" ng="1" na="1" hn="LAPTOP-UO12M6SP">
+    <responseHeader class="java.lang.String">shared:false, driver:com.mysql.jdbc.Driver, url:jdbc:mysql://47.115.35.45:3306?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true, user:gjdev</responseHeader>
+    <requestHeader class="java.lang.String"></requestHeader>
+    <responseData class="java.lang.String">node_id	node_code	node_name	method	path	parameter	expect_response	pre_keys	post_keys	post_keys_extractor	post_keys_default	ischechdb	sql_str	sql_para	expect_db	sleep_time	isexcute_pre_sql	pre_sql_str	pre_sql_para	pre_sql_out
+887		全量订阅小程序-订阅全部	POST	/base/manage/v1/applet/subscribe	{
+  &quot;dataVersion&quot;: &quot;V1&quot;,
+  &quot;ids&quot;: [
+    &quot;49&quot;,&quot;36&quot;,&quot;41&quot;,&quot;10&quot;,&quot;35&quot;,&quot;32&quot;,&quot;40&quot;,&quot;44&quot;,&quot;15&quot;,&quot;43&quot;,&quot;4&quot;,&quot;5&quot;,&quot;12&quot;,&quot;33&quot;,&quot;13&quot;,&quot;39&quot;,&quot;30&quot;,&quot;11&quot;,&quot;14&quot;,&quot;42&quot;,&quot;34&quot;,&quot;47&quot;,&quot;45&quot;,&quot;46&quot;,&quot;48&quot;,&quot;31&quot;,&quot;37&quot;
+  ],
+  &quot;position&quot;: &quot;HOME&quot;
+}	{&quot;code&quot;:200,&quot;msg&quot;:&quot;操作成功&quot;,&quot;data&quot;:{&quot;ids&quot;:[&quot;49&quot;,&quot;36&quot;,&quot;41&quot;,&quot;10&quot;,&quot;35&quot;,&quot;32&quot;,&quot;40&quot;,&quot;44&quot;,&quot;15&quot;,&quot;43&quot;,&quot;4&quot;,&quot;5&quot;,&quot;12&quot;,&quot;33&quot;,&quot;13&quot;,&quot;39&quot;,&quot;30&quot;,&quot;11&quot;,&quot;14&quot;,&quot;42&quot;,&quot;34&quot;,&quot;47&quot;,&quot;45&quot;,&quot;46&quot;,&quot;48&quot;,&quot;31&quot;,&quot;37&quot;]}}					0				1000	0			
+888		全量订阅小程序-取消订阅	POST	/base/manage/v1/applet/subscribe	{
+  &quot;dataVersion&quot;: &quot;V1&quot;,
+  &quot;ids&quot;: [
+    &quot;49&quot;,&quot;36&quot;
+  ],
+  &quot;position&quot;: &quot;HOME&quot;
+}	{&quot;code&quot;:200,&quot;msg&quot;:&quot;操作成功&quot;,&quot;data&quot;:{&quot;ids&quot;:[&quot;49&quot;,&quot;36&quot;]}}					0				0	0			
+883		增量订阅小程序-记账	POST	/base/manage/v1/applet/subscribeIncrement	{
+  &quot;dataVersion&quot;: &quot;V1&quot;,
+  &quot;ids&quot;: [
+    &quot;10&quot;
+  ]
+}	{&quot;code&quot;:200,&quot;msg&quot;:&quot;操作成功&quot;,&quot;data&quot;:{&quot;appletId&quot;:&quot;10&quot;,&quot;appletName&quot;:&quot;记账&quot;,&quot;reminded&quot;					0				0	0			
+</responseData>
+    <responseFile class="java.lang.String"></responseFile>
+    <samplerData class="java.lang.String">[Prepared Select Statement] select node_id,node_code,node_name,method,path,parameter,expect_response,pre_keys,post_keys,post_keys_extractor,post_keys_default,ischechdb,sql_str,sql_para,expect_db,sleep_time,isexcute_pre_sql,pre_sql_str,pre_sql_para,pre_sql_out from automation.testdata_node_new where flow_id = ? and state = 1 and run_env like &apos;%test%&apos; order by order_id
+
+27
+varchar</samplerData>
+  </sample>
+  <httpSample t="1676" it="0" lt="1676" ct="1533" ts="1583758454950" s="true" lb="登录" rc="200" rm="" tn="流程测试引擎 1-1" dt="text" by="1225" sby="540" sc="1" ec="0" ng="1" na="1" hn="LAPTOP-UO12M6SP">
+    <assertionResult>
+      <name>Response Assertion</name>
+      <failure>false</failure>
+      <error>false</error>
+    </assertionResult>
+    <responseHeader class="java.lang.String">HTTP/1.1 200 
+Server: openresty/1.11.2.2
+Date: Mon, 09 Mar 2020 12:54:15 GMT
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Content-Encoding: gzip
+</responseHeader>
+    <requestHeader class="java.lang.String">Connection: keep-alive
+Content-Type: application/json;charset=UTF-8
+Accept-Encoding: gzip
+token: 
+User-Agent: okhttp/3.3.0
+Content-Length: 330
+Host: tapi.shiguangxu.com
+</requestHeader>
+    <responseData class="java.lang.String">{&quot;code&quot;:200,&quot;msg&quot;:&quot;操作成功&quot;,&quot;data&quot;:{&quot;id&quot;:&quot;3071454945868725272&quot;,&quot;mobile&quot;:&quot;11100000782&quot;,&quot;uniqueKey&quot;:&quot;1efd9a053911457db375a60b7fe00ad6&quot;,&quot;oldMobile&quot;:&quot;11100000782&quot;,&quot;deviceType&quot;:&quot;2&quot;,&quot;pwdErrorCount&quot;:0,&quot;gender&quot;:1,&quot;signature&quot;:&quot;&quot;,&quot;telecomOperators&quot;:&quot;&quot;,&quot;lunar&quot;:&quot;1&quot;,&quot;birthYear&quot;:0,&quot;birthMonth&quot;:0,&quot;birthDay&quot;:0,&quot;job&quot;:&quot;&quot;,&quot;leapMonth&quot;:&quot;false&quot;,&quot;appVersion&quot;:&quot;1.2.0&quot;,&quot;lastLoginTime&quot;:1583758455521,&quot;channelName&quot;:&quot;未来管家_ios&quot;,&quot;channelType&quot;:&quot;hswl&quot;,&quot;channel&quot;:&quot;iOS&quot;,&quot;deviceTag&quot;:&quot;EC4ABEFA-9BC4-4C1A-BFD0-8034CA096FB2&quot;,&quot;created&quot;:1583321375000,&quot;updated&quot;:1583758455521,&quot;pushToken&quot;:&quot;727c30653f5b5c982c8c1ba7a4c0fd90&quot;,&quot;userToken&quot;:&quot;ec67d5fd016b34769ff35ba5fefc97cab0da7a37a16123ca9674502d84bfff3397f6a11e0cc705ad&quot;,&quot;token&quot;:&quot;eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A&quot;,&quot;wxConcerns&quot;:&quot;0&quot;,&quot;wxBind&quot;:&quot;0&quot;,&quot;type&quot;:&quot;old&quot;,&quot;qqBind&quot;:&quot;0&quot;}}</responseData>
+    <responseFile class="java.lang.String"></responseFile>
+    <cookies class="java.lang.String"></cookies>
+    <method class="java.lang.String">POST</method>
+    <queryString class="java.lang.String">{&quot;password&quot;:&quot;123456&quot;,&quot;appType&quot;:&quot;1&quot;,&quot;mobile&quot;:&quot;11100000782&quot;,&quot;type&quot;:&quot;1&quot;,&quot;device&quot;:{&quot;deviceType&quot;:&quot;1&quot;,&quot;appVersion&quot;:&quot;2.1.2&quot;,&quot;deviceTag&quot;:&quot;ec:51:bc:a6:a2:d5&quot;,&quot;isRoot&quot;:false,&quot;osVersion&quot;:27,&quot;ip&quot;:&quot;172.16.11.200&quot;,&quot;channel&quot;:&quot;xiaomi&quot;,&quot;deviceModel&quot;:&quot;OPPO-OPPO R11s&quot;,&quot;channelName&quot;:&quot;android&quot;,&quot;channelType&quot;:&quot;sgx&quot;,&quot;deviceTagApp&quot;:&quot;ec:51:bc:a6:a2:d5&quot;}}</queryString>
+    <java.net.URL>https://tapi.shiguangxu.com/base/user/login</java.net.URL>
+  </httpSample>
+  <sample t="20" it="0" lt="0" ct="0" ts="1583758456670" s="true" lb="重置节点计数器" rc="200" rm="OK" tn="流程测试引擎 1-1" dt="text" by="0" sby="0" sc="1" ec="0" ng="1" na="1" hn="LAPTOP-UO12M6SP">
+    <responseHeader class="java.lang.String"></responseHeader>
+    <requestHeader class="java.lang.String"></requestHeader>
+    <responseData class="java.lang.String"></responseData>
+    <responseFile class="java.lang.String"></responseFile>
+    <samplerData class="java.lang.String">import java.util.Date;
+import java.text.SimpleDateFormat;
+
+vars.put(&quot;N&quot;,&quot;0&quot;);//节点循环外计数器重置为0,节点循环时每个节点执行前计数器加1
+
+SimpleDateFormat df = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+System.out.println(df.format(new Date()) + &quot;: 执行流程--&quot;+vars.get(&quot;flow_name_&quot;+vars.get(&quot;M&quot;)));
+
+vars.put(&quot;currentMin_add1&quot;, vars.get(&quot;currentMin&quot;)+&quot;00&quot;);
+vars.put(&quot;currentMin_add6&quot;, vars.get(&quot;todotime_add6&quot;)+&quot;00&quot;);
+vars.put(&quot;currentMin_add2&quot;, vars.get(&quot;todotime_add2&quot;)+&quot;00&quot;);
+
+String time = vars.get(&quot;currentMin&quot;)+&quot;00&quot;;
+String time6 = vars.get(&quot;todotime_add6&quot;)+&quot;00&quot;;
+String time2 = vars.get(&quot;todotime_add2&quot;)+&quot;00&quot;;
+String day3 = vars.get(&quot;todoDay_add3&quot;)+&quot;00&quot;;
+
+String todoDay3 = day3.substring(6,8);
+if(todoDay3.substring(0,1).equals(&quot;0&quot;)){
+	todoDay3 = todoDay3.substring(1);
+}
+
+String todoDay = time.substring(6,8);
+if(todoDay.substring(0,1).equals(&quot;0&quot;)){
+	todoDay = todoDay.substring(1);
+}
+
+
+String todoMonth = time.substring(4,6);
+if(todoMonth.substring(0,1).equals(&quot;0&quot;)){
+	todoMonth = todoMonth.substring(1);
+}
+
+
+String todoHH = time.substring(8,10);
+if(todoHH.substring(0,1).equals(&quot;0&quot;)){
+	todoHH = todoHH.substring(1);
+}
+
+String todomm = time.substring(10,12);
+if(todomm.substring(0,1).equals(&quot;0&quot;)){
+	todomm = todomm.substring(1);
+}
+
+String todoHH2 = time2.substring(8,10);
+if(todoHH2.substring(0,1).equals(&quot;0&quot;)){
+	todoHH2 = todoHH2.substring(1);
+}
+
+String todomm2 = time2.substring(10,12);
+if(todomm2.substring(0,1).equals(&quot;0&quot;)){
+	todomm2 = todomm2.substring(1);
+}
+
+String todoHH6 = time6.substring(8,10);
+if(todoHH6.substring(0,1).equals(&quot;0&quot;)){
+	todoHH6 = todoHH6.substring(1);
+}
+
+String todomm6 = time6.substring(10,12);
+if(todomm6.substring(0,1).equals(&quot;0&quot;)){
+	todomm6 = todomm6.substring(1);
+}
+
+
+vars.put(&quot;todoMonth&quot;,todoMonth);
+
+vars.put(&quot;todoDay&quot;,todoDay);
+vars.put(&quot;todoDay3&quot;,todoDay3);
+
+vars.put(&quot;todoHH2&quot;,todoHH2);
+vars.put(&quot;todomm2&quot;,todomm2);
+
+vars.put(&quot;todoHH6&quot;,todoHH6);
+vars.put(&quot;todomm6&quot;,todomm6);
+
+vars.put(&quot;todoHH&quot;,todoHH);
+vars.put(&quot;todomm&quot;,todomm);
+
+
+String todoHHRepeat = time.substring(8,10);
+if(todoHHRepeat.substring(0,1).equals(&quot;0&quot;)){
+	todoHHRepeat = todoHHRepeat.substring(1);
+}
+
+String todommRepeat = time.substring(10,12);
+if(todommRepeat.substring(0,1).equals(&quot;0&quot;)){
+	todommRepeat = todommRepeat.substring(1);
+}
+
+String todoHHRepeat2 = time2.substring(8,10);
+if(todoHHRepeat2.substring(0,1).equals(&quot;0&quot;)){
+	todoHHRepeat2 = todoHHRepeat2.substring(1);
+}
+
+String todommRepeat2 = time2.substring(10,12);
+if(todommRepeat2.substring(0,1).equals(&quot;0&quot;)){
+	todommRepeat2 = todommRepeat2.substring(1);
+}
+
+
+String todoHHRepeat6 = time6.substring(8,10);
+if(todoHHRepeat6.substring(0,1).equals(&quot;0&quot;)){
+	todoHHRepeat6 = todoHHRepeat6.substring(1);
+}
+
+String todommRepeat6 = time6.substring(10,12);
+if(todommRepeat6.substring(0,1).equals(&quot;0&quot;)){
+	todommRepeat6 = todommRepeat6.substring(1);
+}
+
+vars.put(&quot;todoHHRepeat2&quot;,todoHHRepeat2);
+vars.put(&quot;todommRepeat2&quot;,todommRepeat2);
+
+vars.put(&quot;todoHHRepeat6&quot;,todoHHRepeat6);
+vars.put(&quot;todommRepeat6&quot;,todommRepeat6);
+
+vars.put(&quot;todommRepeat&quot;,todommRepeat);
+vars.put(&quot;todoHHRepeat&quot;,todoHHRepeat);
+
+
+
+
+
+
+
+
+
+
+</samplerData>
+  </sample>
+  <responseHeader class="java.lang.String"></responseHeader>
+  <requestHeader class="java.lang.String"></requestHeader>
+  <responseData class="java.lang.String">Non-TEXT response data, cannot record: ()</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+</sample>
+<httpSample t="382" it="0" lt="382" ct="0" ts="1583758456749" s="true" lb="1-全量订阅小程序-订阅全部" rc="200" rm="" tn="流程测试引擎 1-1" dt="text" by="360" sby="1631" sc="1" ec="0" ng="1" na="1" hn="LAPTOP-UO12M6SP">
+  <assertionResult>
+    <name>返回值断言</name>
+    <failure>false</failure>
+    <error>false</error>
+    <failureMessage>返回值断言匹配通过</failureMessage>
+  </assertionResult>
+  <assertionResult>
+    <name>数据库校验</name>
+    <failure>false</failure>
+    <error>false</error>
+    <failureMessage></failureMessage>
+  </assertionResult>
+  <responseHeader class="java.lang.String">HTTP/1.1 200 
+Server: openresty/1.11.2.2
+Date: Mon, 09 Mar 2020 12:54:16 GMT
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Content-Encoding: gzip
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Content-Type: application/json;charset=UTF-8
+Accept-Encoding: gzip
+token: eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+User-Agent: okhttp/3.3.0
+sid: eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+Content-Length: 200
+Host: tapi.shiguangxu.com
+</requestHeader>
+  <responseData class="java.lang.String">{&quot;code&quot;:200,&quot;msg&quot;:&quot;操作成功&quot;,&quot;data&quot;:{&quot;ids&quot;:[&quot;49&quot;,&quot;36&quot;,&quot;41&quot;,&quot;10&quot;,&quot;35&quot;,&quot;32&quot;,&quot;40&quot;,&quot;44&quot;,&quot;15&quot;,&quot;43&quot;,&quot;4&quot;,&quot;5&quot;,&quot;12&quot;,&quot;33&quot;,&quot;13&quot;,&quot;39&quot;,&quot;30&quot;,&quot;11&quot;,&quot;14&quot;,&quot;42&quot;,&quot;34&quot;,&quot;47&quot;,&quot;45&quot;,&quot;46&quot;,&quot;48&quot;,&quot;31&quot;,&quot;37&quot;]}}</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">POST</method>
+  <queryString class="java.lang.String">{
+  &quot;dataVersion&quot;: &quot;V1&quot;,
+  &quot;ids&quot;: [
+    &quot;49&quot;,&quot;36&quot;,&quot;41&quot;,&quot;10&quot;,&quot;35&quot;,&quot;32&quot;,&quot;40&quot;,&quot;44&quot;,&quot;15&quot;,&quot;43&quot;,&quot;4&quot;,&quot;5&quot;,&quot;12&quot;,&quot;33&quot;,&quot;13&quot;,&quot;39&quot;,&quot;30&quot;,&quot;11&quot;,&quot;14&quot;,&quot;42&quot;,&quot;34&quot;,&quot;47&quot;,&quot;45&quot;,&quot;46&quot;,&quot;48&quot;,&quot;31&quot;,&quot;37&quot;
+  ],
+  &quot;position&quot;: &quot;HOME&quot;
+}</queryString>
+  <java.net.URL>https://tapi.shiguangxu.com/base/manage/v1/applet/subscribe</java.net.URL>
+</httpSample>
+<httpSample t="370" it="0" lt="370" ct="43" ts="1583758458192" s="true" lb="2-全量订阅小程序-取消订阅" rc="200" rm="" tn="流程测试引擎 1-1" dt="text" by="295" sby="1507" sc="1" ec="0" ng="1" na="1" hn="LAPTOP-UO12M6SP">
+  <assertionResult>
+    <name>返回值断言</name>
+    <failure>false</failure>
+    <error>false</error>
+    <failureMessage>返回值断言匹配通过</failureMessage>
+  </assertionResult>
+  <assertionResult>
+    <name>数据库校验</name>
+    <failure>false</failure>
+    <error>false</error>
+    <failureMessage></failureMessage>
+  </assertionResult>
+  <responseHeader class="java.lang.String">HTTP/1.1 200 
+Server: openresty/1.11.2.2
+Date: Mon, 09 Mar 2020 12:54:17 GMT
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Content-Encoding: gzip
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Content-Type: application/json;charset=UTF-8
+Accept-Encoding: gzip
+token: eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+User-Agent: okhttp/3.3.0
+sid: eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+Content-Length: 77
+Host: tapi.shiguangxu.com
+</requestHeader>
+  <responseData class="java.lang.String">{&quot;code&quot;:200,&quot;msg&quot;:&quot;操作成功&quot;,&quot;data&quot;:{&quot;ids&quot;:[&quot;49&quot;,&quot;36&quot;]}}</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">POST</method>
+  <queryString class="java.lang.String">{
+  &quot;dataVersion&quot;: &quot;V1&quot;,
+  &quot;ids&quot;: [
+    &quot;49&quot;,&quot;36&quot;
+  ],
+  &quot;position&quot;: &quot;HOME&quot;
+}</queryString>
+  <java.net.URL>https://tapi.shiguangxu.com/base/manage/v1/applet/subscribe</java.net.URL>
+</httpSample>
+<httpSample t="124" it="0" lt="124" ct="0" ts="1583758458638" s="false" lb="3-增量订阅小程序-记账" rc="200" rm="" tn="流程测试引擎 1-1" dt="text" by="291" sby="1489" sc="1" ec="1" ng="1" na="1" hn="LAPTOP-UO12M6SP">
+  <assertionResult>
+    <name>返回值断言</name>
+    <failure>true</failure>
+    <error>false</error>
+    <failureMessage>返回值断言匹配失败:{&quot;code&quot;:200,&quot;msg&quot;:&quot;操作成功&quot;,&quot;data&quot;:{&quot;appletId&quot;:&quot;10&quot;,&quot;appletName&quot;:&quot;记账&quot;,&quot;reminded&quot;</failureMessage>
+  </assertionResult>
+  <assertionResult>
+    <name>数据库校验</name>
+    <failure>false</failure>
+    <error>false</error>
+    <failureMessage></failureMessage>
+  </assertionResult>
+  <responseHeader class="java.lang.String">HTTP/1.1 200 
+Server: openresty/1.11.2.2
+Date: Mon, 09 Mar 2020 12:54:17 GMT
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Content-Encoding: gzip
+</responseHeader>
+  <requestHeader class="java.lang.String">Connection: keep-alive
+Content-Type: application/json;charset=UTF-8
+Accept-Encoding: gzip
+token: eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+User-Agent: okhttp/3.3.0
+sid: eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+Content-Length: 50
+Host: tapi.shiguangxu.com
+</requestHeader>
+  <responseData class="java.lang.String">{&quot;code&quot;:200,&quot;msg&quot;:&quot;操作成功&quot;,&quot;data&quot;:{&quot;ids&quot;:[&quot;10&quot;]}}</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <cookies class="java.lang.String"></cookies>
+  <method class="java.lang.String">POST</method>
+  <queryString class="java.lang.String">{
+  &quot;dataVersion&quot;: &quot;V1&quot;,
+  &quot;ids&quot;: [
+    &quot;10&quot;
+  ]
+}</queryString>
+  <java.net.URL>https://tapi.shiguangxu.com/base/manage/v1/applet/subscribeIncrement</java.net.URL>
+</httpSample>
+<sample t="2" it="0" lt="0" ct="0" ts="1583758458828" s="true" lb="Debug Sampler" rc="200" rm="OK" tn="流程测试引擎 1-1" dt="text" by="6348" sby="0" sc="1" ec="0" ng="1" na="1" hn="LAPTOP-UO12M6SP">
+  <responseHeader class="java.lang.String"></responseHeader>
+  <requestHeader class="java.lang.String"></requestHeader>
+  <responseData class="java.lang.String">JMeterVariables:
+JMeterThread.last_sample_ok=false
+JMeterThread.pack=org.apache.jmeter.threads.SamplePackage@4110f0a5
+M=1
+N=3
+NULL=NULL
+NULL_matchNr=0
+START.HMS=205413
+START.MS=1583758453239
+START.YMD=20200309
+TESTSTART.MS=1583758453744
+__jm__流程循环__idx=0
+__jm__流程测试引擎__idx=0
+__jm__节点循环__idx=0
+__jmeter.U_T__=流程测试引擎 1-1
+account_#=1
+account_1=11100000782
+afterOneDay=20200310
+afterThreeDay=20200312
+content=test
+currentDay=20200309
+currentMin=202003092057
+currentMin_add1=20200309205700
+currentMin_add2=20200309205800
+currentMin_add6=20200309210300
+currentTime=20200309205414  
+currentTimeByMM=202003092054  
+dbcheckpool=org.apache.jmeter.protocol.jdbc.config.DataSourceElement$DataSourceComponentImpl@41b5d982
+device={&quot;deviceType&quot;:&quot;1&quot;,&quot;appVersion&quot;:&quot;2.1.2&quot;,&quot;deviceTag&quot;:&quot;59db5d3aef9002a9&quot;,&quot;isRoot&quot;:false,&quot;osVersion&quot;:27,&quot;ip&quot;:&quot;172.16.10.55&quot;,&quot;channel&quot;:&quot;_360&quot;,&quot;deviceModel&quot;:&quot;Meizu-16th Plus&quot;,&quot;channelName&quot;:&quot;android&quot;,&quot;channelType&quot;:&quot;sgx&quot;,&quot;deviceTagApp&quot;:&quot;59db5d3aef9002a9&quot;}
+deviceTagApp=59db5d3aef9002a9
+device_model=Meizu-16th Plus
+email=testbind@qq.com
+endDateTime=20991231235959
+envname=test
+expect_db_#=3
+expect_db_1=
+expect_db_2=
+expect_db_3=
+expect_response_#=3
+expect_response_1={&quot;code&quot;:200,&quot;msg&quot;:&quot;操作成功&quot;,&quot;data&quot;:{&quot;ids&quot;:[&quot;49&quot;,&quot;36&quot;,&quot;41&quot;,&quot;10&quot;,&quot;35&quot;,&quot;32&quot;,&quot;40&quot;,&quot;44&quot;,&quot;15&quot;,&quot;43&quot;,&quot;4&quot;,&quot;5&quot;,&quot;12&quot;,&quot;33&quot;,&quot;13&quot;,&quot;39&quot;,&quot;30&quot;,&quot;11&quot;,&quot;14&quot;,&quot;42&quot;,&quot;34&quot;,&quot;47&quot;,&quot;45&quot;,&quot;46&quot;,&quot;48&quot;,&quot;31&quot;,&quot;37&quot;]}}
+expect_response_2={&quot;code&quot;:200,&quot;msg&quot;:&quot;操作成功&quot;,&quot;data&quot;:{&quot;ids&quot;:[&quot;49&quot;,&quot;36&quot;]}}
+expect_response_3={&quot;code&quot;:200,&quot;msg&quot;:&quot;操作成功&quot;,&quot;data&quot;:{&quot;appletId&quot;:&quot;10&quot;,&quot;appletName&quot;:&quot;记账&quot;,&quot;reminded&quot;
+flow_id_#=1
+flow_id_1=27
+flow_name_#=1
+flow_name_1=Base-管家
+importance=2
+ischechdb_#=3
+ischechdb_1=0
+ischechdb_2=0
+ischechdb_3=0
+isexcute_pre_sql_#=3
+isexcute_pre_sql_1=0
+isexcute_pre_sql_2=0
+isexcute_pre_sql_3=0
+method_#=3
+method_1=POST
+method_2=POST
+method_3=POST
+mobile=14400001111
+next_time_add3=2020-03-09 20:58:14
+node_code_#=3
+node_code_1=
+node_code_2=
+node_code_3=
+node_id_#=3
+node_id_1=887
+node_id_2=888
+node_id_3=883
+node_name_#=3
+node_name_1=全量订阅小程序-订阅全部
+node_name_2=全量订阅小程序-取消订阅
+node_name_3=增量订阅小程序-记账
+para={
+  &quot;dataVersion&quot;: &quot;V1&quot;,
+  &quot;ids&quot;: [
+    &quot;10&quot;
+  ]
+}
+parameter_#=3
+parameter_1={
+  &quot;dataVersion&quot;: &quot;V1&quot;,
+  &quot;ids&quot;: [
+    &quot;49&quot;,&quot;36&quot;,&quot;41&quot;,&quot;10&quot;,&quot;35&quot;,&quot;32&quot;,&quot;40&quot;,&quot;44&quot;,&quot;15&quot;,&quot;43&quot;,&quot;4&quot;,&quot;5&quot;,&quot;12&quot;,&quot;33&quot;,&quot;13&quot;,&quot;39&quot;,&quot;30&quot;,&quot;11&quot;,&quot;14&quot;,&quot;42&quot;,&quot;34&quot;,&quot;47&quot;,&quot;45&quot;,&quot;46&quot;,&quot;48&quot;,&quot;31&quot;,&quot;37&quot;
+  ],
+  &quot;position&quot;: &quot;HOME&quot;
+}
+parameter_2={
+  &quot;dataVersion&quot;: &quot;V1&quot;,
+  &quot;ids&quot;: [
+    &quot;49&quot;,&quot;36&quot;
+  ],
+  &quot;position&quot;: &quot;HOME&quot;
+}
+parameter_3={
+  &quot;dataVersion&quot;: &quot;V1&quot;,
+  &quot;ids&quot;: [
+    &quot;10&quot;
+  ]
+}
+password=123456
+password_#=1
+password_1=123456
+path_#=3
+path_1=/base/manage/v1/applet/subscribe
+path_2=/base/manage/v1/applet/subscribe
+path_3=/base/manage/v1/applet/subscribeIncrement
+port=443
+post_keys_#=3
+post_keys_1=NULL
+post_keys_2=NULL
+post_keys_3=NULL
+post_keys_default_#=3
+post_keys_default_1=NULL
+post_keys_default_2=NULL
+post_keys_default_3=NULL
+post_keys_extractor_#=3
+post_keys_extractor_1=NULL
+post_keys_extractor_2=NULL
+post_keys_extractor_3=NULL
+pre_keys_#=3
+pre_keys_1=
+pre_keys_2=
+pre_keys_3=
+pre_sql=
+pre_sql_out_#=3
+pre_sql_out_1=
+pre_sql_out_2=
+pre_sql_out_3=
+pre_sql_para_#=3
+pre_sql_para_1=
+pre_sql_para_2=
+pre_sql_para_3=
+pre_sql_str_#=3
+pre_sql_str_1=
+pre_sql_str_2=
+pre_sql_str_3=
+protocol=https
+pushToken=727c30653f5b5c982c8c1ba7a4c0fd90
+server=tapi.shiguangxu.com
+sleep_time_#=3
+sleep_time_1=1000
+sleep_time_2=0
+sleep_time_3=0
+sql=
+sql_para_#=3
+sql_para_1=
+sql_para_2=
+sql_para_3=
+sql_str_#=3
+sql_str_1=
+sql_str_2=
+sql_str_3=
+summaryDay=2020-03-09
+todoDay=9
+todoDay3=12
+todoDay_add3=202003122054
+todoHH=20
+todoHH2=20
+todoHH6=21
+todoHHRepeat=20
+todoHHRepeat2=20
+todoHHRepeat6=21
+todoMonth=3
+todomm=57
+todomm2=58
+todomm6=3
+todommRepeat=57
+todommRepeat2=58
+todommRepeat6=3
+todotime=20200309205414
+todotime_add15=202003092109
+todotime_add2=202003092058
+todotime_add6=202003092103
+token=eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+token;user_id=eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+token;user_id_g=1
+token;user_id_g0=&quot;token&quot;:&quot;eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A&quot;
+token;user_id_g1=eyJhbGciOiJSUzI1NiJ9.eyJkX3R5cGUiOiIxIiwiZF9tb2RlbCI6Ik9QUE8tT1BQTyBSMTFzIiwiZF90YWciOiJlYzo1MTpiYzphNjphMjpkNSIsInVpZCI6MzA3MTQ1NDk0NTg2ODcyNTI3MiwiY3YiOiIyLjEuMiIsImV4cCI6MTU4NTA1NDQ1NSwibF90aW1lIjoxNTg1MDU0NDU1LCJzaWQiOiJUS05fM2V0SU1qbUI5RThfM3MwOGxZIn0.WkcYBq7eB-ok93i6Y1LVnRGdXC_lTisiOHsK-M75mpWFRY40Q9hmfOvhMJ8gmPbJQ-blnmXOk_se1h5YmRZS5v987La88tC5y7YiEufYI_gXaG1SNUJTjKHIXPKtMIeJQr8r-63PJmQ_uIzdva90jXkBp64blo917ntbq0c5udZyXVb9dSbHOK5dpAe4hj5WwiPHbOj8LaBC5dT_zyKNktOndEESv4HihBwmdOCGeyL11x36Ua_6_JBbtfN9vYZXBj5_Mftymgfdyto3D_Gyan5luWB7YOOF5UY2-jjV2PijeOvPPV77rAEJ_yqqE9icRtmz4PhNlX5LYhYrrJaf_A
+userid=3071454945868725272
+
+</responseData>
+  <responseFile class="java.lang.String"></responseFile>
+  <samplerData class="java.lang.String">JMeterVariables
+</samplerData>
+</sample>
+
+</testResults>
