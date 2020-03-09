@@ -22,13 +22,16 @@
             overflow: inherit;
             text-overflow: ellipsis;
         }
+
         .el-checkbox {
             margin: 1px;
             padding: 0;
         }
+
         .el-tooltip__popper {
             max-width: 40%
         }
+
         .el-menu-vertical-demo:not(.el-menu--collapse) {
             width: 200px;
             min-height: 400px;
@@ -107,11 +110,17 @@
         </button>
     </el-menu>
     <div style="margin: 1px 1px 0 1px ;padding: 0">
-        <el-tabs type="border-card"  v-model="activeName"  @tab-click="handleClick">
+        <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="接口测试流管理" name="apitest">
-                <el-button size="small"  type="primary" @click="dialogFormVisible = true" style="margin:10px;font-weight: bolder">+添加接口测试流</el-button>
-                <el-button size="small" type="warning" @click="actionAllFlow()" style="margin: 10px;float: right">运行所有测试流</el-button>
-                <el-button size="small" type="primary" @click="openSwagger()" style="margin: 10px;float: right">进入swagger</el-button>
+                <el-button size="small" type="primary" @click="dialogFormVisible = true"
+                           style="margin:10px;font-weight: bolder">+添加接口测试流
+                </el-button>
+                <el-button size="small" type="warning" @click="actionAllFlow()" style="margin: 10px;float: right">
+                    运行所有测试流
+                </el-button>
+                <el-button size="small" type="primary" @click="openSwagger()" style="margin: 10px;float: right">
+                    进入swagger
+                </el-button>
                 <template>
                     <el-select size="small" v-model="filtrate" @change="filtrateCreater" placeholder="筛选负责人">
                         <el-option
@@ -122,10 +131,12 @@
                         </el-option>
                     </el-select>
                 </template>
-                <el-input size="small" placeholder="请输入测试流名称" v-model="flowName" class="input-with-select" style="width: 400px">
+                <el-input size="small" placeholder="请输入测试流名称" v-model="flowName" class="input-with-select"
+                          style="width: 400px">
                     <el-button slot="append" icon="el-icon-search" @click="filterFlowName()">搜索测试流</el-button>
                 </el-input>
-                <el-input size="small" placeholder="请输入接口URL" v-model="path" class="input-with-select" style="width: 400px">
+                <el-input size="small" placeholder="请输入接口URL" v-model="path" class="input-with-select"
+                          style="width: 400px">
                     <el-button slot="append" icon="el-icon-search" @click="filterPath()">搜索URL</el-button>
                 </el-input>
                 <div>
@@ -148,7 +159,8 @@
                                 @cell-dblclick="dbEditFlowTable">
                             <el-table-column label="测试流 ID" size="small" prop="flow_code" id="flow_code" width="90px">
                                 <template slot-scope="scope">
-                                    <el-input style="display: none;margin: 0;padding: 0" :placeholder="scope.row.flow_code"
+                                    <el-input style="display: none;margin: 0;padding: 0"
+                                              :placeholder="scope.row.flow_code"
                                               v-model="scope.row.flow_code"></el-input>
                                     <span class="span" style="display: block;font-weight: bold;color: #3557ff">
                                         {%verbatim%}
@@ -222,7 +234,7 @@
                                     <el-input size="mini" style="display: none;margin: 0;padding: 0"
                                               :placeholder="scope.row.swagger_url"
                                               v-model="scope.row.swagger_url"></el-input>
-                                    <span class="span" style="display: block" @click="jumpSwagger(scope.row)" >
+                                    <span class="span" style="display: block" @click="jumpSwagger(scope.row)">
                                         {%verbatim%}
                                         {{scope.row.swagger_url}}
                                         {%endverbatim%}
@@ -270,7 +282,8 @@
                                     <el-button size="mini" type="success" style="display: none;margin: 2px;padding: 5px"
                                                @click.native.prevent="addFlowRow(flowData,scope.$index, scope.row)">添加
                                     </el-button>
-                                    <el-button size="mini" type="danger" icon="el-icon-delete" style="margin: 2px;padding: 5px"
+                                    <el-button size="mini" type="danger" icon="el-icon-delete"
+                                               style="margin: 2px;padding: 5px"
                                                @click="deleteFlowRow(scope.$index,flowData,scope.row)">删除
                                     </el-button>
                                     <el-dialog
@@ -281,7 +294,8 @@
                                         <span style="color: coral">确定删除当前测试流吗？删除后将不可恢复</span>
                                         <span slot="footer" class="dialog-footer">
                                              <el-button @click="deleteFlowDialogVisible = false">取 消</el-button>
-                                             <el-button type="primary" @click="deleteFlowOk(scope.$index,scope.row,flowData)">确定删除</el-button>
+                                             <el-button type="primary"
+                                                        @click="deleteFlowOk(scope.$index,scope.row,flowData)">确定删除</el-button>
                                         </span>
                                     </el-dialog>
                                     <el-button size="mini" class="save" icon="el-icon-edit-outline"
@@ -319,9 +333,9 @@
                                                 :data="nodeData"
                                                 stripe
                                                 height="550px"
-                                                border =true
+                                                border=true
                                                 size="mini"
-                                                :default-sort = "{prop: 'order_id', order: 'ascending'}"
+                                                :default-sort="{prop: 'order_id', order: 'ascending'}"
                                                 @row-click="rowClick"
                                                 @cell-dblclick="dbEditNodeTable"
                                                 highlight-current-row="true"
@@ -344,12 +358,14 @@
                                                     </span>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="接口名称" width="160px" prop="node_name" resizable="true">
+                                            <el-table-column label="接口名称" width="160px" prop="node_name"
+                                                             resizable="true">
                                                 <template slot-scope="scope">
                                                     <el-input size="mini" style="display: none"
                                                               :placeholder="scope.row.node_name"
                                                               v-model="scope.row.node_name"></el-input>
-                                                    <el-tooltip class="item" effect="dark" :content="scope.row.node_name" placement="top-start">
+                                                    <el-tooltip class="item" effect="dark"
+                                                                :content="scope.row.node_name" placement="top-start">
                                                 <span class="span" style="display: block;font-weight: bold;">
                                                     {%verbatim%}
                                                         {{scope.row.node_name}}
@@ -362,7 +378,8 @@
                                                              resizable="true"
                                                              prop="method">
                                                 <template slot-scope="scope">
-                                                    <el-input size="mini" style="display: none" :placeholder="scope.row.method"
+                                                    <el-input size="mini" style="display: none"
+                                                              :placeholder="scope.row.method"
                                                               v-model="scope.row.method"></el-input>
                                                     <span class="span" style="display: block">
                                                 {%verbatim%}
@@ -375,9 +392,11 @@
                                                              resizable="true"
                                                              prop="path">
                                                 <template slot-scope="scope">
-                                                    <el-input size="mini" style="display: none" :placeholder="scope.row.path"
+                                                    <el-input size="mini" style="display: none"
+                                                              :placeholder="scope.row.path"
                                                               v-model="scope.row.path"></el-input>
-                                                    <el-tooltip class="item" effect="dark" :content="scope.row.path" placement="top-start">
+                                                    <el-tooltip class="item" effect="dark" :content="scope.row.path"
+                                                                placement="top-start">
                                                         <span class="span" style="display: block;font-weight: bold;">
                                                             {%verbatim%}
                                                                 {{scope.row.path}}
@@ -386,7 +405,8 @@
                                                     </el-tooltip>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="请求参数" width="180px" show-overflow-tooltip prop="parameter"
+                                            <el-table-column label="请求参数" width="180px" show-overflow-tooltip
+                                                             prop="parameter"
                                                              resizable="true"
                                                              style="padding: 0">
                                                 <template slot-scope="scope">
@@ -399,7 +419,9 @@
                                                                class="parameterButton"
                                                                slot="reference"
                                                                @click="getParameter(scope.$index, scope.row,scope.$event)">
-                                                        {%verbatim%}{{scope.row.parameter}}{%endverbatim%}
+                                                        {%verbatim%}
+                                                        {{scope.row.parameter}}
+                                                        {%endverbatim%}
                                                     </el-button>
 
                                                 </template>
@@ -409,7 +431,8 @@
                                                     <el-input size="mini" style="display: none"
                                                               :placeholder="scope.row.pre_keys"
                                                               v-model="scope.row.pre_keys"></el-input>
-                                                    <el-tooltip class="item" effect="dark" :content="scope.row.pre_keys" placement="top-start">
+                                                    <el-tooltip class="item" effect="dark" :content="scope.row.pre_keys"
+                                                                placement="top-start">
                                                 <span class="span" style="display: block">
                                                     {%verbatim%}
                                                         {{scope.row.pre_keys}}
@@ -418,7 +441,8 @@
                                                     </el-tooltip>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="等待时间" width="80px" show-overflow-tooltip prop="sleep_time"
+                                            <el-table-column label="等待时间" width="80px" show-overflow-tooltip
+                                                             prop="sleep_time"
                                                              style="padding: 0">
                                                 <template slot-scope="scope">
                                                     <el-input size="mini" style="display: none"
@@ -431,13 +455,16 @@
                                             </span>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="期望结果" width="140px"  prop="expect_response" resizable="true">
+                                            <el-table-column label="期望结果" width="140px" prop="expect_response"
+                                                             resizable="true">
                                                 <template slot-scope="scope">
                                                     <el-input size="mini" style="display: none"
                                                               :placeholder="scope.row.expect_response"
                                                               v-model="scope.row.expect_response"></el-input>
-                                                    <el-tooltip class="item" effect="dark" :content="scope.row.expect_response" placement="top-start">
-                                                        <span class="span" style="display: block" >
+                                                    <el-tooltip class="item" effect="dark"
+                                                                :content="scope.row.expect_response"
+                                                                placement="top-start">
+                                                        <span class="span" style="display: block">
                                                             {%verbatim%}
                                                                 {{scope.row.expect_response}}
                                                             {%endverbatim%}
@@ -445,13 +472,15 @@
                                                     </el-tooltip>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="可运行环境" width="140px"  prop="run_env" resizable="true">
+                                            <el-table-column label="可运行环境" width="140px" prop="run_env"
+                                                             resizable="true">
                                                 <template slot-scope="scope">
                                                     <el-input size="mini" style="display: none"
                                                               :placeholder="scope.row.run_env"
                                                               v-model="scope.row.run_env"></el-input>
-                                                    <el-tooltip class="item" effect="dark" :content="scope.row.run_env" placement="top-start">
-                                                        <span class="span" style="display: block" >
+                                                    <el-tooltip class="item" effect="dark" :content="scope.row.run_env"
+                                                                placement="top-start">
+                                                        <span class="span" style="display: block">
                                                             {%verbatim%}
                                                                 {{scope.row.run_env}}
                                                             {%endverbatim%}
@@ -476,57 +505,67 @@
                                                              show-overflow-tooltip
                                                              prop="preSql">
                                                 <template slot-scope="scope">
-                                                    <el-button  size="medium"
-                                                                class="popoverButtonPre"
-                                                                style="color: chocolate;border:1px solid #c8c6d4;text-overflow: ellipsis;width: 90px;overflow: hidden;text-align: left"
-                                                                slot="reference"
-                                                                @click="getPreSql(scope.$index, scope.row,scope.$event)">
-                                                                {%verbatim%}{{formatPreSql(scope.row,preSqlData)}}{%endverbatim%}
+                                                    <el-button size="medium"
+                                                               class="popoverButtonPre"
+                                                               style="color: chocolate;border:1px solid #c8c6d4;text-overflow: ellipsis;width: 90px;overflow: hidden;text-align: left"
+                                                               slot="reference"
+                                                               @click="getPreSql(scope.$index, scope.row,scope.$event)">
+                                                        {%verbatim%}
+                                                            {{formatPreSql(scope.row,preSqlData)}}
+                                                        {%endverbatim%}
                                                     </el-button>
                                                 </template>
                                             </el-table-column>
                                             <el-table-column label="Sql校验" width="110px" show-overflow-tooltip
                                                              prop="outSqlData">
                                                 <template slot-scope="scope">
-                                                    <el-button  size="medium"
-                                                                class="popoverButton"
-                                                                style="color: chocolate;border:1px solid #c8c6d4;text-overflow: ellipsis;width: 90px;overflow: hidden;text-align: left"
-                                                                slot="reference"
-                                                                @click="getOutSql(scope.$index, scope.row,scope.$event)">
-                                                                {%verbatim%}{{formatOutSql(scope.row,outSqlData)}}{%endverbatim%}
+                                                    <el-button size="medium"
+                                                               class="popoverButton"
+                                                               style="color: chocolate;border:1px solid #c8c6d4;text-overflow: ellipsis;width: 90px;overflow: hidden;text-align: left"
+                                                               slot="reference"
+                                                               @click="getOutSql(scope.$index, scope.row,scope.$event)">
+                                                        {%verbatim%}
+                                                            {{formatOutSql(scope.row,outSqlData)}}
+                                                        {%endverbatim%}
                                                     </el-button>
                                                 </template>
                                             </el-table-column>
                                             <el-table-column label="后置变量提取" width="165px" show-overflow-tooltip
                                                              prop="postKeyData">
                                                 <template slot-scope="scope">
-                                                    <el-button  size="medium"
-                                                                class="popoverButtonPost"
-                                                                style="color: chocolate;border:1px solid #c8c6d4;text-overflow: ellipsis;width: 150px;overflow: hidden;text-align: left"
-                                                                slot="reference"
-                                                                @click="getPostKey(scope.$index, scope.row,scope.$event)">
-                                                                {%verbatim%}{{formatPostKey(scope.row,postKeyData)}}{%endverbatim%}
+                                                    <el-button size="medium"
+                                                               class="popoverButtonPost"
+                                                               style="color: chocolate;border:1px solid #c8c6d4;text-overflow: ellipsis;width: 150px;overflow: hidden;text-align: left"
+                                                               slot="reference"
+                                                               @click="getPostKey(scope.$index, scope.row,scope.$event)">
+                                                        {%verbatim%}
+                                                            {{formatPostKey(scope.row,postKeyData)}}
+                                                        {%endverbatim%}
                                                     </el-button>
                                                 </template>
                                             </el-table-column>
                                             <el-table-column label="操作" width="180px" prop="parameter">
                                                 <template slot-scope="scope">
-                                                    <el-button size="mini" type="warning" style="margin: 2px;padding: 5px"
+                                                    <el-button size="mini" type="warning"
+                                                               style="margin: 2px;padding: 5px"
                                                                @click="copyApi(scope.$index,nodeData,scope.row)">
                                                         复制
                                                     </el-button>
                                                     <el-button size="mini" type="danger"
                                                                style="margin: 2px;padding: 5px"
-                                                               @click="deleteNodeRow(scope.$index,nodeData,scope.row)">删除
+                                                               @click="deleteNodeRow(scope.$index,nodeData,scope.row)">
+                                                        删除
                                                     </el-button>
                                                     <el-button size="mini" class="saveNode"
                                                                style="display: none;margin: 2px;padding: 5px;float: left"
                                                                type="warning"
-                                                               @click="saveNodeEdit(scope.$index, scope.row,scope.$event)">保存
+                                                               @click="saveNodeEdit(scope.$index, scope.row,scope.$event)">
+                                                        保存
                                                     </el-button>
                                                     <el-button size="mini" class="editNode" type="primary"
                                                                style="margin: 2px;padding: 5px;float: left"
-                                                               @click="editNodeTable(scope.$index, scope.row,scope.$event)">编辑
+                                                               @click="editNodeTable(scope.$index, scope.row,scope.$event)">
+                                                        编辑
                                                     </el-button>
                                                     <el-dialog
                                                             title="删除接口"
@@ -562,18 +601,22 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane label="配置管理" style="font-weight: bolder" name="config">
-                <el-button size="small" type="danger" @click="dialogEmailChange = true" style="margin: 10px">配置邮箱收件人</el-button>
-                <el-button size="small" type="primary" @click="dialogDefaultVar = true;getDefaultVar()" style="margin: 10px">配置全局默认变量</el-button>
+                <el-button size="small" type="danger" @click="dialogEmailChange = true" style="margin: 10px">配置邮箱收件人
+                </el-button>
+                <el-button size="small" type="primary" @click="dialogDefaultVar = true;getDefaultVar()"
+                           style="margin: 10px">配置全局默认变量
+                </el-button>
             </el-tab-pane>
             <el-tab-pane label="定时任务" style="font-weight: bolder" name="task">
-                <el-button size="small" type="danger" @click="startTask" style="margin: 10px">开启定时任务（每天早上9点50开始接口自动化）</el-button>
+                <el-button size="small" type="danger" @click="startTask" style="margin: 10px">开启定时任务（每天早上9点50开始接口自动化）
+                </el-button>
             </el-tab-pane>
             <el-tab-pane label="接口统计" style="font-weight: bolder"
-                    v-loading="statisticsLoading"
-                    element-loading-text="正在拼命统计中..."
-                    element-loading-spinner="el-icon-loading"
-                    element-loading-background="rgba(0, 0, 0, 0.8)"
-                    name="statistics" >
+                         v-loading="statisticsLoading"
+                         element-loading-text="正在拼命统计中..."
+                         element-loading-spinner="el-icon-loading"
+                         element-loading-background="rgba(0, 0, 0, 0.8)"
+                         name="statistics">
                 <span class="span" style="display: block;font-weight: bold;color: #3557ff">
                     <el-tag>微服务总数 ：
                     {%verbatim%}
@@ -602,8 +645,8 @@
                     {%endverbatim%}
                      </el-tag>
                 </span>
-                <el-collapse  accordion>
-                    <el-collapse-item >
+                <el-collapse accordion>
+                    <el-collapse-item>
                         <template slot="title">
                             <span class="span" style="display: block;font-weight: bold;color: #ffa354;margin-top: 5px">
                             未统计接口列表(点击展开详情)：
@@ -633,18 +676,19 @@
                             </el-table-column>
                             <el-table-column
                                     v-for="col in colTemplate"
-                                    :prop="col.prop" :label="col.label" >
+                                    :prop="col.prop" :label="col.label">
                             </el-table-column>
-                            <el-table-column label="操作" width="250px" prop="operation" >
+                            <el-table-column label="操作" width="250px" prop="operation">
                                 <template slot-scope="scope">
-                                    <el-button raw-type="button" @click="manualStatistics(scope.$index,tableData,scope.row)">
+                                    <el-button raw-type="button"
+                                               @click="manualStatistics(scope.$index,tableData,scope.row)">
                                         手动统计
                                     </el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
                     </el-collapse-item>
-                    <el-collapse-item >
+                    <el-collapse-item>
                         <template slot="title">
                             <span class="span" style="display: block;font-weight: bold;color: #d49e54;margin-top: 5px">
                             未实现接口列表(点击展开详情)：
@@ -669,7 +713,7 @@
                             </el-table-column>
                             <el-table-column
                                     v-for="col in colTemplate"
-                                    :prop="col.prop" :label="col.label" >
+                                    :prop="col.prop" :label="col.label">
                             </el-table-column>
                             <el-table-column
                                     label="备注"
@@ -678,18 +722,20 @@
                                     :filters="filters"
                                     :filter-method="filterTag"
                                     filter-placement="bottom-end">
-                                    width="290px">
+                                width="290px">
                                 <template slot-scope="scope">
-                                    <span  class="unDoStatistics"  style="display: block;font-weight: bold;color: #2b83e9;overflow:unset">
+                                    <span class="unDoStatistics"
+                                          style="display: block;font-weight: bold;color: #2b83e9;overflow:unset">
                                         {%verbatim%}
                                         {{scope.row.remark}}
                                         {%endverbatim%}
                                     </span>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="操作" width="250px" prop="operation" >
+                            <el-table-column label="操作" width="250px" prop="operation">
                                 <template slot-scope="scope">
-                                    <el-button raw-type="button"  @click="unDoStatistics(scope.$index,unDoList,scope.row)">
+                                    <el-button raw-type="button"
+                                               @click="unDoStatistics(scope.$index,unDoList,scope.row)">
                                         手动统计
                                     </el-button>
                                 </template>
@@ -700,7 +746,8 @@
             </el-tab-pane>
         </el-tabs>
     </div>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="新增接口测试流" :visible.sync="dialogFormVisible">
+    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="新增接口测试流"
+               :visible.sync="dialogFormVisible">
         <el-form :model="flowDataDefault">
             <el-form-item label="测试流名称" :label-width="formLabelWidth">
                 <el-input v-model="flowDataDefault.flow_name" autocomplete="off"
@@ -720,7 +767,8 @@
                 <el-input v-model="flowDataDefault.creater" autocomplete="off" placeholder="请输入模块自动化测试负责人"></el-input>
             </el-form-item>
             <el-form-item label="swagger_url" :label-width="formLabelWidth">
-                <el-input v-model="flowDataDefault.swagger_url" autocomplete="off" placeholder="请输入swagger_url"></el-input>
+                <el-input v-model="flowDataDefault.swagger_url" autocomplete="off"
+                          placeholder="请输入swagger_url"></el-input>
             </el-form-item>
             <el-form-item label="可运行环境" :label-width="formLabelWidth">
                 <el-select
@@ -751,7 +799,8 @@
             <el-button type="primary" @click="addFlowOk(flowDataDefault)">确 定</el-button>
         </div>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="配置全局默认变量" :visible.sync="dialogDefaultVar">
+    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="配置全局默认变量"
+               :visible.sync="dialogDefaultVar">
         <el-button size="mini" class="save"
                    style="display: block;margin: 2px;padding: 5px;float: left"
                    type="success">+添加全局变量
@@ -760,7 +809,7 @@
                 :data="varListData"
                 :header-cell-style="{background:'#606266',color:'#FFFFFF',padding:0}"
                 border>
-            <el-table-column property="date" label="变量名称" width="250px" >
+            <el-table-column property="date" label="变量名称" width="250px">
                 <template slot-scope="scope">
                     <el-input style="display: none;margin: 0;padding: 0" :placeholder="scope.row.argumentName"
                               v-model="scope.row.argumentName"></el-input>
@@ -771,7 +820,7 @@
                             </span>
                 </template>
             </el-table-column>
-            <el-table-column property="date" label="变量值" >
+            <el-table-column property="date" label="变量值">
                 <template slot-scope="scope">
                     <el-input style="display: none;margin: 0;padding: 0" :placeholder="scope.row.argumentValue"
                               v-model="scope.row.argumentValue"></el-input>
@@ -782,7 +831,7 @@
                             </span>
                 </template>
             </el-table-column>
-            <el-table-column property="date" label="操作" width="170px" >
+            <el-table-column property="date" label="操作" width="170px">
                 <template slot-scope="scope">
                     <el-button size="mini" class="save"
                                style="display: block;margin: 2px;padding: 5px;float: left"
@@ -808,7 +857,8 @@
             </el-table-column>
         </el-table>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="邮箱收件人配置(多个收件人以逗号隔开)" :visible.sync="dialogEmailChange">
+    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="邮箱收件人配置(多个收件人以逗号隔开)"
+               :visible.sync="dialogEmailChange">
         <el-form :model="flowDataDefault">
             <el-form-item label="" :label-width="formLabelWidth">
                 <el-input v-model="recipients" autocomplete="off" :autosize="{ minRows: 5, maxRows: 20}" size="small"
@@ -822,7 +872,8 @@
             <el-button type="primary" @click="emailChange(recipients)">确 定</el-button>
         </div>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="新增接口" border :visible.sync="dialogTableVisible" width="1482px">
+    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="新增接口" border
+               :visible.sync="dialogTableVisible" width="1482px">
         <el-table
                 :data="nodeDataDefault"
                 :header-cell-style="{background:'#606266',color:'#FFFFFF',padding:0}"
@@ -842,15 +893,20 @@
                                     </el-option>
                                 </el-select>
                             </p>
-                            <p style="font-weight: bold">
-                                <el-tag style="float:left;margin: 1px" size="medium">执行顺序</el-tag>
-                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口测试执行顺序序号"
-                                          v-model="nodeDataDefault[0].order_id"></el-input>
-                            </p>
                             <p style="font-weight: bold;margin: 1px">
                                 <el-tag style="float:left;margin: 1px" size="medium">接口名称</el-tag>
                                 <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口名称"
                                           v-model="nodeDataDefault[0].node_name"></el-input>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">接口路径</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口请求路径"
+                                          v-model="nodeDataDefault[0].path"></el-input>
+                            </p>
+                            <p style="font-weight: bold">
+                                <el-tag style="float:left;margin: 1px" size="medium">执行顺序</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口测试执行顺序序号"
+                                          v-model="nodeDataDefault[0].order_id"></el-input>
                             </p>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">请求方式</el-tag>
@@ -860,11 +916,6 @@
                                     <el-option label="POST" value="POST"></el-option>
                                     <el-option label="GET" value="GET"></el-option>
                                 </el-select>
-                            </p>
-                            <p style="font-weight: bold;">
-                                <el-tag style="float:left;margin: 1px" size="medium">接口路径</el-tag>
-                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口请求路径"
-                                          v-model="nodeDataDefault[0].path"></el-input>
                             </p>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">请求参数</el-tag>
@@ -1012,7 +1063,8 @@
             <el-button type="warning" @click="addNodeOk(nodeDataDefault)">再加一条</el-button>
         </div>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="复制接口" border :visible.sync="dialogCopyNode" width="1482px">
+    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="复制接口" border
+               :visible.sync="dialogCopyNode" width="1482px">
         <el-table
                 :data="nodeDataDefault"
                 :header-cell-style="{background:'#606266',color:'#FFFFFF',padding:0}"
@@ -1032,15 +1084,20 @@
                                     </el-option>
                                 </el-select>
                             </p>
-                            <p style="font-weight: bold">
-                                <el-tag style="float:left;margin: 1px" size="medium">执行顺序</el-tag>
-                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口测试执行顺序序号"
-                                          v-model="nodeDataDefault[0].order_id"></el-input>
-                            </p>
                             <p style="font-weight: bold;margin: 1px">
                                 <el-tag style="float:left;margin: 1px" size="medium">接口名称</el-tag>
                                 <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口名称"
                                           v-model="nodeDataDefault[0].node_name"></el-input>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">接口路径</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口请求路径"
+                                          v-model="nodeDataDefault[0].path"></el-input>
+                            </p>
+                            <p style="font-weight: bold">
+                                <el-tag style="float:left;margin: 1px" size="medium">执行顺序</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口测试执行顺序序号"
+                                          v-model="nodeDataDefault[0].order_id"></el-input>
                             </p>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">请求方式</el-tag>
@@ -1051,11 +1108,7 @@
                                     <el-option label="GET" value="GET"></el-option>
                                 </el-select>
                             </p>
-                            <p style="font-weight: bold;">
-                                <el-tag style="float:left;margin: 1px" size="medium">接口路径</el-tag>
-                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口请求路径"
-                                          v-model="nodeDataDefault[0].path"></el-input>
-                            </p>
+
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">请求参数</el-tag>
                                 <el-input :autosize="{ minRows: 13, maxRows: 20}" size="mini" type="textarea"
@@ -1202,7 +1255,8 @@
             <el-button type="primary" @click="dialogCopyNode = false;copyNodeOk(nodeDataDefault)">确 定</el-button>
         </div>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="接口运行完成，请选择要查看的报告类型" :visible.sync="dialogReport">
+    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="接口运行完成，请选择要查看的报告类型"
+               :visible.sync="dialogReport">
         <el-button icon="el-icon-search"><a href="/lookSummaryReport" target="_blank">查看概要报告</a></el-button>
         <el-button icon="el-icon-search"><a href="/lookDetailReport" target="_blank">查看详细报告</a></el-button>
     </el-dialog>
@@ -1232,17 +1286,17 @@
                     <el-option label="关闭前置SQl查询" value=0></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="SQL语句"  :label-width="formLabelWidth">
+            <el-form-item label="SQL语句" :label-width="formLabelWidth">
                 <el-input v-model="preSqlData.pre_sql_str"
                           type="textarea"
                           :autosize="{ minRows: 1, maxRows: 20}"
                           :placeholder="preSqlData.pre_sql_str"></el-input>
             </el-form-item>
-            <el-form-item label="传入变量"  :label-width="formLabelWidth">
+            <el-form-item label="传入变量" :label-width="formLabelWidth">
                 <el-input v-model="preSqlData.pre_sql_para"
                           :placeholder="preSqlData.pre_sql_para"></el-input>
             </el-form-item>
-            <el-form-item label="接收变量"  :label-width="formLabelWidth">
+            <el-form-item label="接收变量" :label-width="formLabelWidth">
                 <el-input v-model="preSqlData.pre_sql_out"
                           :placeholder="preSqlData.pre_sql_out"></el-input>
             </el-form-item>
@@ -1263,17 +1317,17 @@
                     <el-option label="关闭SQL校验" value=0></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="SQL语句"  :label-width="formLabelWidth">
+            <el-form-item label="SQL语句" :label-width="formLabelWidth">
                 <el-input v-model="outSqlData.sql_str"
                           type="textarea"
                           :autosize="{ minRows: 1, maxRows: 20}"
                           :placeholder="outSqlData.sql_str"></el-input>
             </el-form-item>
-            <el-form-item label="传入变量"  :label-width="formLabelWidth">
+            <el-form-item label="传入变量" :label-width="formLabelWidth">
                 <el-input v-model="outSqlData.sql_para"
                           :placeholder="outSqlData.sql_para"></el-input>
             </el-form-item>
-            <el-form-item label="预期结果"  :label-width="formLabelWidth">
+            <el-form-item label="预期结果" :label-width="formLabelWidth">
                 <el-input v-model="outSqlData.expect_db"
                           type="textarea"
                           :autosize="{ minRows: 1, maxRows: 20}"
@@ -1290,17 +1344,17 @@
     </el-dialog>
     <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="后置变量提取配置" :visible.sync="dialogPostKey">
         <el-form :model="postKeyData">
-            <el-form-item label="提取变量名"  :label-width="formLabelWidth">
+            <el-form-item label="提取变量名" :label-width="formLabelWidth">
                 <el-input v-model="postKeyData.post_keys"
                           :placeholder="postKeyData.post_keys"></el-input>
             </el-form-item>
-            <el-form-item label="提取表达式"  :label-width="formLabelWidth">
+            <el-form-item label="提取表达式" :label-width="formLabelWidth">
                 <el-input v-model="postKeyData.post_keys_extractor"
                           type="textarea"
                           :autosize="{ minRows: 1, maxRows: 20}"
                           :placeholder="postKeyData.post_keys_extractor"></el-input>
             </el-form-item>
-            <el-form-item label="默认值"  :label-width="formLabelWidth">
+            <el-form-item label="默认值" :label-width="formLabelWidth">
                 <el-input v-model="postKeyData.post_keys_default"
                           :placeholder="postKeyData.post_keys_default"></el-input>
             </el-form-item>
@@ -1313,21 +1367,22 @@
             取消
         </el-button>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold; width:80%" title="手动统计接口信息配置" :visible.sync="dialogManualStatistics">
+    <el-dialog :close-on-click-modal="false" style="font-weight: bold; width:80%" title="手动统计接口信息配置"
+               :visible.sync="dialogManualStatistics">
         <el-form :model="unStatisticsData">
-            <el-form-item label="微服务"  :label-width="formLabelWidth">
+            <el-form-item label="微服务" :label-width="formLabelWidth">
                 <el-input v-model="unStatisticsData.service" style="width:80%"
                           :placeholder="unStatisticsData.service"></el-input>
             </el-form-item>
-            <el-form-item label="接口描述"  :label-width="formLabelWidth">
+            <el-form-item label="接口描述" :label-width="formLabelWidth">
                 <el-input v-model="unStatisticsData.summary" style="width:80%"
                           :placeholder="unStatisticsData.summary"></el-input>
             </el-form-item>
-            <el-form-item label="接口Url"  :label-width="formLabelWidth">
+            <el-form-item label="接口Url" :label-width="formLabelWidth">
                 <el-input v-model="unStatisticsData.path" style="width:80%"
                           :placeholder="unStatisticsData.path"></el-input>
             </el-form-item>
-            <el-form-item label="统计人"  :label-width="formLabelWidth">
+            <el-form-item label="统计人" :label-width="formLabelWidth">
                 <el-input v-model="unStatisticsData.author" style="width:80%"
                           placeholder="请输入统计人"></el-input>
             </el-form-item>
@@ -1337,7 +1392,7 @@
                     <el-option label="否" value=0></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="备注"  :label-width="formLabelWidth">
+            <el-form-item label="备注" :label-width="formLabelWidth">
                 <el-input v-model="unStatisticsData.remark" style="width:80%"
                           placeholder="请输入无法实现原因，待实现接口直接填写：未覆盖"></el-input>
             </el-form-item>
@@ -1350,21 +1405,22 @@
             取消
         </el-button>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold; width:80%" title="手动统计接口信息配置" :visible.sync="dialogUnDoStatistics">
+    <el-dialog :close-on-click-modal="false" style="font-weight: bold; width:80%" title="手动统计接口信息配置"
+               :visible.sync="dialogUnDoStatistics">
         <el-form :model="unDoStatisticsData">
-            <el-form-item label="微服务"  :label-width="formLabelWidth">
+            <el-form-item label="微服务" :label-width="formLabelWidth">
                 <el-input v-model="unDoStatisticsData.service" style="width:80%"
                           :placeholder="unDoStatisticsData.service"></el-input>
             </el-form-item>
-            <el-form-item label="接口描述"  :label-width="formLabelWidth">
+            <el-form-item label="接口描述" :label-width="formLabelWidth">
                 <el-input v-model="unDoStatisticsData.summary" style="width:80%"
                           :placeholder="unDoStatisticsData.summary"></el-input>
             </el-form-item>
-            <el-form-item label="接口Url"  :label-width="formLabelWidth">
+            <el-form-item label="接口Url" :label-width="formLabelWidth">
                 <el-input v-model="unDoStatisticsData.path" style="width:80%"
                           :placeholder="unDoStatisticsData.path"></el-input>
             </el-form-item>
-            <el-form-item label="统计人"  :label-width="formLabelWidth">
+            <el-form-item label="统计人" :label-width="formLabelWidth">
                 <el-input v-model="unDoStatisticsData.author" style="width:80%"
                           placeholder="请输入统计人"></el-input>
             </el-form-item>
@@ -1374,7 +1430,7 @@
                     <el-option label="否" value=0></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="备注"  :label-width="formLabelWidth">
+            <el-form-item label="备注" :label-width="formLabelWidth">
                 <el-input v-model="unDoStatisticsData.remark" style="width:80%"
                           placeholder="请输入无法实现原因，待实现接口直接填写：未覆盖"></el-input>
             </el-form-item>

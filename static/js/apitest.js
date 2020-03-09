@@ -968,6 +968,7 @@ var vm = new Vue({
                 'post_keys_default': row.post_keys_default,
                 "pk": row.pk
             };
+            console.log("dataPost--->", dataPost);
             this.$http.post(this.url + '/editNode', dataPost).then(
                 function (data) {
                     var responData = data.status;
