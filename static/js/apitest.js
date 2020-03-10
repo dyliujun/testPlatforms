@@ -107,7 +107,7 @@ var vm = new Vue({
                     "method": "POST",
                     "path": "",
                     "parameter": "",
-                    "run_env": ["test"],
+                    "run_env": "test",
                     "expect_response": "",
                     "sleep_time": 0,
                     "state": "1",
@@ -155,6 +155,7 @@ var vm = new Vue({
             currentRow: '',
             value: true,
             visible: false,
+            dialogDrawer: false,
             dialogFormVisible: false,
             dialogParameter: false,
             dialogManualStatistics: false,
@@ -170,10 +171,12 @@ var vm = new Vue({
             dialogCopyNode: false,
             dialogTableVisible: false,
             formLabelWidth: '120px',
-            actionLoading: false
+            actionLoading: false,
+            actionLoading2: false
         }
     },
     methods: {
+        cancelForm(){},
         transferFlowData(row){
             var fromFlowId = row.pk;
         },
@@ -894,26 +897,14 @@ var vm = new Vue({
             console.log("index", index);
             },
         editNodeTable(index, row) {
-                console.log("this.currentRow", this.currentRow);
-                var nodeTable = document.getElementById('nodeTable');
-                var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("el-table__row")[index];
-                console.log("editNodeTable-index", index);
-                console.log("editNodeTable-row", row);
-                console.log("editNodeTable-nodeTable", nodeTable);
-                console.log("editNodeTable-currentRow", currentRow);
-                console.log("editNodeTable-el-table__row", nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("el-table__row"));
-                for (var i = 0; i < currentRow.children.length - 5; i++) {
-                    var cell = currentRow.children[i].getElementsByClassName('cell')[0];
-                    var elInput = cell.children[0];
-                var elSpan = cell.children[1];
-                elInput.style.display = 'block';
-                elSpan.style.display = 'none';
-                cell.style.color = 'blue';
-            }
-            currentRow.children[13].getElementsByClassName('saveNode')[0].style.display = 'block';
-            currentRow.children[13].getElementsByClassName('editNode')[0].style.display = 'none';
+            this.dialogDrawer = true;
+            this.nodeDataDefault = row;
+            this.filtrateFlowId = row.flow_id;
         },
         dbEditNodeTable(index, row) {
+            // this.dialogDrawer = true;
+            // this.nodeDataDefault = row;
+            // this.filtrateFlowId = row.flow_id;
             var nodeTable = document.getElementById('nodeTable');
             var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
             for (var i = 0; i < currentRow.children.length - 5; i++) {
@@ -926,6 +917,84 @@ var vm = new Vue({
             }
             currentRow.children[13].getElementsByClassName('saveNode')[0].style.display = 'block';
             currentRow.children[13].getElementsByClassName('editNode')[0].style.display = 'none';
+        },
+        saveNode(){
+            var dataPost = {
+                "order_id": this.nodeDataDefault.order_id,
+                "flow_id": this.filtrateFlowId,
+                "node_name": this.nodeDataDefault.node_name,
+                "method": this.nodeDataDefault.method,
+                "path": this.nodeDataDefault.path,
+                "parameter": this.nodeDataDefault.parameter,
+                "run_env": this.nodeDataDefault.run_env,
+                "pre_keys": this.nodeDataDefault.pre_keys,
+                "sleep_time": this.nodeDataDefault.sleep_time,
+                "state": this.nodeDataDefault.state,
+                "expect_response": this.nodeDataDefault.expect_response,
+                "isexcute_pre_sql": this.nodeDataDefault.isexcute_pre_sql,
+                "pre_sql_str": this.nodeDataDefault.pre_sql_str,
+                "pre_sql_para": this.nodeDataDefault.pre_sql_para,
+                "pre_sql_out": this.nodeDataDefault.pre_sql_out,
+                "ischechdb": this.nodeDataDefault.ischechdb,
+                "sql_str": this.nodeDataDefault.sql_str,
+                "sql_para": this.nodeDataDefault.sql_para,
+                "expect_db": this.nodeDataDefault.expect_db,
+                'post_keys': this.nodeDataDefault.post_keys,
+                'post_keys_extractor': this.nodeDataDefault.post_keys_extractor,
+                'post_keys_default': this.nodeDataDefault.post_keys_default,
+                "pk": this.nodeDataDefault.pk
+            };
+            this.$http.post(this.url + '/editNode', dataPost).then(
+                function (data) {
+                    var responData = data.status;
+                    var node_id = data.body[0].node_id;
+                    if (responData === 200 || responData === '200') {
+                        this.$message({
+                            showClose: true,
+                            message: '恭喜你，保存成功',
+                            type: 'success'
+                        });
+                        this.dialogDrawer = false;
+                        if(this.filtrateFlowId !== this.nodeFlowId){
+                            window.location.reload();
+                        }else {
+                            this.nodeData.push(
+                                {
+                                    "order_id": nodeDataDefault.order_id,
+                                    "flow_id": this.filtrateFlowId,
+                                    "node_name": nodeDataDefault.node_name,
+                                    "method": nodeDataDefault.method,
+                                    "path": nodeDataDefault.path,
+                                    "parameter": nodeDataDefault.parameter,
+                                    "run_env": nodeDataDefault.run_env,
+                                    "pre_keys": nodeDataDefault.pre_keys,
+                                    "sleep_time": nodeDataDefault.sleep_time,
+                                    "state": nodeDataDefault.state,
+                                    "expect_response": nodeDataDefault.expect_response,
+                                    "isexcute_pre_sql": nodeDataDefault.isexcute_pre_sql,
+                                    "pre_sql_out": nodeDataDefault.pre_sql_out,
+                                    "pre_sql_para": nodeDataDefault.pre_sql_para,
+                                    "pre_sql_str": nodeDataDefault.pre_sql_str,
+                                    "expect_db": nodeDataDefault.expect_db,
+                                    "ischechdb": nodeDataDefault.ischechdb,
+                                    "sql_para": nodeDataDefault.sql_para,
+                                    "sql_str": nodeDataDefault.sql_str,
+                                    'post_keys': nodeDataDefault.post_keys,
+                                    'post_keys_extractor': nodeDataDefault.post_keys_extractor,
+                                    'post_keys_default': nodeDataDefault.post_keys_default,
+                                    "pk": node_id
+                                });
+                            this.dialogDrawer = false;
+                        }
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: '很遗憾，保存失败，快查查原因吧',
+                            type: 'error'
+                        });
+                    }
+                }
+            );
         },
         saveNodeEdit(index, row, event) {
             var nodeTable = document.getElementById('nodeTable');
@@ -1249,6 +1318,15 @@ var vm = new Vue({
                 this.parameterData.value = JSON.stringify(JSON.parse(text), null, 2);
             }
         },
+        formatJson2() {
+            text = this.nodeDataDefault.parameter;
+            console.log(text);
+            if (text.indexOf("$") !== -1) {
+                this.nodeDataDefault.parameter = JSON.stringify(JSON.parse(text.replace(/\:\$/g, "\:\"\$").replace(/\$\,/g, "\$\"\,").replace(/\$\}/g, "\$\"\}").replace(/\[\$/g, "\[\"\$").replace(/\$\]/g, "\$\"\]")), null, 2);
+            } else {
+                this.nodeDataDefault.parameter = JSON.stringify(JSON.parse(text), null, 2);
+            }
+        },
         deleteFlowRow(index,rows,row) {
             console.log(row);
             this.deleteFlowId = row.pk;
@@ -1369,7 +1447,7 @@ var vm = new Vue({
             }
         },
         actionFlow(index, row) {
-            this.actionLoading = true;
+            this.actionLoading2 = true;
             var dataPost = {
                 "flow_id": row.pk,
             };
@@ -1377,7 +1455,7 @@ var vm = new Vue({
                 function (data) {
                     var responData = data.status;
                     if (responData === 200 || responData === '200') {
-                        this.actionLoading = false;
+                        this.actionLoading2 = false;
                         this.$message({
                             showClose: true,
                             message: '测试流接口执行成功，结果请查收邮件',
@@ -1385,7 +1463,7 @@ var vm = new Vue({
                         });
                         this.dialogReport = true;
                     } else {
-                        this.actionLoading = false;
+                        this.actionLoading2 = false;
                         this.$message({
                             showClose: true,
                             message: '很遗憾，接口执行失败',
