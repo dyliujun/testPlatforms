@@ -60,6 +60,7 @@ var vm = new Vue({
             ],
             filtrate: '',
             path: '',
+            path2: '',
             unStatisticsData: {},
             unDoStatisticsData: {},
             unDoList: [{
@@ -98,7 +99,34 @@ var vm = new Vue({
             nodeFlowId: '',
             isCollapse: true,
             statisticsLoading:false,
+            statisticsLoading2:false,
             nodeDataDefault: [
+                {
+                    "pk": "",
+                    "order_id": "",
+                    "node_name": "",
+                    "method": "POST",
+                    "path": "",
+                    "parameter": "",
+                    "run_env": "test",
+                    "expect_response": "",
+                    "sleep_time": 0,
+                    "state": "1",
+                    "isexcute_pre_sql": "0",
+                    "pre_keys": "",
+                    "pre_sql_str": "",
+                    "pre_sql_para": "",
+                    "pre_sql_out": "",
+                    "ischechdb": "0",
+                    "sql_str": "",
+                    "sql_para": "",
+                    "expect_db": "",
+                    "post_keys": "",
+                    "post_keys_extractor": "",
+                    "post_keys_default": "",
+                }
+            ],
+            nodeDataDefaultAdd: [
                 {
                     "pk": "",
                     "order_id": "",
@@ -256,7 +284,7 @@ var vm = new Vue({
         },
         filterPath2(){
             this.statisticsLoading = true;
-            var dataPost = {"path": this.path};
+            var dataPost = {"path": this.path2};
             this.$http.post(this.url + '/filterPath2()', dataPost).then(
                 function (data) {
                     this.page_size = 2000;
@@ -290,7 +318,6 @@ var vm = new Vue({
                         });
                         this.apiSize = allApi.length;
                         this.statisticsLoading = false;
-                        console.log("this.allApiJsonList---->",this.allApiJsonList)
                     }else {
                         this.statisticsLoading = false;
                     }
@@ -394,6 +421,7 @@ var vm = new Vue({
         },
         saveRemark(){
             this.statisticsLoading = true;
+            this.statisticsLoading2 = true;
             dataPost = {
                 "id":this.lableData.id,
                 "remark":this.lableData.remark,
@@ -405,7 +433,7 @@ var vm = new Vue({
                         this.dialogDrawer2 = false;
                         dataPost = {
                             "page_id":1,
-                            "page_size":15
+                            "page_size":2000
                         };
                         this.$http.post(this.url + '/getApiCounts', dataPost).then(
                             function (data) {
@@ -440,8 +468,11 @@ var vm = new Vue({
                                     }
                                     this.apiSize = parseInt(data.body[0].data.totalCounts);
                                     this.statisticsLoading = false;
+                                    this.statisticsLoading2 = false;
+                                    console.log("this.allApiJsonList--->",this.allApiJsonList)
                                 }else {
                                     this.statisticsLoading = false;
+                                    this.statisticsLoading2 = false;
                                 }
 
                             }
@@ -607,6 +638,11 @@ var vm = new Vue({
             this.nodeDataDefault = [row];
             console.log("this.nodeDataDefault--->",this.nodeDataDefault);
             this.dialogCopyNode = true;
+        },
+        addApi(nodeData,index,row){
+            this.nodeDataDefault = [row];
+            console.log("this.nodeDataDefault--->",this.nodeDataDefault);
+            this.dialogTableVisible = true
         },
         startTask(){
             this.$http.get(this.url + '/startTask').then(
@@ -1404,9 +1440,9 @@ var vm = new Vue({
             );
         },
 
-        addNodeOk(nodeDataDefault) {
+        addNodeOk(nodeDataDefaultAdd) {
             this.loading = true;
-            if (nodeDataDefault[0].order_id === '') {
+            if (nodeDataDefaultAdd[0].order_id === '') {
                 this.$message({
                     showClose: true,
                     message: '执行顺序不能为空，请填写',
@@ -1414,28 +1450,28 @@ var vm = new Vue({
                 });
             } else {
                 var dataPost = {
-                    "order_id": nodeDataDefault[0].order_id,
+                    "order_id": nodeDataDefaultAdd[0].order_id,
                     "flow_id": this.filtrateFlowId,
-                    "node_name": nodeDataDefault[0].node_name,
-                    "method": nodeDataDefault[0].method,
-                    "path": nodeDataDefault[0].path,
-                    "parameter": nodeDataDefault[0].parameter,
-                    "run_env": nodeDataDefault[0].run_env,
-                    "pre_keys": nodeDataDefault[0].pre_keys,
-                    "sleep_time": nodeDataDefault[0].sleep_time,
-                    "state": nodeDataDefault[0].state,
-                    "expect_response": nodeDataDefault[0].expect_response,
-                    "isexcute_pre_sql": nodeDataDefault[0].isexcute_pre_sql,
-                    "pre_sql_out": nodeDataDefault[0].pre_sql_out,
-                    "pre_sql_para": nodeDataDefault[0].pre_sql_para,
-                    "pre_sql_str": nodeDataDefault[0].pre_sql_str,
-                    "expect_db": nodeDataDefault[0].expect_db,
-                    "ischechdb": nodeDataDefault[0].ischechdb,
-                    "sql_para": nodeDataDefault[0].sql_para,
-                    "sql_str": nodeDataDefault[0].sql_str,
-                    'post_keys': nodeDataDefault[0].post_keys,
-                    'post_keys_extractor': nodeDataDefault[0].post_keys_extractor,
-                    'post_keys_default': nodeDataDefault[0].post_keys_default,
+                    "node_name": nodeDataDefaultAdd[0].node_name,
+                    "method": nodeDataDefaultAdd[0].method,
+                    "path": nodeDataDefaultAdd[0].path,
+                    "parameter": nodeDataDefaultAdd[0].parameter,
+                    "run_env": nodeDataDefaultAdd[0].run_env,
+                    "pre_keys": nodeDataDefaultAdd[0].pre_keys,
+                    "sleep_time": nodeDataDefaultAdd[0].sleep_time,
+                    "state": nodeDataDefaultAdd[0].state,
+                    "expect_response": nodeDataDefaultAdd[0].expect_response,
+                    "isexcute_pre_sql": nodeDataDefaultAdd[0].isexcute_pre_sql,
+                    "pre_sql_out": nodeDataDefaultAdd[0].pre_sql_out,
+                    "pre_sql_para": nodeDataDefaultAdd[0].pre_sql_para,
+                    "pre_sql_str": nodeDataDefaultAdd[0].pre_sql_str,
+                    "expect_db": nodeDataDefaultAdd[0].expect_db,
+                    "ischechdb": nodeDataDefaultAdd[0].ischechdb,
+                    "sql_para": nodeDataDefaultAdd[0].sql_para,
+                    "sql_str": nodeDataDefaultAdd[0].sql_str,
+                    'post_keys': nodeDataDefaultAdd[0].post_keys,
+                    'post_keys_extractor': nodeDataDefaultAdd[0].post_keys_extractor,
+                    'post_keys_default': nodeDataDefaultAdd[0].post_keys_default,
                 };
                 this.$http.post(this.url + '/addNode', dataPost).then(
                     function (data) {
@@ -1453,28 +1489,28 @@ var vm = new Vue({
                             }else {
                                 this.nodeData.push(
                                     {
-                                        "order_id": nodeDataDefault[0].order_id,
+                                        "order_id": nodeDataDefaultAdd[0].order_id,
                                         "flow_id": this.filtrateFlowId,
-                                        "node_name": nodeDataDefault[0].node_name,
-                                        "method": nodeDataDefault[0].method,
-                                        "path": nodeDataDefault[0].path,
-                                        "parameter": nodeDataDefault[0].parameter,
-                                        "run_env": nodeDataDefault[0].run_env,
-                                        "pre_keys": nodeDataDefault[0].pre_keys,
-                                        "sleep_time": nodeDataDefault[0].sleep_time,
-                                        "state": nodeDataDefault[0].state,
-                                        "expect_response": nodeDataDefault[0].expect_response,
-                                        "isexcute_pre_sql": nodeDataDefault[0].isexcute_pre_sql,
-                                        "pre_sql_out": nodeDataDefault[0].pre_sql_out,
-                                        "pre_sql_para": nodeDataDefault[0].pre_sql_para,
-                                        "pre_sql_str": nodeDataDefault[0].pre_sql_str,
-                                        "expect_db": nodeDataDefault[0].expect_db,
-                                        "ischechdb": nodeDataDefault[0].ischechdb,
-                                        "sql_para": nodeDataDefault[0].sql_para,
-                                        "sql_str": nodeDataDefault[0].sql_str,
-                                        'post_keys': nodeDataDefault[0].post_keys,
-                                        'post_keys_extractor': nodeDataDefault[0].post_keys_extractor,
-                                        'post_keys_default': nodeDataDefault[0].post_keys_default,
+                                        "node_name": nodeDataDefaultAdd[0].node_name,
+                                        "method": nodeDataDefaultAdd[0].method,
+                                        "path": nodeDataDefaultAdd[0].path,
+                                        "parameter": nodeDataDefaultAdd[0].parameter,
+                                        "run_env": nodeDataDefaultAdd[0].run_env,
+                                        "pre_keys": nodeDataDefaultAdd[0].pre_keys,
+                                        "sleep_time": nodeDataDefaultAdd[0].sleep_time,
+                                        "state": nodeDataDefaultAdd[0].state,
+                                        "expect_response": nodeDataDefaultAdd[0].expect_response,
+                                        "isexcute_pre_sql": nodeDataDefaultAdd[0].isexcute_pre_sql,
+                                        "pre_sql_out": nodeDataDefaultAdd[0].pre_sql_out,
+                                        "pre_sql_para": nodeDataDefaultAdd[0].pre_sql_para,
+                                        "pre_sql_str": nodeDataDefaultAdd[0].pre_sql_str,
+                                        "expect_db": nodeDataDefaultAdd[0].expect_db,
+                                        "ischechdb": nodeDataDefaultAdd[0].ischechdb,
+                                        "sql_para": nodeDataDefaultAdd[0].sql_para,
+                                        "sql_str": nodeDataDefaultAdd[0].sql_str,
+                                        'post_keys': nodeDataDefaultAdd[0].post_keys,
+                                        'post_keys_extractor': nodeDataDefaultAdd[0].post_keys_extractor,
+                                        'post_keys_default': nodeDataDefaultAdd[0].post_keys_default,
                                         "pk": node_id
                                     });
                             }
@@ -1789,7 +1825,6 @@ var vm = new Vue({
                     }
                 }
             );
-
         },
         actionAllFlow() {
             var dataPost = {};

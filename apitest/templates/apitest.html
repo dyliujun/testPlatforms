@@ -617,6 +617,10 @@
                 </el-button>
             </el-tab-pane>
             <el-tab-pane label="接口统计" style="font-weight: bolder"
+                         v-loading="statisticsLoading2"
+                         element-loading-text="正在拼命统计中..."
+                         element-loading-spinner="el-icon-loading"
+                         element-loading-background="rgba(0, 0, 0, 0.8)"
                          name="statistics">
                 <div style="margin-left: 5%">
                     <span class="span" style="display: block;font-weight: bold;color: #3557ff">
@@ -692,12 +696,11 @@
                 </div>
                 <el-divider content-position="center">Swagger接口列表</el-divider>
                 <div style="margin-left: 5%">
-
                     <span class="span" style="display: block;font-weight: bold;color: #3557ff">
                         <el-button type="warning" size="mini" style="margin-bottom: 3px" icon="el-icon-s-data">Swagger接口列表</el-button>
                         <el-button type="warning" size="mini" @click="filterApi()" style="margin-bottom: 3px" icon="el-icon-s-data">屏蔽已标记接口</el-button>
                         <el-button type="warning" size="mini" @click="unfilterApi()" style="margin-bottom: 3px" icon="el-icon-s-data">显示所有接口</el-button>
-                        <el-input size="small" placeholder="请输入接口URL" v-model="path" class="input-with-select"
+                        <el-input size="small" placeholder="请输入接口URL" v-model="path2" class="input-with-select"
                                   style="width: 400px">
                         <el-button slot="append" icon="el-icon-search" @click="filterPath2()">搜索URL</el-button>
                     </el-input>
@@ -926,12 +929,12 @@
     <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="新增接口" border
                :visible.sync="dialogTableVisible" width="1482px">
         <el-table
-                :data="nodeDataDefault"
+                :data="nodeDataDefaultAdd"
                 :header-cell-style="{background:'#606266',color:'#FFFFFF',padding:0}"
                 border>
             <el-table-column property="date" label="基本配置" width="720px">
                 <template slot-scope="scope">
-                    <el-form :model="nodeDataDefault">
+                    <el-form :model="nodeDataDefaultAdd">
                         <div width="50%">
                             <p style="font-weight: bold">
                                 <el-tag style="float:left;margin: 1px" size="medium">选测试流</el-tag>
@@ -947,21 +950,21 @@
                             <p style="font-weight: bold;margin: 1px">
                                 <el-tag style="float:left;margin: 1px" size="medium">接口名称</el-tag>
                                 <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口名称"
-                                          v-model="nodeDataDefault[0].node_name"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].node_name"></el-input>
                             </p>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">接口路径</el-tag>
                                 <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口请求路径"
-                                          v-model="nodeDataDefault[0].path"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].path"></el-input>
                             </p>
                             <p style="font-weight: bold">
                                 <el-tag style="float:left;margin: 1px" size="medium">执行顺序</el-tag>
                                 <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口测试执行顺序序号"
-                                          v-model="nodeDataDefault[0].order_id"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].order_id"></el-input>
                             </p>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">请求方式</el-tag>
-                                <el-select size="mini" v-model="nodeDataDefault[0].method"
+                                <el-select size="mini" v-model="nodeDataDefaultAdd[0].method"
                                            style="margin: 1px;width: 78%"
                                            placeholder="请选择请求方式">
                                     <el-option label="POST" value="POST"></el-option>
@@ -973,12 +976,12 @@
                                 <el-input :autosize="{ minRows: 13, maxRows: 20}" size="mini" type="textarea"
                                           style="margin: 1px;width: 78%"
                                           placeholder="请输入接口请求参数（JSON格式，变量以 $变量$形式输入）"
-                                          v-model="nodeDataDefault[0].parameter"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].parameter"></el-input>
                             </p>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">请求变量</el-tag>
                                 <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口请求引用的变量名称"
-                                          v-model="nodeDataDefault[0].pre_keys"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].pre_keys"></el-input>
                             </p>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">预期结果</el-tag>
@@ -986,16 +989,16 @@
                                           style="margin: 1px;width: 78%"
                                           type="textarea"
                                           placeholder="请输入接口响应校验正则表达式（多个以|隔开）"
-                                          v-model="nodeDataDefault[0].expect_response"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].expect_response"></el-input>
                             </p>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">运行环境</el-tag>
                                 <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入可运行环境"
-                                          v-model="nodeDataDefault[0].run_env"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].run_env"></el-input>
                             </p>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">接口状态</el-tag>
-                                <el-select size="mini" v-model="nodeDataDefault[0].state"
+                                <el-select size="mini" v-model="nodeDataDefaultAdd[0].state"
                                            style="margin: 1px;width: 78%"
                                            placeholder="请设置是否启用前置SQL查询（1：启用/0：不启用）">
                                     <el-option label="开启接口" value=1></el-option>
@@ -1008,18 +1011,18 @@
             </el-table-column>
             <el-table-column property="name" label="其他配置" width="720px">
                 <template slot-scope="scope">
-                    <el-form :model="nodeDataDefault">
+                    <el-form :model="nodeDataDefaultAdd">
                         <div width="50%">
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">等待时间</el-tag>
                                 <el-input size="mini" style="margin: 1px;width: 78%"
                                           placeholder="请输入当前接口请求完成后需要等待时间间隔（单位：毫秒）"
-                                          v-model="nodeDataDefault[0].sleep_time"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].sleep_time"></el-input>
                             </p>
                             <el-divider content-position="center">前置SQL查询信息配置</el-divider>
                             <p style="font-weight: bold;border: lime">
                                 <el-tag style="float:left;margin: 1px" size="medium">前置开关</el-tag>
-                                <el-select size="mini" v-model="nodeDataDefault[0].isexcute_pre_sql"
+                                <el-select size="mini" v-model="nodeDataDefaultAdd[0].isexcute_pre_sql"
                                            style="margin: 1px;width: 78%"
                                            placeholder="请设置是否启用前置SQL查询（1：启用/0：不启用）">
                                     <el-option label="开启前置SQL查询" value=1></el-option>
@@ -1030,23 +1033,23 @@
                                 <el-tag style="float:left;margin: 1px" size="medium">SQL语句</el-tag>
                                 <el-input :autosize="{ minRows: 1, maxRows: 10}" size="mini" type="textarea"
                                           style="margin: 1px;width: 78%" placeholder="请输入前置查询SQL语句（变量用 $变量$ 格式引用）"
-                                          v-model="nodeDataDefault[0].pre_sql_str"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].pre_sql_str"></el-input>
                             </p>
                             <p style="font-weight: bold;border: lime">
                                 <el-tag style="float:left;margin: 1px" size="medium">SQL变量</el-tag>
                                 <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入需要引用的变量名称"
-                                          v-model="nodeDataDefault[0].pre_sql_para"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].pre_sql_para"></el-input>
                             </p>
                             <p style="font-weight: bold;border: lime">
                                 <el-tag style="float:left;margin: 1px" size="medium">接收变量</el-tag>
                                 <el-input size="mini" style="margin: 1px;width: 78%"
                                           placeholder="请输入接收查询结果的变量名称（多个以分号隔开）"
-                                          v-model="nodeDataDefault[0].pre_sql_out"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].pre_sql_out"></el-input>
                             </p>
                             <el-divider content-position="center">后置SQL校验信息配置</el-divider>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">后置开关</el-tag>
-                                <el-select size="mini" v-model="nodeDataDefault[0].ischechdb"
+                                <el-select size="mini" v-model="nodeDataDefaultAdd[0].ischechdb"
                                            style="margin: 1px;width: 78%">
                                     <el-option label="开启后置SQL校验" value=1></el-option>
                                     <el-option label="关闭后置SQL校验" value=0></el-option>
@@ -1056,38 +1059,38 @@
                                 <el-tag style="float:left;margin: 1px" size="medium">SQL语句</el-tag>
                                 <el-input :autosize="{ minRows: 1, maxRows: 10}" size="mini" type="textarea"
                                           style="margin: 1px;width: 78%" placeholder="请输入后置查询SQL语句（变量用 $变量$ 格式引用）"
-                                          v-model="nodeDataDefault[0].sql_str"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].sql_str"></el-input>
                             </p>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">SQL变量</el-tag>
                                 <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入需要引用的变量名称"
-                                          v-model="nodeDataDefault[0].sql_para"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].sql_para"></el-input>
                             </p>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">SQL预期</el-tag>
                                 <el-input size="mini" style="margin: 1px;width:78%"
                                           placeholder="请输入SQL校验预期结果（以Json格式输入）"
-                                          v-model="nodeDataDefault[0].expect_db"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].expect_db"></el-input>
                             </p>
                             <el-divider content-position="center">接口请求后置变量提取配置</el-divider>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">后置变量</el-tag>
                                 <el-input size="mini" style="margin: 1px;width: 78%"
                                           placeholder="请输入需要提取的参数接收变量（多个以分号隔开）"
-                                          v-model="nodeDataDefault[0].post_keys"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].post_keys"></el-input>
                             </p>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">提取公式</el-tag>
                                 <el-input :autosize="{ minRows: 1, maxRows: 10}" size="mini" type="textarea"
                                           style="margin: 1px;width: 78%"
                                           placeholder="请输入参数提取表达式（格式：$.data.xxx 多个以分号隔开）"
-                                          v-model="nodeDataDefault[0].post_keys_extractor"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].post_keys_extractor"></el-input>
                             </p>
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">默认取值</el-tag>
                                 <el-input size="mini" style="margin: 1px;width: 78%"
                                           placeholder="请输入提取参数默认值（与提取变量个数和顺序匹配（如：0；0；0））"
-                                          v-model="nodeDataDefault[0].post_keys_default"></el-input>
+                                          v-model="nodeDataDefaultAdd[0].post_keys_default"></el-input>
                             </p>
                         </div>
 
@@ -1097,8 +1100,8 @@
         </el-table>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogTableVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogTableVisible = false;addNodeOk(nodeDataDefault)">确 定</el-button>
-            <el-button type="warning" @click="addNodeOk(nodeDataDefault)">再加一条</el-button>
+            <el-button type="primary" @click="dialogTableVisible = false;addNodeOk(nodeDataDefaultAdd)">确 定</el-button>
+            <el-button type="warning" @click="addNodeOk(nodeDataDefaultAdd)">再加一条</el-button>
         </div>
     </el-dialog>
     <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="复制接口" border
@@ -1146,7 +1149,6 @@
                                     <el-option label="GET" value="GET"></el-option>
                                 </el-select>
                             </p>
-
                             <p style="font-weight: bold;">
                                 <el-tag style="float:left;margin: 1px" size="medium">请求参数</el-tag>
                                 <el-input :autosize="{ minRows: 13, maxRows: 20}" size="mini" type="textarea"
