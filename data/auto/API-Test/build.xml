@@ -3,7 +3,7 @@
     <property environment="env" />
     <tstamp> <format property="time" pattern="yyyyMMddHHmm" /></tstamp>
     <property name="jmeter.home" value="${env.JMETER_HOME}" />
-    <property name="report.title" value="时光序API测试" />
+    <property name="report.title" value="未来管家API测试" />
     <property name="jmeter.result.jtl.dir" value="./Report/jtl" />
     <property name="jmeter.result.html.dir" value="./Report/html" />
     <property name="ReportName" value="APITest" />
@@ -15,7 +15,7 @@
     <property name="password" value="jielema_2015"/>
     <property name="mailfrom" value="cuiqingyong@jielema.com"/>
     <property name="mail_to" value="liujun@jielema.com,cuiqingyong@jielema.com,cjb@jielema.com"/>
-    <property name="mailsubject" value="时光序API自动化测试报告"/>
+    <property name="mailsubject" value="未来管家API自动化测试报告"/>
     <property name="mail_port" value="25"/>
     <target name="run">
         <antcall target="test" />
@@ -78,7 +78,7 @@
             <from address="${mailfrom}" />
 
             <fileset dir="${jmeter.result.html.dir}">
-				<include name="${ReportName}_Summary_${time}.html" />
+<!--				<include name="${ReportName}_Summary_${time}.html" />-->
 				<include name="${ReportName}_Detail_${time}.html" />
             </fileset>
             <message>

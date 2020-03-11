@@ -2,10 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-
-
-
-
 class ApiStatisticsNew(models.Model):
     service = models.CharField(max_length=255, blank=True, null=True)
     summary = models.CharField(max_length=255, blank=True, null=True)
@@ -21,8 +17,6 @@ class ApiStatisticsNew(models.Model):
     class Meta:
         managed = False
         db_table = 'api_statistics_new'
-
-
 
 class TestdataFlowNew(models.Model):
     flow_id = models.AutoField(primary_key=True)

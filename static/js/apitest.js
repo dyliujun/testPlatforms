@@ -22,6 +22,14 @@ var vm = new Vue({
         return {
             url: 'http://apitest.shiguangxu.com:8001',
             text :"接口运行中...",
+            apiSize:1001,
+            remarkLists:[
+                {
+                    value: '已实现自动化',
+                    label: '已实现自动化'
+                }
+            ],
+            page_size:15,
             envOptions: [{
                 value: 'test',
                 label: '测试环境'
@@ -39,11 +47,12 @@ var vm = new Vue({
                 user: '',
                 region: ''
             },
-            tableData: [{
-                id: '1',
-                apiName: '暂无数据',
-                url: '暂无数据'
-            }],
+            tableData:[],
+            lableData:{
+                "id":"",
+                "remark":"",
+                "author":""
+            },
             colTemplate:[
                 {prop: 'serviceName', label: '微服务'},
                 {prop: 'apiName', label: '接口描述'},
@@ -65,17 +74,7 @@ var vm = new Vue({
                 'flowId': '',
                 'flow_name': ''
             }],
-            filters: [
-                {text: 'Web端接口', value: 'Web端接口' },
-                {text: '内部调用', value: '内部调用' },
-                {text: '测试接口', value: '测试接口' },
-                {text: '废弃接口', value: '废弃接口' },
-                {text: '数据割切', value: '数据割切' },
-                {text: '未覆盖', value: '未覆盖' },
-                {text: '已覆盖', value: '已覆盖' },
-                {text: '运营后台', value: '运营后台' },
-                {text: '暂不支持', value: '暂不支持' }
-            ],
+            filters: [],
             pageSize: 18,
             FlowlistSize: 100,
             currentPage: 1,
@@ -141,6 +140,7 @@ var vm = new Vue({
                 "argumentName":"示例1:变量名称",
                 "argumentValue":"示例1:变量值",
             }],
+            allApiJsonList:[],
             modal1: false,
             flowName: "",
             search: '',
@@ -156,6 +156,7 @@ var vm = new Vue({
             value: true,
             visible: false,
             dialogDrawer: false,
+            dialogDrawer2: false,
             dialogFormVisible: false,
             dialogParameter: false,
             dialogManualStatistics: false,
@@ -176,7 +177,240 @@ var vm = new Vue({
         }
     },
     methods: {
-        cancelForm(){},
+        handleClick(targetName){
+            if (targetName.name === "apitest"){
+                this.activeName = targetName.name;
+                console.log(this.activeName);
+                var dataPost = {"page_id": 1,"page_size":18};
+                this.$http.post(this.url + '/getFlowData', dataPost).then(
+                    function (data) {
+                        this.FlowlistSize = data.body[0].size;
+                        this.flowData = data.body[0].flowData;
+                        this.FlowIdList = data.body[0].FlowIdList;
+                        console.log(this.flowData);
+                        console.log(this.FlowlistSize);
+                    }
+                );
+            } else if (targetName.name === "config"){
+                this.activeName = targetName.name;
+                console.log(this.activeName);
+                var dataPost = {"page_id": 1,"page_size":15};
+                this.$http.post(this.url + '/getFlowData', dataPost).then(
+                    function (data) {
+                        this.FlowlistSize = data.body[0].size;
+                        this.flowData = data.body[0].flowData;
+                        this.FlowIdList = data.body[0].FlowIdList;
+                        console.log(this.flowData);
+                        console.log(this.FlowlistSize);
+                    }
+                );
+            } else if (targetName.name === "task"){
+                this.activeName = targetName.name;
+                console.log(this.activeName);
+            } else if (targetName.name === "statistics") {
+                this.statisticsLoading = true;
+                dataPost = {
+                    "page_id":1,
+                    "page_size":15
+                };
+                this.$http.post(this.url + '/getApiCounts', dataPost).then(
+                    function (data) {
+                        code = data.body[0].code;
+                        if (code === "200"){
+                            this.tableData = [];
+                            this.filters = [];
+                            this.allApiJsonList = [];
+                            this.tableData = [data.body[0].data];
+                            remarkList = data.body[0].data.remarkList;
+                            let allApi = data.body[0].data.allApi;
+                            for (let i = 0; i<remarkList.length;i++){
+                                if (remarkList[i][0] ===""){
+                                    this.filters.push({
+                                        text: "接口未标记", value: "接口未标记"
+                                    })
+                                } else {
+                                    this.filters.push({
+                                        text: remarkList[i][0], value: remarkList[i][0]
+                                    })
+                                }
+                            }
+                            for (let i = 0; i<allApi.length;i++){
+                                this.allApiJsonList.push({
+                                    "id": allApi[i][0],
+                                    "service_name": allApi[i][2],
+                                    "summary": allApi[i][4],
+                                    "path": allApi[i][5],
+                                    "author": allApi[i][13],
+                                    "remark": allApi[i][14]
+                                })
+                            }
+                            this.apiSize = parseInt(data.body[0].data.totalCounts);
+                            this.statisticsLoading = false;
+                        }else {
+                            this.statisticsLoading = false;
+                        }
+
+                    }
+                );
+            }
+        },
+        unfilterApi(){
+            this.statisticsLoading = true;
+            dataPost = {
+                "switch":false,
+            };
+            this.$http.post(this.url + '/filterApi', dataPost).then(
+                function (data) {
+                    this.page_size = 2000;
+                    code = data.body[0].code;
+                    if (code === "201"){
+                        this.filters = [];
+                        this.allApiJsonList = [];
+                        remarkList = data.body[0].remarkList;
+                        for (let i = 0; i<remarkList.length;i++){
+                            if (remarkList[i][0] ===""){
+                                this.filters.push({
+                                    text: "接口未标记", value: "接口未标记"
+                                })
+                            } else {
+                                this.filters.push({
+                                    text: remarkList[i][0], value: remarkList[i][0]
+                                })
+                            }
+                        }
+                        let allApi = data.body[0].data;
+                        for (let i = 0; i<allApi.length;i++){
+                            this.allApiJsonList.push({
+                                "id": allApi[i][0],
+                                "service_name": allApi[i][2],
+                                "summary": allApi[i][4],
+                                "path": allApi[i][5],
+                                "author": allApi[i][13],
+                                "remark": allApi[i][14]
+                            })
+                        }
+                        this.apiSize = allApi.length;
+                        this.statisticsLoading = false;
+                    }else {
+                        this.statisticsLoading = false;
+                    }
+                }
+            );
+        },
+        filterApi(){
+            this.statisticsLoading = true;
+            dataPost = {
+                "switch":true,
+            };
+            this.$http.post(this.url + '/filterApi', dataPost).then(
+                function (data) {
+                    this.page_size = 2000;
+                    code = data.body[0].code;
+                    if (code === "200"){
+                        this.filters = [];
+                        this.allApiJsonList = [];
+                        remarkList = data.body[0].remarkList;
+                        for (let i = 0; i<remarkList.length;i++){
+                            if (remarkList[i][0] ===""){
+                                this.filters.push({
+                                    text: "接口未标记", value: "接口未标记"
+                                })
+                            } else {
+                                this.filters.push({
+                                    text: remarkList[i][0], value: remarkList[i][0]
+                                })
+                            }
+                        }
+                        let allApi = data.body[0].data;
+                        for (let i = 0; i<allApi.length;i++){
+                            this.allApiJsonList.push({
+                                "id": allApi[i][0],
+                                "service_name": allApi[i][2],
+                                "summary": allApi[i][4],
+                                "path": allApi[i][5],
+                                "author": allApi[i][13],
+                                "remark": allApi[i][14]
+                            })
+                        }
+                        this.apiSize = allApi.length;
+                        this.statisticsLoading = false;
+                    }else {
+                        this.statisticsLoading = false;
+                    }
+
+                }
+            );
+        },
+        labeledApi(index, row){
+            this.dialogDrawer2 = true;
+            this.lableData = {
+                "id": row.id,
+                "remark":row.remark,
+                "author":row.author
+            }
+        },
+        saveRemark(){
+            this.statisticsLoading = true;
+            dataPost = {
+                "id":this.lableData.id,
+                "remark":this.lableData.remark,
+                "author":this.lableData.author
+            };
+            this.$http.post(this.url + '/saveRemark', dataPost).then(
+                function (data) {
+                    if (data.body[0].code === "200"){
+                        this.dialogDrawer2 = false;
+                        dataPost = {
+                            "page_id":1,
+                            "page_size":15
+                        };
+                        this.$http.post(this.url + '/getApiCounts', dataPost).then(
+                            function (data) {
+                                code = data.body[0].code;
+                                if (code === "200"){
+                                    this.tableData = [];
+                                    this.filters = [];
+                                    this.allApiJsonList = [];
+                                    this.tableData = [data.body[0].data];
+                                    remarkList = data.body[0].data.remarkList;
+                                    let allApi = data.body[0].data.allApi;
+                                    for (let i = 0; i<remarkList.length;i++){
+                                        if (remarkList[i][0] ===""){
+                                            this.filters.push({
+                                                text: "接口未标记", value: "接口未标记"
+                                            })
+                                        } else {
+                                            this.filters.push({
+                                                text: remarkList[i][0], value: remarkList[i][0]
+                                            })
+                                        }
+                                    }
+                                    for (let i = 0; i<allApi.length;i++){
+                                        this.allApiJsonList.push({
+                                            "id": allApi[i][0],
+                                            "service_name": allApi[i][2],
+                                            "summary": allApi[i][4],
+                                            "path": allApi[i][5],
+                                            "author": allApi[i][13],
+                                            "remark": allApi[i][14]
+                                        })
+                                    }
+                                    this.apiSize = parseInt(data.body[0].data.totalCounts);
+                                    this.statisticsLoading = false;
+                                }else {
+                                    this.statisticsLoading = false;
+                                }
+
+                            }
+                        );
+                    }
+
+                }
+            );
+        },
+        cancelForm(){
+            this.dialogDrawer2 = false;
+        },
         transferFlowData(row){
             var fromFlowId = row.pk;
         },
@@ -241,19 +475,55 @@ var vm = new Vue({
                 }
             );
         },
-        manualStatistics(index, rows,row){
-            console.log("manualStatistics-->",row);
-            this.unStatisticsData = {
-                "index":row.id,
-                "service":row.serviceName,
-                "summary":row.apiName,
-                "path":row.url,
-                "isAuto":"否",
-                "author":"",
-                "remark":""
+        manualStatistics(){
+            this.statisticsLoading = true;
+            this.tableData = [];
+            this.filters = [];
+            this.allApiJsonList = [];
+            var dataPost = {
+                "page_id":1,
+                "page_size":15
             };
-            rows.splice(index, 1);
-            this.dialogManualStatistics = true;
+            this.$http.post(this.url + '/manualStatistics', dataPost).then(
+                function (data) {
+                    code = data.body[0].code;
+                    if (code === 200 || code === '200'){
+                        this.tableData = [data.body[0].data];
+                        remarkList = data.body[0].data.remarkList;
+                        let allApi = data.body[0].data.allApi;
+                        for (let i = 0; i<remarkList.length;i++){
+                            if (remarkList[i][0] ===""){
+                                this.filters.push({
+                                    text: "接口未标记", value: "接口未标记"
+                                })
+                            } else {
+                                this.filters.push({
+                                    text: remarkList[i][0], value: remarkList[i][0]
+                                })
+                            }
+                        }
+                        for (let i = 0; i<allApi.length;i++){
+                            this.allApiJsonList.push({
+                                "id": allApi[i][0],
+                                "service_name": allApi[i][2],
+                                "summary": allApi[i][4],
+                                "path": allApi[i][5],
+                                "author": allApi[i][13],
+                                "remark": allApi[i][14]
+                            })
+                        }
+                        this.apiSize = parseInt(data.body[0].data.totalCounts);
+                        console.log("this.filters--->", this.filters);
+                        console.log("this.apiSize--->", this.apiSize);
+                        console.log("this.tableData--->", this.tableData);
+                        console.log("this.allApiJsonList--->", this.allApiJsonList);
+                        this.statisticsLoading = false;
+                    } else {
+
+                    }
+
+                }
+            );
         },
         unDoStatistics(index, rows,row){
             console.log("unDoStatistics-->",row);
@@ -325,56 +595,7 @@ var vm = new Vue({
                 }
             );
         },
-        handleClick(targetName){
-            if (targetName.name === "apitest"){
-                this.activeName = targetName.name;
-                console.log(this.activeName);
-                var dataPost = {"page_id": 1,"page_size":18};
-                this.$http.post(this.url + '/getFlowData', dataPost).then(
-                    function (data) {
-                        this.FlowlistSize = data.body[0].size;
-                        this.flowData = data.body[0].flowData;
-                        this.FlowIdList = data.body[0].FlowIdList;
-                        console.log(this.flowData);
-                        console.log(this.FlowlistSize);
-                    }
-                );
-            } else if (targetName.name === "config"){
-                this.activeName = targetName.name;
-                console.log(this.activeName);
-                var dataPost = {"page_id": 1,"page_size":15};
-                this.$http.post(this.url + '/getFlowData', dataPost).then(
-                    function (data) {
-                        this.FlowlistSize = data.body[0].size;
-                        this.flowData = data.body[0].flowData;
-                        this.FlowIdList = data.body[0].FlowIdList;
-                        console.log(this.flowData);
-                        console.log(this.FlowlistSize);
-                    }
-                );
-            } else if (targetName.name === "task"){
-                this.activeName = targetName.name;
-                console.log(this.activeName);
-            } else if (targetName.name === "statistics") {
-                this.statisticsLoading = true;
-                this.$http.post(this.url + '/getApiStatistics', dataPost).then(
-                    function (data) {
-                        code = data.body[0].code;
-                        if (code === "200"){
-                            this.apiStatisticsData = data.body[0].data;
-                            this.tableData = data.body[0].data.unStatisticsList;
-                            this.unDoList = data.body[0].data.undoneList;
-                            this.statisticsLoading = false;
 
-                        }else {
-                            this.statisticsLoading = false;
-                        }
-
-                    }
-                );
-            }
-
-        },
         getDefaultVar(){
             this.$http.get(this.url + '/getDefaultVar').then(
                 function (data) {
@@ -420,6 +641,55 @@ var vm = new Vue({
                             message: '很遗憾，切换分页失败',
                             type: 'error'
                         });
+                    }
+
+                }
+            );
+        },
+        handleCurrentChange2(val) {
+            console.log(`当前页: ${val}`);
+            var dataPost = {
+                "page_id": val,
+                "page_size":15
+            };
+            this.$http.post(this.url + '/getApiCounts', dataPost).then(
+                function (data) {
+                    code = data.body[0].code;
+                    if (code === "200"){
+                        this.tableData = [];
+                        this.filters = [];
+                        this.allApiJsonList = [];
+                        this.tableData = [data.body[0].data];
+                        remarkList = data.body[0].data.remarkList;
+                        let allApi = data.body[0].data.allApi;
+                        for (let i = 0; i<remarkList.length;i++){
+                            if (remarkList[i][0] ===""){
+                                this.filters.push({
+                                    text: "接口未标记", value: "接口未标记"
+                                })
+                            } else {
+                                this.filters.push({
+                                    text: remarkList[i][0], value: remarkList[i][0]
+                                })
+                            }
+                        }
+                        for (let i = 0; i<allApi.length;i++){
+                            this.allApiJsonList.push({
+                                "id": allApi[i][0],
+                                "service_name": allApi[i][2],
+                                "summary": allApi[i][4],
+                                "path": allApi[i][5],
+                                "author": allApi[i][13],
+                                "remark": allApi[i][14]
+                            })
+                        }
+                        this.apiSize = parseInt(data.body[0].data.totalCounts);
+                        console.log("this.filters--->", this.filters);
+                        console.log("this.tableData--->", this.tableData);
+                        console.log("this.allApiJsonList--->", this.allApiJsonList);
+                        this.statisticsLoading = false;
+                    }else {
+                        this.statisticsLoading = false;
                     }
 
                 }
@@ -903,8 +1173,10 @@ var vm = new Vue({
         },
         dbEditNodeTable(index, row) {
             // this.dialogDrawer = true;
-            // this.nodeDataDefault = row;
+            this.nodeDataDefault = row;
             // this.filtrateFlowId = row.flow_id;
+            console.log("this.filtrateFlowId--->",this.filtrateFlowId);
+            console.log("this.nodeDataDefault--->",this.nodeDataDefault);
             var nodeTable = document.getElementById('nodeTable');
             var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
             for (var i = 0; i < currentRow.children.length - 5; i++) {
@@ -921,7 +1193,7 @@ var vm = new Vue({
         saveNode(){
             var dataPost = {
                 "order_id": this.nodeDataDefault.order_id,
-                "flow_id": this.filtrateFlowId,
+                "flow_id": this.nodeDataDefault.flow_id,
                 "node_name": this.nodeDataDefault.node_name,
                 "method": this.nodeDataDefault.method,
                 "path": this.nodeDataDefault.path,

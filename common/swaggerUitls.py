@@ -3,7 +3,7 @@ import json
 from requests import HTTPError
 
 from common.TestdataNodeDao import getSwaggerApiAllNew, isExitServiceNew, isExitPathNew, isExitSwaggerApiNew, \
-    getPathBySwaggerApiNew, getPathByTestDataNodeNew
+    getPathBySwaggerApiNew, getPathByTestDataNodeNew, getCountsByswaggerApi
 from common.dbUitls import insert_data_new, update_data, MysqlHelper
 from common.readerYaml import getYamlValueForKey
 from common.requestUitls import doRequest
@@ -196,11 +196,8 @@ def swaggerApiStatistics():
             sql = "update automation.swagger_api set remark='已实现自动化', isAuto='1' where path='"+path[0]+"'"
             update_data(sql)
 
-
-
-def ttt():
-    # getSwaggerApiNew()
+def toStatisticsApi():
+    getSwaggerApiNew()
     swaggerApiStatistics()
-    # swaggerApiTransferNew()
 
-ttt()
+# ApiStatistics()

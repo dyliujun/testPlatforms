@@ -65,3 +65,54 @@ def getRemarksNew(url):
     for path in apiStatisticsRemark:
         if url == path[0]:
             return path[1]
+
+
+def getCountsByswaggerApi(size):
+    sql1 = "SELECT count(*) FROM automation.swagger_api where remark='内部调用'"
+    sql2 = "SELECT count(*) FROM automation.swagger_api where remark='测试接口'"
+    sql3 = "SELECT count(*) FROM automation.swagger_api where remark='废弃接口'"
+    sql4 = "SELECT count(*) FROM automation.swagger_api where remark='提醒接口'"
+    sql5 = "SELECT count(*) FROM automation.swagger_api where remark='微信公众号'"
+    sql6 = "SELECT count(*) FROM automation.swagger_api where remark='已实现自动化'"
+    sql7 = "SELECT count(distinct service_name)  FROM automation.swagger_api"
+    sql8 = "SELECT distinct remark  FROM automation.swagger_api"
+    sql9 = "SELECT count(*)  FROM automation.swagger_api"
+
+    allApi = mhNew.find("SELECT * FROM automation.swagger_api limit "+ size, None)
+    innerCellCounts = int(mhNew.find(sql1, None)[0][0])
+    testApiCounts = int(mhNew.find(sql2, None)[0][0])
+    abandonCounts = int(mhNew.find(sql3, None)[0][0])
+    remindCounts = int(mhNew.find(sql4, None)[0][0])
+    wechatCounts = int(mhNew.find(sql5, None)[0][0])
+    doneCounts = int(mhNew.find(sql6, None)[0][0])
+    serviceCounts = int(mhNew.find(sql7, None)[0][0])
+    totalCounts = int(mhNew.find(sql9, None)[0][0])
+    undoneCounts = totalCounts - (innerCellCounts + testApiCounts + abandonCounts +remindCounts+wechatCounts+doneCounts)
+    skipApiCounts = innerCellCounts + testApiCounts + abandonCounts +remindCounts+wechatCounts
+    remarkList = mhNew.find(sql8, None)
+    return {
+        "serviceCounts": serviceCounts,
+        "doneCounts": doneCounts,
+        "undoneCounts": undoneCounts,
+        "innerCellCounts": innerCellCounts,
+        "testApiCounts": testApiCounts,
+        "remindCounts": remindCounts,
+        "wechatCounts": wechatCounts,
+        "abandonCounts": abandonCounts,
+        "skipApiCounts": skipApiCounts,
+        "totalCounts": totalCounts,
+        "remarkList": remarkList,
+        "progress": int(doneCounts/(doneCounts+undoneCounts)*100),
+        "allApi": allApi
+    }
+
+def filterApiUnlabeled():
+    return mhNew.find("SELECT * FROM automation.swagger_api where remark in ('','未实现')", None)
+
+def filterApiAll():
+    return mhNew.find("SELECT * FROM automation.swagger_api ", None)
+
+def getRemarkList():
+    sql8 = "SELECT distinct remark  FROM automation.swagger_api"
+    return mhNew.find(sql8, None)
+

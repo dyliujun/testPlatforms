@@ -150,6 +150,11 @@
             <stringProp name="Argument.value">${__time(yyyy-MM-dd,)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="aheadTime2M" elementType="Argument">
+            <stringProp name="Argument.name">aheadTime2M</stringProp>
+            <stringProp name="Argument.value">${__timeShift(yyyyMMddHHmm,,-PT2M,)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>

@@ -22,7 +22,6 @@
             overflow: inherit;
             text-overflow: ellipsis;
         }
-
         .el-checkbox {
             margin: 1px;
             padding: 0;
@@ -49,7 +48,9 @@
             margin-left: 2px;
             padding: 2px;
         }
-
+        .el-checkbox__label {
+            display: inline-flex;
+        }
         .popover {
             position: absolute;
             top: 0;
@@ -616,137 +617,178 @@
                 </el-button>
             </el-tab-pane>
             <el-tab-pane label="接口统计" style="font-weight: bolder"
-                         v-loading="statisticsLoading"
-                         element-loading-text="正在拼命统计中..."
-                         element-loading-spinner="el-icon-loading"
-                         element-loading-background="rgba(0, 0, 0, 0.8)"
                          name="statistics">
-                <span class="span" style="display: block;font-weight: bold;color: #3557ff">
-                    <el-tag>微服务总数 ：
-                    {%verbatim%}
-                    {{apiStatisticsData.serviceCount}}
-                    {%endverbatim%}
-                    </el-tag>
-                </span>
-                <span class="span" style="display: block;font-weight: bold;color: #3557ff">
-                    <el-tag>接口总数 ：
-                    {%verbatim%}
-                    {{apiStatisticsData.apiCounts}}
-                    {%endverbatim%}
-                    </el-tag>
-                </span>
-                <span class="span" style="display: block;font-weight: bold;color: #3557ff">
-                    <el-tag type="warning">未实现接口数 ：
-                    {%verbatim%}
-                    {{apiStatisticsData.undoneCounts}}
-                    {%endverbatim%}
-                    </el-tag>
-                </span>
-                <span class="span" style="display: block;font-weight: bold;color: #3557ff">
-                    <el-tag type="warning">未统计接口 ：
-                    {%verbatim%}
-                    {{apiStatisticsData.unStatisticsCounts}}
-                    {%endverbatim%}
-                     </el-tag>
-                </span>
-                <el-collapse accordion>
-                    <el-collapse-item>
-                        <template slot="title">
-                            <span class="span" style="display: block;font-weight: bold;color: #ffa354;margin-top: 5px">
-                            未统计接口列表(点击展开详情)：
-                            </span>
-                        </template>
-                        <el-table :data="tableData"
-                                  id="unStatisticsTable"
-                                  style="width: 100%"
-                                  border
-                                  stripe
-                                  size="mini"
-                                  highlight-current-row="true"
-                                  row-style="height:20px"
-                                  cell-style="padding:4px"
-                                  style="width:auto"
-                                  :header-cell-style="{background:'#836FFF',color:'#F0FFFF',padding:'3px'}">
-                            <el-table-column label="序号" size="small" prop="id" id="id" width="90px">
-                                <template slot-scope="scope">
-                                    <el-input style="display: none;margin: 0;padding: 0" :placeholder="scope.row.pk"
-                                              v-model="scope.row.id"></el-input>
+                <div style="margin-left: 5%">
+                    <span class="span" style="display: block;font-weight: bold;color: #3557ff">
+                        <el-button type="primary" size="mini" @click="manualStatistics()" style="margin-bottom: 3px" icon="el-icon-s-data">手动统计接口</el-button>
+                    </span>
+                    <el-table :data="tableData"
+                              v-loading="statisticsLoading"
+                              element-loading-text="正在拼命统计中..."
+                              element-loading-spinner="el-icon-loading"
+                              element-loading-background="rgba(0, 0, 0, 0.8)"
+                              id="tableData"
+                              border
+                              stripe
+                              size="mini"
+                              highlight-current-row="true"
+                              row-style="height:20px"
+                              cell-style="padding:4px"
+                              style="width: 92.6%"
+                              :header-cell-style="{background:'#C8C6D4',color:'#0E0513',padding:'3px'}">
+                        <el-table-column label="微服务数量" size="small" prop="serviceCounts" id="serviceCounts" width="auto">
+                            <template slot-scope="scope">
+                                    <span class="span" style="display: block;font-weight: bold;color: #0e0513">
+                                        {%verbatim%}
+                                        {{scope.row.serviceCounts}}
+                                        {%endverbatim%}
+                                    </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="接口总数" size="small" prop="totalCounts" id="totalCounts" width="auto">
+                            <template slot-scope="scope">
+                                    <span class="span" style="display: block;font-weight: bold;color: #0e0513">
+                                        {%verbatim%}
+                                        {{scope.row.totalCounts}}
+                                        {%endverbatim%}
+                                    </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="已实现接口数" size="small" prop="id" id="id" width="auto">
+                            <template slot-scope="scope">
+                                    <span class="span" style="display: block;font-weight: bold;color: #0e0513">
+                                        {%verbatim%}
+                                        {{scope.row.doneCounts}}
+                                        {%endverbatim%}
+                                    </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="未实现接口数" size="small" prop="id" id="id" width="auto">
+                            <template slot-scope="scope">
+                                    <span class="span" style="display: block;font-weight: bold;color: #0e0513">
+                                        {%verbatim%}
+                                        {{scope.row.undoneCounts}}
+                                        {%endverbatim%}
+                                    </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="无需实现接口(废弃/测试/提醒/微信等)" size="small" prop="id" id="id" width="auto">
+                            <template slot-scope="scope">
+                                    <span class="span" style="display: block;font-weight: bold;color: #0e0513">
+                                        {%verbatim%}
+                                        {{scope.row.skipApiCounts}}
+                                        {%endverbatim%}
+                                    </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="覆盖率" size="small" prop="progress" id="progress" width="auto">
+                            <template slot-scope="scope">
+                                    <span class="span" style="display: block;font-weight: bold;color: #0e0513">
+                                        <el-progress :text-inside="true" :stroke-width="26" :percentage="scope.row.progress" status="success"></el-progress>
+                                    </span>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+                <el-divider content-position="center">Swagger接口列表</el-divider>
+                <div style="margin-left: 5%">
+                    <span class="span" style="display: block;font-weight: bold;color: #3557ff">
+                        <el-button type="warning" size="mini" style="margin-bottom: 3px" icon="el-icon-s-data">Swagger接口列表</el-button>
+                        <el-button type="warning" size="mini" @click="filterApi()" style="margin-bottom: 3px" icon="el-icon-s-data">屏蔽未标记接口</el-button>
+                        <el-button type="warning" size="mini" @click="unfilterApi()" style="margin-bottom: 3px" icon="el-icon-s-data">显示所有接口</el-button>
+                    </span>
+                    <div class="block" style="color:#faf8ff;margin-top:10px;padding: 3px ">
+                        <el-pagination
+                                background
+                                @current-change="handleCurrentChange2"
+                                :current-page="currentPage"
+                                :page-size=page_size
+                                layout="total, prev, pager, next"
+                                :total=apiSize>
+                        </el-pagination>
+                    </div>
+                    <el-table
+                            v-loading="statisticsLoading"
+                            element-loading-text="正在拼命统计中..."
+                            element-loading-spinner="el-icon-loading"
+                            element-loading-background="rgba(0, 0, 0, 0.8)"
+                            :data="allApiJsonList"
+                            id="allApiJsonList"
+                            border
+                            stripe
+                            size="mini"
+                            highlight-current-row="true"
+                            row-style="height:20px"
+                            cell-style="padding:4px"
+                            style="width: 92.6%"
+                            :header-cell-style="{background:'#C8C6D4',color:'#0E0513',padding:'3px'}">
+                        <el-table-column label="序号" size="small" prop="id" id="id" width="90px">
+                            <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
                                         {%verbatim%}
                                         {{scope.row.id}}
                                         {%endverbatim%}
                                     </span>
-                                </template>
-                            </el-table-column>
-                            <el-table-column
-                                    v-for="col in colTemplate"
-                                    :prop="col.prop" :label="col.label">
-                            </el-table-column>
-                            <el-table-column label="操作" width="250px" prop="operation">
-                                <template slot-scope="scope">
-                                    <el-button raw-type="button"
-                                               @click="manualStatistics(scope.$index,tableData,scope.row)">
-                                        手动统计
-                                    </el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                    </el-collapse-item>
-                    <el-collapse-item>
-                        <template slot="title">
-                            <span class="span" style="display: block;font-weight: bold;color: #d49e54;margin-top: 5px">
-                            未实现接口列表(点击展开详情)：
-                            </span>
-                        </template>
-                        <el-table :data="unDoList"
-                                  id="unDoList"
-                                  style="width: 100%"
-                                  border
-                                  stripe
-                                  highlight-current-row="true"
-                                  style="width:auto"
-                                  :header-cell-style="{background:'#C8C6D4',color:'#0E0513',padding:'3px'}">
-                            <el-table-column label="序号" size="small" prop="id" id="id" width="90px">
-                                <template slot-scope="scope">
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="微服务名称" size="small" prop="service_name" id="service_name" width="auto">
+                            <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
                                         {%verbatim%}
-                                        {{scope.row.id}}
+                                        {{scope.row.service_name}}
                                         {%endverbatim%}
                                     </span>
-                                </template>
-                            </el-table-column>
-                            <el-table-column
-                                    v-for="col in colTemplate"
-                                    :prop="col.prop" :label="col.label">
-                            </el-table-column>
-                            <el-table-column
-                                    label="备注"
-                                    size="small"
-                                    prop="remark"
-                                    :filters="filters"
-                                    :filter-method="filterTag"
-                                    filter-placement="bottom-end">
-                                width="290px">
-                                <template slot-scope="scope">
-                                    <span class="unDoStatistics"
-                                          style="display: block;font-weight: bold;color: #2b83e9;overflow:unset">
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="接口名称" size="small" prop="summary" id="summary" width="auto">
+                            <template slot-scope="scope">
+                                    <span class="span" style="display: block;font-weight: bold;color: #0e0513">
+                                        {%verbatim%}
+                                        {{scope.row.summary}}
+                                        {%endverbatim%}
+                                    </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="接口URL" size="small" prop="path" id="path" width="auto">
+                            <template slot-scope="scope">
+                                    <span class="span" style="display: block;font-weight: bold;color: #0e0513">
+                                        {%verbatim%}
+                                        {{scope.row.path}}
+                                        {%endverbatim%}
+                                    </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作者" size="small" prop="author" id="author" width="auto">
+                            <template slot-scope="scope">
+                                    <span class="span" style="display: block;font-weight: bold;color: #0e0513">
+                                        {%verbatim%}
+                                        {{scope.row.author}}
+                                        {%endverbatim%}
+                                    </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="备注" size="small"  prop="remark" id="remark" width="auto"
+                                :filters="filters"
+                                :filter-method="filterTag"
+                                filter-placement="bottom-end">
+                            <template slot-scope="scope">
+                                    <span style="display: block;font-weight: bold;color: #2b83e9;overflow:unset">
                                         {%verbatim%}
                                         {{scope.row.remark}}
                                         {%endverbatim%}
                                     </span>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="操作" width="250px" prop="operation">
-                                <template slot-scope="scope">
-                                    <el-button raw-type="button"
-                                               @click="unDoStatistics(scope.$index,unDoList,scope.row)">
-                                        手动统计
-                                    </el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                    </el-collapse-item>
-                </el-collapse>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作" width="auto" prop="operation">
+                            <template slot-scope="scope">
+                                <el-button raw-type="button"
+                                           @click="labeledApi(scope.$index,scope.row)">
+                                    标记接口
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -1420,7 +1462,7 @@
             取消
         </el-button>
     </el-dialog>
-    <el-drawer :title="nodeDataDefault.node_name" size="100%" direction="rtl" custom-class="demo-drawer" :visible.sync="dialogDrawer">
+    <el-drawer :close-on-click-modal="false" :title="nodeDataDefault.node_name" size="100%" direction="rtl" custom-class="demo-drawer" :visible.sync="dialogDrawer">
         <div class="demo-drawer__content">
             <div style="float: top">
                 <div style="width: 48%;height: 90%;float: left">
@@ -1584,6 +1626,40 @@
             </el-button>
         </div>
 
+    </el-drawer>
+    <el-drawer :close-on-click-modal="false" title="接口标记" size="40%" direction="rtl" custom-class="demo-drawer" :visible.sync="dialogDrawer2">
+        <div class="demo-drawer__content">
+            <el-form :model="lableData">
+                <el-form-item label="" :label-width="formLabelWidth">
+                    <p style="font-weight: bold">
+                        <el-tag style="float:left;margin: 1px" size="medium">标记接口</el-tag>
+                        <br style="margin: 10px">
+                        <el-select size="small" style="margin: 1px" v-model="lableData.remark" placeholder="请标记接口备注信息">
+                            <el-option
+                                    v-for="item in filters"
+                                    :key="item.text"
+                                    :label="item.text"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </p>
+                    <p style="font-weight: bold;margin: 1px">
+                        <el-tag style="float:left;margin: 1px" size="medium">操作人员</el-tag>
+                        <br style="margin: 10px">
+                        <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入操作人名字"
+                                  v-model="lableData.author"></el-input>
+                    </p>
+                </el-form-item>
+                <el-form-item label="" :label-width="formLabelWidth">
+
+                </el-form-item>
+            </el-form>
+            <div class="demo-drawer__footer" style="margin-left: 16%">
+                <el-button @click="cancelForm">取 消</el-button>
+                <el-button @click="saveRemark" type="primary">确 定</el-button>
+
+            </div>
+        </div>
     </el-drawer>
 </div>
 <script src="../../static/js/apitest.js" type="text/javascript"></script>

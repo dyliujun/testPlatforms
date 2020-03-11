@@ -20,8 +20,9 @@ from django.urls import path
 from apitest.views import apitest, getFlowData, getNodeData, getOutSql, getPreSql, getPostKey, getParameter, addFlow, \
     editFlow, deleteFlow, addNode, editNode, savePostKey, editParameter, deleteNode, editOutSql, editPreSql, getCreater, \
     actionFlow, getEmail, emailChange, actionAllFlow, changeFlowState, changeNodeState, editDefaultVar, getDefaultVar, \
-    deleteDefaultVar, addDefaultVar, getApiStatistics, getLog, lookDetailReport, lookSummaryReport, filterFlowName, \
-    filterPath, saveUnStatisticsData, saveUnDoStatisticsData, transferFlowData
+    deleteDefaultVar, addDefaultVar, getLog, lookDetailReport, lookSummaryReport, filterFlowName, \
+    filterPath, saveUnStatisticsData, saveUnDoStatisticsData, transferFlowData, getApiCounts, manualStatistics, \
+    filterApi, saveRemark
 from performance.views import performance, \
     getPerformanceFlowData, getPerformanceNodeData, getPerformanceOutSql, getPerformancePreSql, getPerformancePostKey, \
     getPerformanceParameter, addPerformanceFlow, editPerformanceFlow, deletePerformanceFlow, deletePerformanceNode, \
@@ -36,8 +37,9 @@ from sql.views import sqlIndex, register, clearModelCodeRecords, clearPhoneCodeR
 from task.views import startWork, startBeat
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'index', apitest),
-    url(r'getFlowData', getFlowData),
+    url(r'^index$', apitest),
+    url(r'getApiCounts', getApiCounts),
+    url(r'^getFlowData$', getFlowData),
     url(r'getNodeData', getNodeData),
     url(r'getOutSql', getOutSql),
     url(r'getPreSql', getPreSql),
@@ -106,7 +108,6 @@ urlpatterns = [
     url(r'getPerformanceConfig', getPerformanceConfig),
     url(r'savePerformanceConfig', savePerformanceConfig),
     url(r'plan', plan),
-    url(r'getApiStatistics', getApiStatistics),
     url(r'lookDetailReport', lookDetailReport),
     url(r'lookSummaryReport', lookSummaryReport),
     url(r'getLog', getLog),
@@ -115,5 +116,8 @@ urlpatterns = [
     url(r'saveUnStatisticsData', saveUnStatisticsData),
     url(r'saveUnDoStatisticsData', saveUnDoStatisticsData),
     url(r'transferFlowData', transferFlowData),
+    url(r'manualStatistics', manualStatistics),
+    url(r'filterApi', filterApi),
+    url(r'saveRemark', saveRemark),
     # url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_URL}),
 ]

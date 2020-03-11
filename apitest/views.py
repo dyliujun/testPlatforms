@@ -9,8 +9,9 @@ from apitest.models import TestdataNodeNew, TestdataFlowNew, ApiStatisticsNew
 from apitest.readJmx import changeAciton, getEmailList, changeEmail, getDefaultVariable, addDefaultVariable, \
     editDefaultVariable, deleteDefaultVariable, removeFile, readText
 
-from apitest.swaggerUitls import getSwaggerApi
-from common.dbUitls import update_flow_data
+from common.TestdataNodeDao import getCountsByswaggerApi,  filterApiAll, filterApiUnlabeled, getRemarkList
+from common.dbUitls import update_flow_data, update_data
+from common.swaggerUitls import toStatisticsApi
 
 paths = os.path.abspath(os.path.dirname(__file__)).split('testPlatforms')[0]+"testPlatforms\\data\\auto\\API-Test\\"
 
@@ -574,21 +575,15 @@ def deleteDefaultVar(request):
         return JsonResponse(response, safe=False)
 
 @csrf_exempt
-def getApiStatistics(request):
-    response = [{"code": "200", "msg": "操作成功", "data": getSwaggerApi()}]
-    return JsonResponse(response, safe=False)
-
-@csrf_exempt
-def getLog(request):
+def getLog():
     fileName = os.path.abspath(os.path.dirname(__file__)).split('testPlatforms')[0]+"testPlatforms\\nodes\\django.log"
-    # clearText(fileName)
     log = readText(fileName)
     print(log)
     response = [{"code": "200", "msg": "操作成功", "log": log}]
     return JsonResponse(response, safe=False)
 
 @csrf_exempt
-def lookDetailReport(request):
+def lookDetailReport():
     for root, dirs, files in os.walk(paths+"Report\\html\\"):
         for f in files:
             if "Detail" in f:
@@ -596,7 +591,7 @@ def lookDetailReport(request):
     return render_to_response('data/auto/API-Test/Report/html/'+fileName, {})
 
 @csrf_exempt
-def lookSummaryReport(request):
+def lookSummaryReport():
     for root, dirs, files in os.walk(paths+"Report\\html\\"):
         for f in files:
             if "Summary" in f:
@@ -666,3 +661,53 @@ def transferFlowData(request):
     update_flow_data(fromFlowId, toFlowId)
     response = [{"code": "200", "msg": "操作成功"}]
     return JsonResponse(response, safe=False)
+
+@csrf_exempt
+def getApiCounts(request):
+    page_id = json.loads(request.body)["page_id"]
+    page_size = json.loads(request.body)["page_size"]
+    start = (page_id-1)*page_size
+    size = str(start)+","+str(page_size)
+    print(size)
+    data = getCountsByswaggerApi(size)
+    response = [{"code": "200", "msg": "操作成功", "data": data}]
+    return JsonResponse(response, safe=False)
+
+@csrf_exempt
+def manualStatistics(request):
+    page_id = json.loads(request.body)["page_id"]
+    page_size = json.loads(request.body)["page_size"]
+    start = (page_id-1)*page_size
+    size = str(start)+","+str(page_size)
+    data = getCountsByswaggerApi(size)
+    toStatisticsApi()
+    response = [{"code": "200", "msg": "操作成功", "data": data}]
+    return JsonResponse(response, safe=False)
+
+@csrf_exempt
+def filterApi(request):
+    switch = json.loads(request.body)["switch"]
+    if switch:
+        response = [{"code": "200", "msg": "开启屏蔽", "data": filterApiUnlabeled(), "remarkList": getRemarkList()}]
+    else:
+        response = [{"code": "201", "msg": "取消屏蔽", "data": filterApiAll(), "remarkList": getRemarkList()}]
+
+    return JsonResponse(response, safe=False)
+
+
+@csrf_exempt
+def saveRemark(request):
+    id = json.loads(request.body)["id"]
+    remark = json.loads(request.body)["remark"]
+    author = json.loads(request.body)["author"]
+    if remark == "接口未标记":
+        remark = ""
+    sql = "update automation.swagger_api set remark='"+remark+"', author='"+author+"' where id="+str(id)
+    print(sql)
+    try:
+        update_data(sql)
+        response = [{"code": "200", "msg": "标记成功"}]
+    except Exception:
+        response = [{"code": "501", "msg": "标记失败"}]
+    return JsonResponse(response, safe=False)
+
