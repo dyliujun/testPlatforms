@@ -77,6 +77,7 @@ def getCountsByswaggerApi(size):
     sql7 = "SELECT count(distinct service_name)  FROM automation.swagger_api"
     sql8 = "SELECT distinct remark  FROM automation.swagger_api"
     sql9 = "SELECT count(*)  FROM automation.swagger_api"
+    sql10 = "SELECT count(*) FROM automation.swagger_api where remark in ('','未实现','标记未实现')"
 
     allApi = mhNew.find("SELECT * FROM automation.swagger_api limit "+ size, None)
     innerCellCounts = int(mhNew.find(sql1, None)[0][0])
@@ -87,8 +88,8 @@ def getCountsByswaggerApi(size):
     doneCounts = int(mhNew.find(sql6, None)[0][0])
     serviceCounts = int(mhNew.find(sql7, None)[0][0])
     totalCounts = int(mhNew.find(sql9, None)[0][0])
-    undoneCounts = totalCounts - (innerCellCounts + testApiCounts + abandonCounts +remindCounts+wechatCounts+doneCounts)
-    skipApiCounts = innerCellCounts + testApiCounts + abandonCounts +remindCounts+wechatCounts
+    undoneCounts = int(mhNew.find(sql10, None)[0][0])
+    skipApiCounts = totalCounts - (doneCounts+undoneCounts)
     remarkList = mhNew.find(sql8, None)
     return {
         "serviceCounts": serviceCounts,
@@ -107,7 +108,7 @@ def getCountsByswaggerApi(size):
     }
 
 def filterApiUnlabeled():
-    return mhNew.find("SELECT * FROM automation.swagger_api where remark in ('','未实现')", None)
+    return mhNew.find("SELECT * FROM automation.swagger_api where remark in ('','未实现','标记未实现')", None)
 
 def filterApiByPath(path):
     return mhNew.find("SELECT * FROM automation.swagger_api where path = '"+path+"'", None)

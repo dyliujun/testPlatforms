@@ -584,7 +584,7 @@ var vm = new Vue({
         },
         filterPath(){
             var dataPost = {"path": this.path};
-            this.$http.post(this.url + '/filterPath()', dataPost).then(
+            this.$http.post(this.url + '/filterPath', dataPost).then(
                 function (data) {
                     this.flowData = data.body[0].flowData;
                     this.pageSize = 100;
