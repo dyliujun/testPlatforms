@@ -692,10 +692,15 @@
                 </div>
                 <el-divider content-position="center">Swagger接口列表</el-divider>
                 <div style="margin-left: 5%">
+
                     <span class="span" style="display: block;font-weight: bold;color: #3557ff">
                         <el-button type="warning" size="mini" style="margin-bottom: 3px" icon="el-icon-s-data">Swagger接口列表</el-button>
-                        <el-button type="warning" size="mini" @click="filterApi()" style="margin-bottom: 3px" icon="el-icon-s-data">屏蔽未标记接口</el-button>
+                        <el-button type="warning" size="mini" @click="filterApi()" style="margin-bottom: 3px" icon="el-icon-s-data">屏蔽已标记接口</el-button>
                         <el-button type="warning" size="mini" @click="unfilterApi()" style="margin-bottom: 3px" icon="el-icon-s-data">显示所有接口</el-button>
+                        <el-input size="small" placeholder="请输入接口URL" v-model="path" class="input-with-select"
+                                  style="width: 400px">
+                        <el-button slot="append" icon="el-icon-search" @click="filterPath2()">搜索URL</el-button>
+                    </el-input>
                     </span>
                     <div class="block" style="color:#faf8ff;margin-top:10px;padding: 3px ">
                         <el-pagination

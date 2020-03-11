@@ -109,6 +109,9 @@ def getCountsByswaggerApi(size):
 def filterApiUnlabeled():
     return mhNew.find("SELECT * FROM automation.swagger_api where remark in ('','未实现')", None)
 
+def filterApiByPath(path):
+    return mhNew.find("SELECT * FROM automation.swagger_api where path = '"+path+"'", None)
+
 def filterApiAll():
     return mhNew.find("SELECT * FROM automation.swagger_api ", None)
 

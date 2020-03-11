@@ -9,7 +9,8 @@ from apitest.models import TestdataNodeNew, TestdataFlowNew, ApiStatisticsNew
 from apitest.readJmx import changeAciton, getEmailList, changeEmail, getDefaultVariable, addDefaultVariable, \
     editDefaultVariable, deleteDefaultVariable, removeFile, readText
 
-from common.TestdataNodeDao import getCountsByswaggerApi,  filterApiAll, filterApiUnlabeled, getRemarkList
+from common.TestdataNodeDao import getCountsByswaggerApi, filterApiAll, filterApiUnlabeled, getRemarkList, \
+    filterApiByPath
 from common.dbUitls import update_flow_data, update_data
 from common.swaggerUitls import toStatisticsApi
 
@@ -583,7 +584,7 @@ def getLog():
     return JsonResponse(response, safe=False)
 
 @csrf_exempt
-def lookDetailReport():
+def lookDetailReport(request):
     for root, dirs, files in os.walk(paths+"Report\\html\\"):
         for f in files:
             if "Detail" in f:
@@ -591,7 +592,7 @@ def lookDetailReport():
     return render_to_response('data/auto/API-Test/Report/html/'+fileName, {})
 
 @csrf_exempt
-def lookSummaryReport():
+def lookSummaryReport(request):
     for root, dirs, files in os.walk(paths+"Report\\html\\"):
         for f in files:
             if "Summary" in f:
@@ -694,6 +695,13 @@ def filterApi(request):
 
     return JsonResponse(response, safe=False)
 
+
+@csrf_exempt
+def filterPath2(request):
+    path = json.loads(request.body)["path"]
+    response = [{"code": "200", "msg": "过滤成功", "data": filterApiByPath(path), "remarkList": getRemarkList()}]
+    print(response)
+    return JsonResponse(response, safe=False)
 
 @csrf_exempt
 def saveRemark(request):

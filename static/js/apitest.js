@@ -254,6 +254,49 @@ var vm = new Vue({
                 );
             }
         },
+        filterPath2(){
+            this.statisticsLoading = true;
+            var dataPost = {"path": this.path};
+            this.$http.post(this.url + '/filterPath2()', dataPost).then(
+                function (data) {
+                    this.page_size = 2000;
+                    code = data.body[0].code;
+                    if (code === "200"){
+                        console.log(data.body[0].remarkList);
+                        console.log(data.body[0].data[0]);
+                        this.filters = [];
+                        this.allApiJsonList = [];
+                        remarkList = data.body[0].remarkList;
+                        for (let i = 0; i<remarkList.length;i++){
+                            if (remarkList[i][0] ===""){
+                                this.filters.push({
+                                    text: "接口未标记", value: "接口未标记"
+                                })
+                            } else {
+                                this.filters.push({
+                                    text: remarkList[i][0], value: remarkList[i][0]
+                                })
+                            }
+                        }
+                        let allApi = data.body[0].data[0];
+                        console.log("allApi.length",allApi.length);
+                        this.allApiJsonList.push({
+                            "id": allApi[0],
+                            "service_name": allApi[2],
+                            "summary": allApi[4],
+                            "path": allApi[5],
+                            "author": allApi[13],
+                            "remark": allApi[14]
+                        });
+                        this.apiSize = allApi.length;
+                        this.statisticsLoading = false;
+                        console.log("this.allApiJsonList---->",this.allApiJsonList)
+                    }else {
+                        this.statisticsLoading = false;
+                    }
+                }
+            );
+        },
         unfilterApi(){
             this.statisticsLoading = true;
             dataPost = {
@@ -548,6 +591,7 @@ var vm = new Vue({
                 }
             );
         },
+
         filterFlowName(){
             var dataPost = {"flow_name": this.flowName};
             this.$http.post(this.url + '/filterFlowName()', dataPost).then(
