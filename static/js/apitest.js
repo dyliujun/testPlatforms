@@ -1214,36 +1214,10 @@ var vm = new Vue({
                         if(this.filtrateFlowId !== this.nodeFlowId){
                             window.location.reload();
                         }else {
-                            this.nodeData.push(
-                                {
-                                    "order_id": this.nodeDataDefault.order_id,
-                                    "flow_id": this.filtrateFlowId,
-                                    "node_name": this.nodeDataDefault.node_name,
-                                    "method": this.nodeDataDefault.method,
-                                    "path": this.nodeDataDefault.path,
-                                    "parameter": this.nodeDataDefault.parameter,
-                                    "run_env": this.nodeDataDefault.run_env,
-                                    "pre_keys": this.nodeDataDefault.pre_keys,
-                                    "sleep_time": this.nodeDataDefault.sleep_time,
-                                    "state": this.nodeDataDefault.state,
-                                    "expect_response": this.nodeDataDefault.expect_response,
-                                    "isexcute_pre_sql": this.nodeDataDefault.isexcute_pre_sql,
-                                    "pre_sql_out": this.nodeDataDefault.pre_sql_out,
-                                    "pre_sql_para": this.nodeDataDefault.pre_sql_para,
-                                    "pre_sql_str": this.nodeDataDefault.pre_sql_str,
-                                    "expect_db": this.nodeDataDefault.expect_db,
-                                    "ischechdb": this.nodeDataDefault.ischechdb,
-                                    "sql_para": this.nodeDataDefault.sql_para,
-                                    "sql_str": this.nodeDataDefault.sql_str,
-                                    'post_keys': this.nodeDataDefault.post_keys,
-                                    'post_keys_extractor': this.nodeDataDefault.post_keys_extractor,
-                                    'post_keys_default': this.nodeDataDefault.post_keys_default,
-                                    "pk": node_id
-                                });
-                            this.dialogDrawer = false;
                             var nodeTable = document.getElementById('nodeTable');
                             var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
                             currentRow.getElementsByClassName("parameterButton")[0].innerHTML = this.nodeDataDefault.parameter;
+                            this.dialogDrawer = false;
                         }
                     } else {
                         this.$message({
