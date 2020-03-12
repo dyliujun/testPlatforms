@@ -21,15 +21,33 @@ var vm = new Vue({
     data() {
         return {
             url: 'http://apitest.shiguangxu.com:8001',
+
+            //loading文案
             text :"接口运行中...",
-            apiSize:1001,
-            remarkLists:[
-                {
-                    value: '已实现自动化',
-                    label: '已实现自动化'
-                }
-            ],
+
+            //统计
+            remarkLists:[],
+            tableData:[],
+            lableData:{
+                "id":"",
+                "remark":"",
+                "author":""
+            },
+            filtrate: '',
+            filters: [],
+            allApiJsonList:[],
+
+            //分页大小
             page_size:15,
+            apiSize:1001,
+            pageSize: 18,
+            FlowlistSize: 100,
+            currentPage: 1,
+
+            //其他配置
+            path: '',
+            path2: '',
+            recipients: '',
             envOptions: [{
                 value: 'test',
                 label: '测试环境'
@@ -43,42 +61,6 @@ var vm = new Vue({
                 value: 'dev',
                 label: '开发环境'
             }],
-            formInline: {
-                user: '',
-                region: ''
-            },
-            tableData:[],
-            lableData:{
-                "id":"",
-                "remark":"",
-                "author":""
-            },
-            colTemplate:[
-                {prop: 'serviceName', label: '微服务'},
-                {prop: 'apiName', label: '接口描述'},
-                {prop: 'url', label: 'url'}
-            ],
-            filtrate: '',
-            path: '',
-            path2: '',
-            unStatisticsData: {},
-            unDoStatisticsData: {},
-            unDoList: [{
-                id: '1',
-                apiName: '暂无数据',
-                url: '暂无数据'
-            }],
-            apiStatisticsData:{},
-            recipients: '',
-            filtrateFlowId:'',
-            FlowIdList:[{
-                'flowId': '',
-                'flow_name': ''
-            }],
-            filters: [],
-            pageSize: 18,
-            FlowlistSize: 100,
-            currentPage: 1,
             activeName:"apitest",
             creater: [
                 {
@@ -94,12 +76,43 @@ var vm = new Vue({
                 }, {
                     "creater": "陆金爱"
                 }],
+            activeIndex2: '3',
+            varListData: [{
+                "argumentName":"示例1:变量名称",
+                "argumentValue":"示例1:变量值",
+            }],
+            search: '',
+            value: true,
+            visible: false,
+            formLabelWidth: '120px',
+
+            //sql查询
+            outSqlData: [],
+
+            //测试流
+            filtrateFlowId:'',
+            FlowIdList:[{
+                'flowId': '',
+                'flow_name': ''
+            }],
             deleteFlowId: '',
+            flowDataDefault: {
+                "pk": "",
+                "flow_name": "",
+                "account": "",
+                "password": "",
+                "priority": "1",
+                "creater": "",
+                "run_env": "",
+                "swagger_url": "",
+                "state": "1"
+            },
+            flowName: "",
+            flowData: [],
+
+            //接口
             deleteNodeId: '',
             nodeFlowId: '',
-            isCollapse: true,
-            statisticsLoading:false,
-            statisticsLoading2:false,
             nodeDataDefault: [
                 {
                     "pk": "",
@@ -152,37 +165,15 @@ var vm = new Vue({
                     "post_keys_default": "",
                 }
             ],
-            flowDataDefault: {
-                "pk": "",
-                "flow_name": "",
-                "account": "",
-                "password": "",
-                "priority": "1",
-                "creater": "",
-                "run_env": "",
-                "swagger_url": "",
-                "state": "1"
-            },
-            activeIndex2: '3',
-            varListData: [{
-                "argumentName":"示例1:变量名称",
-                "argumentValue":"示例1:变量值",
-            }],
-            allApiJsonList:[],
-            modal1: false,
-            flowName: "",
-            search: '',
-            modal2: false,
-            flowData: [],
             nodeData: [],
-            nodeDataALL: [],
-            outSqlData: [],
             postKeyData: [],
             preSqlData: [],
             parameterData: [],
             currentRow: '',
-            value: true,
-            visible: false,
+
+            //loading开关
+            statisticsLoading:false,
+            statisticsLoading2:false,
             dialogDrawer: false,
             dialogDrawer2: false,
             dialogFormVisible: false,
@@ -199,7 +190,6 @@ var vm = new Vue({
             dialogDefaultVar: false,
             dialogCopyNode: false,
             dialogTableVisible: false,
-            formLabelWidth: '120px',
             actionLoading: false,
             actionLoading2: false
         }
@@ -494,61 +484,6 @@ var vm = new Vue({
         openSwagger(){
             window.open("http://47.112.0.183:8801/swagger-ui.html","_blank");
         },
-        saveUnStatisticsData(row){
-            console.log(row);
-            var index = this.unStatisticsData.index;
-            var dataPost = {
-                "unStatisticsData": this.unStatisticsData,
-            };
-            this.$http.post(this.url + '/saveUnStatisticsData', dataPost).then(
-                function (data) {
-                    var responData = data.status;
-                    if (responData === 200 || responData === '200') {
-                        this.dialogManualStatistics = false;
-                        this.$message({
-                            showClose: true,
-                            message: '保存成功',
-                            type: 'success'
-                        });
-                    } else {
-                        this.$message({
-                            showClose: true,
-                            message: '很遗憾，保存失败',
-                            type: 'error'
-                        });
-                    }
-                }
-            );
-        },
-        saveUnDoStatisticsData(){
-            console.log("saveUnDoStatisticsData-->",this.unDoStatisticsData);
-            var index = this.unDoStatisticsData.index;
-            var dataPost = {
-                "unDoStatisticsData": this.unDoStatisticsData,
-            };
-            this.$http.post(this.url + '/saveUnDoStatisticsData', dataPost).then(
-                function (data) {
-                    var responData = data.status;
-                    if (responData === 200 || responData === '200') {
-                        this.dialogUnDoStatistics = false;
-                        var nodeTable = document.getElementById('unDoList');
-                        var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
-                        currentRow.getElementsByClassName("unDoStatistics")[0].innerHTML = this.unDoStatisticsData.remark;
-                        this.$message({
-                            showClose: true,
-                            message: '保存成功',
-                            type: 'success'
-                        });
-                    } else {
-                        this.$message({
-                            showClose: true,
-                            message: '很遗憾，保存失败',
-                            type: 'error'
-                        });
-                    }
-                }
-            );
-        },
         manualStatistics(){
             this.statisticsLoading = true;
             this.tableData = [];
@@ -599,20 +534,6 @@ var vm = new Vue({
                 }
             );
         },
-        unDoStatistics(index, rows,row){
-            console.log("unDoStatistics-->",row);
-            this.unDoStatisticsData = {
-                "index":row.id,
-                "service":row.serviceName,
-                "summary":row.apiName,
-                "path":row.url,
-                "isAuto":"否",
-                "author":"",
-                "remark":""
-            };
-            // rows.splice(index, 1);
-            this.dialogUnDoStatistics = true;
-        },
         filterPath(){
             var dataPost = {"path": this.path};
             this.$http.post(this.url + '/filterPath', dataPost).then(
@@ -622,7 +543,6 @@ var vm = new Vue({
                 }
             );
         },
-
         filterFlowName(){
             var dataPost = {"flow_name": this.flowName};
             this.$http.post(this.url + '/filterFlowName()', dataPost).then(
@@ -675,7 +595,6 @@ var vm = new Vue({
                 }
             );
         },
-
         getDefaultVar(){
             this.$http.get(this.url + '/getDefaultVar').then(
                 function (data) {
@@ -1253,7 +1172,7 @@ var vm = new Vue({
         },
         dbEditNodeTable(index, row) {
             // this.dialogDrawer = true;
-            this.nodeDataDefault = row;
+            this.nodeDataDefault = index;
             // this.filtrateFlowId = row.flow_id;
             console.log("this.filtrateFlowId--->",this.filtrateFlowId);
             console.log("this.nodeDataDefault--->",this.nodeDataDefault);
@@ -1439,7 +1358,6 @@ var vm = new Vue({
                 }
             );
         },
-
         addNodeOk(nodeDataDefaultAdd) {
             this.loading = true;
             if (nodeDataDefaultAdd[0].order_id === '') {
@@ -1632,6 +1550,7 @@ var vm = new Vue({
         },
         expandChange(row, expandedRows, index) {
             this.loading = true;
+            this.actionLoading2 = true;
             if (expandedRows.length > 1) {
                 this.expands = [];
                 if (row) {
@@ -1646,6 +1565,7 @@ var vm = new Vue({
                     function (data) {
                         this.nodeData = data.body;
                         this.currentRow = '';
+                        this.actionLoading2 = false;
                     }
                 );
             } else {
@@ -1658,6 +1578,7 @@ var vm = new Vue({
                     function (data) {
                         this.nodeData = data.body;
                         this.currentRow = '';
+                        this.actionLoading2 = false;
                     }
                 );
             }
@@ -1720,7 +1641,6 @@ var vm = new Vue({
             rows.splice(index, 1);
             this.deleteNodeDialogVisible = true;
         },
-
         deleteNodeOk() {
             this.loading = true;
             var dataPost = {
