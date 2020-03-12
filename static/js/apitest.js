@@ -742,11 +742,19 @@ var vm = new Vue({
 
         },
         saveParameter() {
-            var dataPost = {"node_id": this.parameterData.key, "parameter": this.parameterData.value};
+            var dataPost = {
+                "node_id": this.parameterData.key,
+                "parameter": this.parameterData.value
+            };
             this.$http.post(this.url + '/editParameter', dataPost).then(
                 function (data) {
                     var responData = data.status;
                     if (responData === 200 || responData === '200') {
+                        for (i=0;i<this.nodeData.length;i++){
+                            if (this.parameterData.key === this.nodeData[i].pk){
+                                this.nodeData[i].parameter = this.parameterData.value
+                            }
+                        }
                         var nodeTable = document.getElementById('nodeTable');
                         var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
                         currentRow.getElementsByClassName("parameterButton")[0].innerHTML = this.parameterData.value;
@@ -1171,11 +1179,15 @@ var vm = new Vue({
             this.filtrateFlowId = row.flow_id;
         },
         dbEditNodeTable(index, row) {
-            // this.dialogDrawer = true;
-            this.nodeDataDefault = index;
-            // this.filtrateFlowId = row.flow_id;
             console.log("this.filtrateFlowId--->",this.filtrateFlowId);
-            console.log("this.nodeDataDefault--->",this.nodeDataDefault);
+            console.log("index--->",index);
+            console.log("this.currentRow--->",this.currentRow);
+            console.log("this.nodeData--->",this.nodeData);
+            for (i = 0;i<this.nodeData.length;i++){
+                if (index.pk === this.nodeData[i].pk){
+                    this.nodeData[i].parameter = index.parameter
+                }
+            }
             var nodeTable = document.getElementById('nodeTable');
             var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
             for (var i = 0; i < currentRow.children.length - 5; i++) {
@@ -1190,6 +1202,7 @@ var vm = new Vue({
             currentRow.children[13].getElementsByClassName('editNode')[0].style.display = 'none';
         },
         saveNode(){
+            console.log("nodeDataDefault--->",this.nodeDataDefault);
             var dataPost = {
                 "order_id": this.nodeDataDefault.order_id,
                 "flow_id": this.nodeDataDefault.flow_id,
@@ -1231,31 +1244,34 @@ var vm = new Vue({
                         }else {
                             this.nodeData.push(
                                 {
-                                    "order_id": nodeDataDefault.order_id,
+                                    "order_id": this.nodeDataDefault.order_id,
                                     "flow_id": this.filtrateFlowId,
-                                    "node_name": nodeDataDefault.node_name,
-                                    "method": nodeDataDefault.method,
-                                    "path": nodeDataDefault.path,
-                                    "parameter": nodeDataDefault.parameter,
-                                    "run_env": nodeDataDefault.run_env,
-                                    "pre_keys": nodeDataDefault.pre_keys,
-                                    "sleep_time": nodeDataDefault.sleep_time,
-                                    "state": nodeDataDefault.state,
-                                    "expect_response": nodeDataDefault.expect_response,
-                                    "isexcute_pre_sql": nodeDataDefault.isexcute_pre_sql,
-                                    "pre_sql_out": nodeDataDefault.pre_sql_out,
-                                    "pre_sql_para": nodeDataDefault.pre_sql_para,
-                                    "pre_sql_str": nodeDataDefault.pre_sql_str,
-                                    "expect_db": nodeDataDefault.expect_db,
-                                    "ischechdb": nodeDataDefault.ischechdb,
-                                    "sql_para": nodeDataDefault.sql_para,
-                                    "sql_str": nodeDataDefault.sql_str,
-                                    'post_keys': nodeDataDefault.post_keys,
-                                    'post_keys_extractor': nodeDataDefault.post_keys_extractor,
-                                    'post_keys_default': nodeDataDefault.post_keys_default,
+                                    "node_name": this.nodeDataDefault.node_name,
+                                    "method": this.nodeDataDefault.method,
+                                    "path": this.nodeDataDefault.path,
+                                    "parameter": this.nodeDataDefault.parameter,
+                                    "run_env": this.nodeDataDefault.run_env,
+                                    "pre_keys": this.nodeDataDefault.pre_keys,
+                                    "sleep_time": this.nodeDataDefault.sleep_time,
+                                    "state": this.nodeDataDefault.state,
+                                    "expect_response": this.nodeDataDefault.expect_response,
+                                    "isexcute_pre_sql": this.nodeDataDefault.isexcute_pre_sql,
+                                    "pre_sql_out": this.nodeDataDefault.pre_sql_out,
+                                    "pre_sql_para": this.nodeDataDefault.pre_sql_para,
+                                    "pre_sql_str": this.nodeDataDefault.pre_sql_str,
+                                    "expect_db": this.nodeDataDefault.expect_db,
+                                    "ischechdb": this.nodeDataDefault.ischechdb,
+                                    "sql_para": this.nodeDataDefault.sql_para,
+                                    "sql_str": this.nodeDataDefault.sql_str,
+                                    'post_keys': this.nodeDataDefault.post_keys,
+                                    'post_keys_extractor': this.nodeDataDefault.post_keys_extractor,
+                                    'post_keys_default': this.nodeDataDefault.post_keys_default,
                                     "pk": node_id
                                 });
                             this.dialogDrawer = false;
+                            var nodeTable = document.getElementById('nodeTable');
+                            var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
+                            currentRow.getElementsByClassName("parameterButton")[0].innerHTML = this.nodeDataDefault.parameter;
                         }
                     } else {
                         this.$message({
@@ -1273,8 +1289,13 @@ var vm = new Vue({
             console.log("this.currentRow", this.currentRow);
             console.log("saveNodeEdit-row", row);
             console.log("saveNodeEdit-index", index);
-            console.log("saveNodeEdit-nodeTable", nodeTable);
             console.log("saveNodeEdit-currentRow", currentRow);
+            for (i = 0;i<this.nodeData.length;i++){
+                if (row.pk === this.nodeData[i].pk){
+                    this.nodeData[i].parameter = row.parameter;
+                }
+            }
+            console.log("this.nodeData--->"+i, this.nodeData);
             for (var i = 0; i < currentRow.children.length - 5; i++) {
                 var cell = currentRow.children[i].getElementsByClassName('cell')[0];
                 var elInput = cell.children[0];
@@ -1319,6 +1340,7 @@ var vm = new Vue({
                             message: '恭喜你，保存成功',
                             type: 'success'
                         });
+                        currentRow.getElementsByClassName("parameterButton")[0].innerHTML = row.parameter;
                         currentRow.children[13].getElementsByClassName('saveNode')[0].style.display = 'none';
                         currentRow.children[13].getElementsByClassName('editNode')[0].style.display = 'block';
                     } else {
@@ -1331,7 +1353,6 @@ var vm = new Vue({
                 }
             );
             this.currentRow = currentRow;
-            console.log("saveNodeEdit-this.currentRow2", this.currentRow)
         },
         emailChange() {
             var dataPost = {
