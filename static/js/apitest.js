@@ -275,7 +275,7 @@ var vm = new Vue({
         filterPath2(){
             this.statisticsLoading = true;
             var dataPost = {"path": this.path2};
-            this.$http.post(this.url + '/filterPath2()', dataPost).then(
+            this.$http.post(this.url + '/filterPath2', dataPost).then(
                 function (data) {
                     this.page_size = 2000;
                     code = data.body[0].code;
@@ -296,16 +296,18 @@ var vm = new Vue({
                                 })
                             }
                         }
-                        let allApi = data.body[0].data[0];
+                        let allApi = data.body[0].data;
                         console.log("allApi.length",allApi.length);
-                        this.allApiJsonList.push({
-                            "id": allApi[0],
-                            "service_name": allApi[2],
-                            "summary": allApi[4],
-                            "path": allApi[5],
-                            "author": allApi[13],
-                            "remark": allApi[14]
-                        });
+                        for (let i = 0; i<allApi.length;i++){
+                            this.allApiJsonList.push({
+                                "id": allApi[i][0],
+                                "service_name": allApi[i][2],
+                                "summary": allApi[i][4],
+                                "path": allApi[i][5],
+                                "author": allApi[i][13],
+                                "remark": allApi[i][14]
+                            })
+                        }
                         this.apiSize = allApi.length;
                         this.statisticsLoading = false;
                     }else {
@@ -409,9 +411,8 @@ var vm = new Vue({
                 "author":row.author
             }
         },
-        saveRemark(){
+        saveRemark(row,index){
             this.statisticsLoading = true;
-            this.statisticsLoading2 = true;
             dataPost = {
                 "id":this.lableData.id,
                 "remark":this.lableData.remark,
@@ -425,48 +426,20 @@ var vm = new Vue({
                             "page_id":1,
                             "page_size":2000
                         };
-                        this.$http.post(this.url + '/getApiCounts', dataPost).then(
-                            function (data) {
-                                code = data.body[0].code;
-                                if (code === "200"){
-                                    this.tableData = [];
-                                    this.filters = [];
-                                    this.allApiJsonList = [];
-                                    this.tableData = [data.body[0].data];
-                                    remarkList = data.body[0].data.remarkList;
-                                    let allApi = data.body[0].data.allApi;
-                                    for (let i = 0; i<remarkList.length;i++){
-                                        if (remarkList[i][0] ===""){
-                                            this.filters.push({
-                                                text: "接口未标记", value: "接口未标记"
-                                            })
-                                        } else {
-                                            this.filters.push({
-                                                text: remarkList[i][0], value: remarkList[i][0]
-                                            })
-                                        }
-                                    }
-                                    for (let i = 0; i<allApi.length;i++){
-                                        this.allApiJsonList.push({
-                                            "id": allApi[i][0],
-                                            "service_name": allApi[i][2],
-                                            "summary": allApi[i][4],
-                                            "path": allApi[i][5],
-                                            "author": allApi[i][13],
-                                            "remark": allApi[i][14]
-                                        })
-                                    }
-                                    this.apiSize = parseInt(data.body[0].data.totalCounts);
-                                    this.statisticsLoading = false;
-                                    this.statisticsLoading2 = false;
-                                    console.log("this.allApiJsonList--->",this.allApiJsonList)
-                                }else {
-                                    this.statisticsLoading = false;
-                                    this.statisticsLoading2 = false;
+                        for (i=0;i<this.allApiJsonList.length;i++){
+                            if (this.lableData.id === this.allApiJsonList[i].id) {
+                                if (this.lableData.remark ==="已实现自动化"||this.allApiJsonList[i].remark==="接口未标记"){
+                                    this.tableData[0].doneCounts = this.tableData[0].doneCounts+1;
+                                    this.tableData[0].undoneCounts = this.tableData[0].undoneCounts-1;
+                                }else if (this.lableData.remark ==="接口未标记"||this.allApiJsonList[i].remark==="已实现自动化"){
+                                    this.tableData[0].doneCounts = this.tableData[0].doneCounts-1;
+                                    this.tableData[0].undoneCounts = this.tableData[0].undoneCounts+1;
                                 }
-
+                                this.allApiJsonList[i].remark = this.lableData.remark;
+                                this.allApiJsonList[i].author = this.lableData.author;
                             }
-                        );
+                        }
+                        this.statisticsLoading = false;
                     }
 
                 }

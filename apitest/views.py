@@ -700,7 +700,7 @@ def filterApi(request):
 def filterPath2(request):
     path = json.loads(request.body)["path"]
     response = [{"code": "200", "msg": "过滤成功", "data": filterApiByPath(path), "remarkList": getRemarkList()}]
-    print(response)
+    print(filterApiByPath(path))
     return JsonResponse(response, safe=False)
 
 @csrf_exempt

@@ -111,7 +111,9 @@ def filterApiUnlabeled():
     return mhNew.find("SELECT * FROM automation.swagger_api where remark in ('','未实现','标记未实现')", None)
 
 def filterApiByPath(path):
-    return mhNew.find("SELECT * FROM automation.swagger_api where path = '"+path+"'", None)
+    sql = "SELECT * FROM automation.swagger_api where path like '%"+path+"%';"
+    print(sql)
+    return mhNew.find(sql, None)
 
 def filterApiAll():
     return mhNew.find("SELECT * FROM automation.swagger_api ", None)
