@@ -426,19 +426,18 @@ var vm = new Vue({
                             "page_id":1,
                             "page_size":2000
                         };
-                        for (i=0;i<this.allApiJsonList.length;i++){
+                        for (i =0;i<this.allApiJsonList.length;i++){
                             if (this.lableData.id === this.allApiJsonList[i].id) {
-                                if (this.lableData.remark ==="已实现自动化"||this.allApiJsonList[i].remark==="接口未标记"){
-                                    this.tableData[0].doneCounts = this.tableData[0].doneCounts+1;
-                                    this.tableData[0].undoneCounts = this.tableData[0].undoneCounts-1;
-                                }else if (this.lableData.remark ==="接口未标记"||this.allApiJsonList[i].remark==="已实现自动化"){
-                                    this.tableData[0].doneCounts = this.tableData[0].doneCounts-1;
-                                    this.tableData[0].undoneCounts = this.tableData[0].undoneCounts+1;
-                                }
                                 this.allApiJsonList[i].remark = this.lableData.remark;
                                 this.allApiJsonList[i].author = this.lableData.author;
                             }
                         }
+                        this.tableData[0].doneCounts = data.body[0].data.doneCounts;
+                        this.tableData[0].undoneCounts = data.body[0].data.undoneCounts;
+                        this.tableData[0].skipApiCounts = data.body[0].data.skipApiCounts;
+                        this.tableData[0].totalCounts = data.body[0].data.totalCounts;
+                        this.tableData[0].progress = data.body[0].data.progress;
+                        console.log("--->data",data.body[0].data);
                         this.statisticsLoading = false;
                     }
 

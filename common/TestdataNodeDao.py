@@ -107,6 +107,24 @@ def getCountsByswaggerApi(size):
         "allApi": allApi
     }
 
+def getCounts():
+    sql6 = "SELECT count(*) FROM automation.swagger_api where remark='已实现自动化'"
+    sql9 = "SELECT count(*)  FROM automation.swagger_api"
+    sql10 = "SELECT count(*) FROM automation.swagger_api where remark in ('','未实现','标记未实现')"
+    doneCounts = int(mhNew.find(sql6, None)[0][0])
+    totalCounts = int(mhNew.find(sql9, None)[0][0])
+    undoneCounts = int(mhNew.find(sql10, None)[0][0])
+    skipApiCounts = totalCounts - (doneCounts+undoneCounts)
+    return {
+        "doneCounts": doneCounts,
+        "undoneCounts": undoneCounts,
+        "skipApiCounts": skipApiCounts,
+        "totalCounts": totalCounts,
+        "progress": int(doneCounts/(doneCounts+undoneCounts)*100),
+    }
+
+
+
 def filterApiUnlabeled():
     return mhNew.find("SELECT * FROM automation.swagger_api where remark in ('','未实现','标记未实现')", None)
 

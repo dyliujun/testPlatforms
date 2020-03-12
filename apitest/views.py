@@ -10,7 +10,7 @@ from apitest.readJmx import changeAciton, getEmailList, changeEmail, getDefaultV
     editDefaultVariable, deleteDefaultVariable, removeFile, readText
 
 from common.TestdataNodeDao import getCountsByswaggerApi, filterApiAll, filterApiUnlabeled, getRemarkList, \
-    filterApiByPath
+    filterApiByPath, getCounts
 from common.dbUitls import update_flow_data, update_data
 from common.swaggerUitls import toStatisticsApi
 
@@ -714,8 +714,8 @@ def saveRemark(request):
     print(sql)
     try:
         update_data(sql)
-        response = [{"code": "200", "msg": "标记成功"}]
+        response = [{"code": "200", "msg": "标记成功", "data": getCounts()}]
     except Exception:
-        response = [{"code": "501", "msg": "标记失败"}]
+        response = [{"code": "501", "msg": "标记失败","data": getCounts()}]
     return JsonResponse(response, safe=False)
 
