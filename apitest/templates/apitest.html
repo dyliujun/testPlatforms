@@ -78,7 +78,7 @@
             background-clip: padding-box;
         }
     </style>
-    <title>时光序接口测试管理</title>
+    <title>未来管家接口测试管理</title>
 </head>
 <body style="background-color: #c8c6d4">
 <div id="app" style="margin: 0">
@@ -1420,6 +1420,10 @@
                         <p style="font-weight: bold;margin: 5px 2px 5px 5%">
                             <el-tag style="font-weight: bold;float:left;margin: 5px;" size="medium">接口名称</el-tag>
                             <el-input size="mini" style="margin: 5px;width: 80%" placeholder="请输入接口名称" v-model="nodeDataDefault.node_name"></el-input>
+                        </p>
+                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
+                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">执行顺序</el-tag>
+                            <el-input size="mini" style="margin: 5px;width: 80%" placeholder="执行顺序" v-model="nodeDataDefault.order_id"></el-input>
                         </p>
                         <p style="font-weight: bold;margin: 5px 2px 5px 5%">
                             <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">请求方式</el-tag>

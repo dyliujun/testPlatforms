@@ -1177,7 +1177,7 @@ var vm = new Vue({
             console.log("nodeDataDefault--->",this.nodeDataDefault);
             var dataPost = {
                 "order_id": this.nodeDataDefault.order_id,
-                "flow_id": this.nodeDataDefault.flow_id,
+                "flow_id": this.filtrateFlowId,
                 "node_name": this.nodeDataDefault.node_name,
                 "method": this.nodeDataDefault.method,
                 "path": this.nodeDataDefault.path,
