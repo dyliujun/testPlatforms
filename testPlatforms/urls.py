@@ -18,11 +18,11 @@ from django.contrib import admin
 from django.urls import path
 
 from apitest.views import apitest, getFlowData, getNodeData, getOutSql, getPreSql, getPostKey, getParameter, addFlow, \
-    editFlow, deleteFlow, addNode, editNode, savePostKey, editParameter, deleteNode, editOutSql, editPreSql, getCreater, \
+    editFlow, deleteFlow, addNode, editNode, savePostKey, editParameter, deleteNode, editOutSql, editPreSql, \
     actionFlow, getEmail, emailChange, actionAllFlow, changeFlowState, changeNodeState, editDefaultVar, getDefaultVar, \
     deleteDefaultVar, addDefaultVar, getLog, lookDetailReport, lookSummaryReport, filterFlowName, \
     filterPath, saveUnStatisticsData, saveUnDoStatisticsData, transferFlowData, getApiCounts, manualStatistics, \
-    filterApi, saveRemark, filterPath2
+    filterApi, saveRemark, filterPath2, getFlowDataByCreater
 from performance.views import performance, \
     getPerformanceFlowData, getPerformanceNodeData, getPerformanceOutSql, getPerformancePreSql, getPerformancePostKey, \
     getPerformanceParameter, addPerformanceFlow, editPerformanceFlow, deletePerformanceFlow, deletePerformanceNode, \
@@ -55,7 +55,7 @@ urlpatterns = [
     url(r'editParameter', editParameter),
     url(r'editOutSql', editOutSql),
     url(r'editPreSql', editPreSql),
-    url(r'getCreater', getCreater),
+    url(r'getFlowDataByCreater', getFlowDataByCreater),
     url(r'actionFlow', actionFlow),
     url(r'sqlIndex', sqlIndex),
     url(r'register', register),

@@ -111,6 +111,7 @@ var vm = new Vue({
             },
             flowName: "",
             flowData: [],
+            expands: [],
 
             //接口
             deleteNodeId: '',
@@ -512,21 +513,44 @@ var vm = new Vue({
             );
         },
         filterPath(){
-            var dataPost = {"path": this.path};
+            var dataPost = {"path": this.path.trim()};
             this.$http.post(this.url + '/filterPath', dataPost).then(
                 function (data) {
                     this.flowData = data.body[0].flowData;
-                    this.pageSize = 100;
+                    this.pageSize = 200;
                 }
             );
         },
         filterFlowName(){
-            var dataPost = {"flow_name": this.flowName};
-            this.$http.post(this.url + '/filterFlowName()', dataPost).then(
+            var dataPost = {"flow_name": this.flowName.trim()};
+            this.$http.post(this.url + '/filterFlowName', dataPost).then(
                 function (data) {
                     this.flowData = data.body[0].flowData;
+                    this.pageSize = 200;
                 }
             );
+        },
+        filtrateCreater() {
+            var dataPost = {
+                "creater": this.filtrate,
+                "page_size":200
+            };
+            this.$http.post(this.url + '/getFlowDataByCreater', dataPost).then(
+                function (data) {
+                    var responData = data.status;
+                    if (responData === 200 || responData === '200') {
+                        this.flowData = data.body;
+                        this.pageSize = 200;
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: '很遗憾，筛选失败',
+                            type: 'error'
+                        });
+                    }
+                }
+            );
+
         },
         filterTag(value, row) {
             return row.remark === value;
@@ -698,7 +722,7 @@ var vm = new Vue({
                         if (this.postKeyData.post_keys != null || this.postKeyData.post_keys > 0 || this.postKeyData.post_keys !== "") {
                             currentRow.getElementsByClassName("popoverButtonPost")[0].innerHTML = this.postKeyData.post_keys;
                         } else {
-                            currentRow.getElementsByClassName("popoverButtonPost")[0].innerHTML = '未提取后置变量';
+                            currentRow.getElementsByClassName("popoverButtonPost")[0].innerHTML = '无后置变量';
                         }
                         console.log("postKeyData=", this.postKeyData);
                         this.$message({
@@ -842,7 +866,7 @@ var vm = new Vue({
             return row.state === 1 || row.state === '1' ? '已开启接口' : row.state === 0 || row.state === '0' ? '已关闭接口' : '未设置接口状态'
         },
         formatPostKey: function (row, formatPostKey) {
-            return row.post_keys != null && row.post_keys.length > 0 && row.post_keys !== "" ? row.post_keys : '未提取后置变量';
+            return row.post_keys != null && row.post_keys.length > 0 && row.post_keys !== "" ? row.post_keys : '无后置变量';
         },
         handleSelect(key, keyPath) {
             console.log(key, keyPath);
@@ -1645,27 +1669,6 @@ var vm = new Vue({
             console.log("this.currentRow2=", this.currentRow);
             this.currentRow = document.getElementById('nodeTable').getElementsByClassName("current-row")[0];
             console.log("this.currentRow3=", this.currentRow);
-        },
-        filtrateCreater() {
-            var dataPost = {
-                "creater": this.filtrate,
-                "page_size":this.pageSize
-            };
-            this.$http.post(this.url + '/getCreater', dataPost).then(
-                function (data) {
-                    var responData = data.status;
-                    if (responData === 200 || responData === '200') {
-                        this.flowData = data.body;
-                    } else {
-                        this.$message({
-                            showClose: true,
-                            message: '很遗憾，筛选失败',
-                            type: 'error'
-                        });
-                    }
-                }
-            );
-
         },
         getLog(){
             console.log("====getLog===");

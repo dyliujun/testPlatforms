@@ -42,7 +42,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="currentTime" elementType="Argument">
             <stringProp name="Argument.name">currentTime</stringProp>
-            <stringProp name="Argument.value">${__time(yyyyMMddHHmmss,)}  </stringProp>
+            <stringProp name="Argument.value">${__time(yyyyMMddHHmmss,)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="importance" elementType="Argument">
@@ -50,24 +50,9 @@
             <stringProp name="Argument.value">${__Random(0,3,)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="todotime" elementType="Argument">
-            <stringProp name="Argument.name">todotime</stringProp>
-            <stringProp name="Argument.value">${__time(yyyyMMddHHmmss,)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="endDateTime" elementType="Argument">
-            <stringProp name="Argument.name">endDateTime</stringProp>
-            <stringProp name="Argument.value">20991231235959</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="currentDay" elementType="Argument">
             <stringProp name="Argument.name">currentDay</stringProp>
             <stringProp name="Argument.value">${__time(yyyyMMdd,)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="todotime_add15" elementType="Argument">
-            <stringProp name="Argument.name">todotime_add15</stringProp>
-            <stringProp name="Argument.value">${__timeShift(yyyyMMddHHmm,,PT15M,)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="currentMin" elementType="Argument">
@@ -80,54 +65,14 @@
             <stringProp name="Argument.value">{&quot;deviceType&quot;:&quot;1&quot;,&quot;appVersion&quot;:&quot;2.1.2&quot;,&quot;deviceTag&quot;:&quot;59db5d3aef9002a9&quot;,&quot;isRoot&quot;:false,&quot;osVersion&quot;:27,&quot;ip&quot;:&quot;172.16.10.55&quot;,&quot;channel&quot;:&quot;_360&quot;,&quot;deviceModel&quot;:&quot;Meizu-16th Plus&quot;,&quot;channelName&quot;:&quot;android&quot;,&quot;channelType&quot;:&quot;sgx&quot;,&quot;deviceTagApp&quot;:&quot;59db5d3aef9002a9&quot;}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="deviceTagApp" elementType="Argument">
-            <stringProp name="Argument.name">deviceTagApp</stringProp>
-            <stringProp name="Argument.value">59db5d3aef9002a9</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="email" elementType="Argument">
             <stringProp name="Argument.name">email</stringProp>
             <stringProp name="Argument.value">testbind@qq.com</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="password" elementType="Argument">
-            <stringProp name="Argument.name">password</stringProp>
-            <stringProp name="Argument.value">123456</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="mobile" elementType="Argument">
-            <stringProp name="Argument.name">mobile</stringProp>
-            <stringProp name="Argument.value">14400001111</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="content" elementType="Argument">
-            <stringProp name="Argument.name">content</stringProp>
-            <stringProp name="Argument.value">test</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="device_model" elementType="Argument">
             <stringProp name="Argument.name">device_model</stringProp>
             <stringProp name="Argument.value">Meizu-16th Plus</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="todotime_add6" elementType="Argument">
-            <stringProp name="Argument.name">todotime_add6</stringProp>
-            <stringProp name="Argument.value">${__timeShift(yyyyMMddHHmm,,PT9M,)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="todotime_add2" elementType="Argument">
-            <stringProp name="Argument.name">todotime_add2</stringProp>
-            <stringProp name="Argument.value">${__timeShift(yyyyMMddHHmm,,PT4M,)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="todoDay_add3" elementType="Argument">
-            <stringProp name="Argument.name">todoDay_add3</stringProp>
-            <stringProp name="Argument.value">${__timeShift(yyyyMMddHHmm,,P3D,)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="next_time_add3" elementType="Argument">
-            <stringProp name="Argument.name">next_time_add3</stringProp>
-            <stringProp name="Argument.value">${__timeShift(yyyy-MM-dd HH:mm:ss,,PT4M,)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="afterThreeDay" elementType="Argument">
@@ -140,11 +85,6 @@
             <stringProp name="Argument.value">${__timeShift(yyyyMMdd,,P1D,)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="currentTimeByMM" elementType="Argument">
-            <stringProp name="Argument.name">currentTimeByMM</stringProp>
-            <stringProp name="Argument.value">${__time(yyyyMMddHHmm,)}  </stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="summaryDay" elementType="Argument">
             <stringProp name="Argument.name">summaryDay</stringProp>
             <stringProp name="Argument.value">${__time(yyyy-MM-dd,)}</stringProp>
@@ -153,6 +93,11 @@
           <elementProp name="aheadTime2M" elementType="Argument">
             <stringProp name="Argument.name">aheadTime2M</stringProp>
             <stringProp name="Argument.value">${__timeShift(yyyyMMddHHmm,,-PT2M,)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="aheadTime1D" elementType="Argument">
+            <stringProp name="Argument.name">aheadTime1D</stringProp>
+            <stringProp name="Argument.value">${__timeShift(yyyyMMdd,,-P1D,)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -191,7 +136,7 @@
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="获取流程数据" enabled="true">
           <stringProp name="dataSource">dbcheckpool</stringProp>
           <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="query">select flow_id,flow_name,account,password from automation.testdata_flow_new where run_env like &apos;%${envname}%&apos; and state = 1 and flow_id = 22 order by flow_code</stringProp>
+          <stringProp name="query">select flow_id,flow_name,account,password from automation.testdata_flow_new where run_env like &apos;%${envname}%&apos; and state = 1 and flow_id = 46 order by flow_code</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="variableNames">flow_id,flow_name,account,password</stringProp>
@@ -330,30 +275,18 @@ SimpleDateFormat df = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
 System.out.println(df.format(new Date()) + &quot;: 执行流程--&quot;+vars.get(&quot;flow_name_&quot;+vars.get(&quot;M&quot;)));
 
 vars.put(&quot;currentMin_add1&quot;, vars.get(&quot;currentMin&quot;)+&quot;00&quot;);
-vars.put(&quot;currentMin_add6&quot;, vars.get(&quot;todotime_add6&quot;)+&quot;00&quot;);
-vars.put(&quot;currentMin_add2&quot;, vars.get(&quot;todotime_add2&quot;)+&quot;00&quot;);
 
 String time = vars.get(&quot;currentMin&quot;)+&quot;00&quot;;
-String time6 = vars.get(&quot;todotime_add6&quot;)+&quot;00&quot;;
-String time2 = vars.get(&quot;todotime_add2&quot;)+&quot;00&quot;;
-String day3 = vars.get(&quot;todoDay_add3&quot;)+&quot;00&quot;;
-
-String todoDay3 = day3.substring(6,8);
-if(todoDay3.substring(0,1).equals(&quot;0&quot;)){
-	todoDay3 = todoDay3.substring(1);
-}
 
 String todoDay = time.substring(6,8);
 if(todoDay.substring(0,1).equals(&quot;0&quot;)){
 	todoDay = todoDay.substring(1);
 }
 
-
 String todoMonth = time.substring(4,6);
 if(todoMonth.substring(0,1).equals(&quot;0&quot;)){
 	todoMonth = todoMonth.substring(1);
 }
-
 
 String todoHH = time.substring(8,10);
 if(todoHH.substring(0,1).equals(&quot;0&quot;)){
@@ -365,92 +298,11 @@ if(todomm.substring(0,1).equals(&quot;0&quot;)){
 	todomm = todomm.substring(1);
 }
 
-String todoHH2 = time2.substring(8,10);
-if(todoHH2.substring(0,1).equals(&quot;0&quot;)){
-	todoHH2 = todoHH2.substring(1);
-}
-
-String todomm2 = time2.substring(10,12);
-if(todomm2.substring(0,1).equals(&quot;0&quot;)){
-	todomm2 = todomm2.substring(1);
-}
-
-String todoHH6 = time6.substring(8,10);
-if(todoHH6.substring(0,1).equals(&quot;0&quot;)){
-	todoHH6 = todoHH6.substring(1);
-}
-
-String todomm6 = time6.substring(10,12);
-if(todomm6.substring(0,1).equals(&quot;0&quot;)){
-	todomm6 = todomm6.substring(1);
-}
-
 
 vars.put(&quot;todoMonth&quot;,todoMonth);
-
 vars.put(&quot;todoDay&quot;,todoDay);
-vars.put(&quot;todoDay3&quot;,todoDay3);
-
-vars.put(&quot;todoHH2&quot;,todoHH2);
-vars.put(&quot;todomm2&quot;,todomm2);
-
-vars.put(&quot;todoHH6&quot;,todoHH6);
-vars.put(&quot;todomm6&quot;,todomm6);
-
 vars.put(&quot;todoHH&quot;,todoHH);
-vars.put(&quot;todomm&quot;,todomm);
-
-
-String todoHHRepeat = time.substring(8,10);
-if(todoHHRepeat.substring(0,1).equals(&quot;0&quot;)){
-	todoHHRepeat = todoHHRepeat.substring(1);
-}
-
-String todommRepeat = time.substring(10,12);
-if(todommRepeat.substring(0,1).equals(&quot;0&quot;)){
-	todommRepeat = todommRepeat.substring(1);
-}
-
-String todoHHRepeat2 = time2.substring(8,10);
-if(todoHHRepeat2.substring(0,1).equals(&quot;0&quot;)){
-	todoHHRepeat2 = todoHHRepeat2.substring(1);
-}
-
-String todommRepeat2 = time2.substring(10,12);
-if(todommRepeat2.substring(0,1).equals(&quot;0&quot;)){
-	todommRepeat2 = todommRepeat2.substring(1);
-}
-
-
-String todoHHRepeat6 = time6.substring(8,10);
-if(todoHHRepeat6.substring(0,1).equals(&quot;0&quot;)){
-	todoHHRepeat6 = todoHHRepeat6.substring(1);
-}
-
-String todommRepeat6 = time6.substring(10,12);
-if(todommRepeat6.substring(0,1).equals(&quot;0&quot;)){
-	todommRepeat6 = todommRepeat6.substring(1);
-}
-
-vars.put(&quot;todoHHRepeat2&quot;,todoHHRepeat2);
-vars.put(&quot;todommRepeat2&quot;,todommRepeat2);
-
-vars.put(&quot;todoHHRepeat6&quot;,todoHHRepeat6);
-vars.put(&quot;todommRepeat6&quot;,todommRepeat6);
-
-vars.put(&quot;todommRepeat&quot;,todommRepeat);
-vars.put(&quot;todoHHRepeat&quot;,todoHHRepeat);
-
-
-
-
-
-
-
-
-
-
-</stringProp>
+vars.put(&quot;todomm&quot;,todomm);</stringProp>
               <stringProp name="BeanShellSampler.filename"></stringProp>
               <stringProp name="BeanShellSampler.parameters"></stringProp>
               <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
@@ -477,7 +329,7 @@ vars.put(&quot;todoHHRepeat&quot;,todoHHRepeat);
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-              <stringProp name="HTTPSampler.path">${__V(path_${N})}</stringProp>
+              <stringProp name="HTTPSampler.path">${path}</stringProp>
               <stringProp name="HTTPSampler.method">${__V(method_${N})}</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -590,7 +442,15 @@ if(vars.get(&quot;post_keys_extractor_&quot;+n) == null || vars.get(&quot;post_k
 
 if(vars.get(&quot;post_keys_default_&quot;+n) == null || vars.get(&quot;post_keys_default_&quot;+n).length()==0){
 	vars.put(&quot;post_keys_default_&quot;+n,&quot;NULL&quot;);
-	}</stringProp>
+	}
+
+/*判断请求是get还是post，如果是get请求不支持body传参需要把参数化放到url路径中*/ 
+String urlPath = vars.get(&quot;path_&quot;+n);
+if(vars.get(&quot;method_&quot;+n).equalsIgnoreCase(&quot;GET&quot;)){
+	urlPath = urlPath + &quot;?&quot; + para;
+	}
+vars.put(&quot;path&quot;,urlPath);
+</stringProp>
               </BeanShellPreProcessor>
               <hashTree/>
               <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="等待时间" enabled="true">

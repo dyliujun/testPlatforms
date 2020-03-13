@@ -84,7 +84,6 @@ def addFlow(request):
     response = [{"code": "200", "msg": "测试流添加成功"}]
     return JsonResponse(response, safe=False)
 
-
 @csrf_exempt
 def editFlow(request):
     flow_id = json.loads(request.body)["pk"]
@@ -103,7 +102,6 @@ def editFlow(request):
     response = [{"code": "200", "msg": "测试流保存成功"}]
     return JsonResponse(response, safe=False)
 
-
 @csrf_exempt
 def deleteFlow(request):
     flow_id = json.loads(request.body)["flow_id"]
@@ -121,26 +119,62 @@ def deleteFlow(request):
     response = [{"code": "200", "msg": "测试流删除成功"}]
     return JsonResponse(response, safe=False)
 
-
 @csrf_exempt
 def filterFlowName(request):
     flow_name = json.loads(request.body)["flow_name"]
+    print("filterFlowName:", flow_name)
     flowDataList = []
     for e in TestdataFlowNew.objects.filter(flow_name__icontains=flow_name).order_by("pk"):
         flowDataList.insert(10000,
                             {
                                 'pk': e.pk,
                                 'flow_name': e.flow_name,
+                                'flow_code': e.flow_code,
                                 'account': e.account,
                                 'password': e.password,
                                 'priority': e.priority,
                                 'creater': e.creater,
                                 'run_env': e.run_env,
                                 'state': str(e.state),
-                                'operation': "1"})
+                                'swagger_url': str(e.swagger_url),
+                                'operation': "1",
+                                'apicount': len(TestdataNodeNew.objects.filter(flow_id=e.pk))
+                            })
     response = [{"code": "200", "msg": "操作成功", "flowData": flowDataList}]
     print("filterFlowName_flowDataList:", flowDataList)
     return JsonResponse(response, safe=False)
+
+@csrf_exempt
+def getFlowDataByCreater(request):
+    creater = json.loads(request.body)["creater"]
+    page_size = json.loads(request.body)["page_size"]
+    print("getFlowDataByCreater-creater:", creater)
+    if creater == "全部负责人":
+        data = TestdataFlowNew.objects.all()[0:page_size]
+        print(data)
+    else:
+        data = TestdataFlowNew.objects.filter(creater__exact=creater)[0:page_size]
+    flowDataListForCreater = []
+    for e in data:
+        flowDataListForCreater.insert(10000,
+                                      {
+                                          'pk': e.pk,
+                                          'flow_name': e.flow_name,
+                                          'flow_code': e.flow_code,
+                                          'account': e.account,
+                                          'password': e.password,
+                                          'priority': e.priority,
+                                          'creater': e.creater,
+                                          'run_env': e.run_env,
+                                          'state': str(e.state),
+                                          'swagger_url': str(e.swagger_url),
+                                          'operation': "1",
+                                          'apicount': len(TestdataNodeNew.objects.filter(flow_id=e.pk))
+                                      })
+    print(flowDataListForCreater)
+    return JsonResponse(flowDataListForCreater, safe=False)
+
+
 
 @csrf_exempt
 def filterPath(request):
@@ -154,13 +188,17 @@ def filterPath(request):
                                 {
                                     'pk': e.pk,
                                     'flow_name': e.flow_name,
+                                    'flow_code': e.flow_code,
                                     'account': e.account,
                                     'password': e.password,
                                     'priority': e.priority,
                                     'creater': e.creater,
                                     'run_env': e.run_env,
                                     'state': str(e.state),
-                                    'operation': "1"})
+                                    'swagger_url': str(e.swagger_url),
+                                    'operation': "1",
+                                    'apicount': len(TestdataNodeNew.objects.filter(flow_id=e.pk))
+                                })
     for i in flowDataList:
         if i.get("pk") not in new_id:
             newFlowDataList.append(i)
@@ -340,31 +378,6 @@ def getPostKey(request):
     })
     return JsonResponse(postKeyDataList, safe=False)
 
-
-@csrf_exempt
-def getCreater(request):
-    creater = json.loads(request.body)["creater"]
-    page_size = json.loads(request.body)["page_size"]
-    if creater == "全部负责人":
-        data = TestdataFlowNew.objects.all()[0:page_size]
-        print(data)
-    else:
-        data = TestdataFlowNew.objects.filter(creater__exact=creater)[0:page_size]
-    flowDataListForCreater = []
-    for e in data:
-        flowDataListForCreater.insert(10000,
-                                      {
-                                          'pk': e.pk,
-                                          'flow_name': e.flow_name,
-                                          'account': e.account,
-                                          'password': e.password,
-                                          'priority': e.priority,
-                                          'creater': e.creater,
-                                          'run_env': e.run_env,
-                                          'state': str(e.state),
-                                          'operation': 1})
-    print(flowDataListForCreater)
-    return JsonResponse(flowDataListForCreater, safe=False)
 
 
 @csrf_exempt
