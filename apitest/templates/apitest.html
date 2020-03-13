@@ -717,7 +717,6 @@
                         <el-button type="primary" size="mini" style="margin-bottom: 3px" icon="el-icon-s-unfold">Swagger接口列表:</el-button>
                         <el-button type="warning" size="mini" @click="filterApi()" style="margin-bottom: 3px;margin-left: 20px" icon="el-icon-s-data">屏蔽已标记接口</el-button>
                         <el-button type="warning" size="mini" @click="unfilterApi()" style="margin-bottom: 3px" icon="el-icon-s-data">显示所有接口</el-button>
-
                         <el-input size="small" style="width: 700px;margin-left: 100px" placeholder="请输入搜索关键字" v-model="inputKey" class="input-with-select">
                             <el-select style="font-weight: bold" v-model="selectType" slot="prepend" placeholder="请选择过滤类型">
                               <el-option label="按URL过滤" value="path"></el-option>
@@ -727,8 +726,6 @@
                             </el-select>
                             <el-button slot="append"  icon="el-icon-search" @click="filterPath2()">搜索</el-button>
                         </el-input>
-
-
                     </span>
                     <div class="block" style="color:#faf8ff;margin-top:10px;padding: 3px ">
                         <el-pagination
@@ -782,7 +779,7 @@
                                     </span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="接口URL" size="small" prop="path" id="path" width="auto">
+                        <el-table-column label="接口URL" size="small" prop="path" id="path" width="450px">
                             <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
                                         {%verbatim%}
@@ -1421,7 +1418,7 @@
     <el-drawer :close-on-click-modal="false" :title="nodeDataDefault.node_name" size="100%" direction="rtl" custom-class="demo-drawer" :visible.sync="dialogDrawer">
         <div class="demo-drawer__content">
             <div style="float: top">
-                <div style="width: 48%;height: 90%;float: left">
+                <div style="width: 48%;height: 80%;float: left">
                     <el-form :model="nodeDataDefault">
                         <el-divider content-position="center">接口基本参数编辑</el-divider>
                         <p style="font-weight: bold;margin: 5px 2px 5px 5%">
@@ -1440,6 +1437,10 @@
                             <el-input size="mini" style="margin: 5px;width: 80%" placeholder="请输入接口名称" v-model="nodeDataDefault.node_name"></el-input>
                         </p>
                         <p style="font-weight: bold;margin: 5px 2px 5px 5%">
+                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">接口路径</el-tag>
+                            <el-input size="mini" style="margin: 5px;width: 80%" placeholder="请输入接口URL" v-model="nodeDataDefault.path"></el-input>
+                        </p>
+                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
                             <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">执行顺序</el-tag>
                             <el-input size="mini" style="margin: 5px;width: 80%" placeholder="执行顺序" v-model="nodeDataDefault.order_id"></el-input>
                         </p>
@@ -1448,18 +1449,15 @@
                             <el-input size="mini" style="margin: 5px;width: 80%" placeholder="请求方式" v-model="nodeDataDefault.method"></el-input>
                         </p>
                         <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">接口路径</el-tag>
-                            <el-input size="mini" style="margin: 5px;width: 80%" placeholder="请输入接口URL" v-model="nodeDataDefault.path"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
                             <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">请求参数</el-tag>
                             <el-input class="el-input-parameter" type="textarea"
                                       size="mini"
-                                      style="margin: 5px 2px 5px 9.5%;display: block;width: 80%"
+                                      style="margin: 5px 2px 5px 9.5%;display: block;width: 70%"
                                       :autosize="{ minRows: 6, maxRows: 6}"
                                       placeholder="请输入请求参数"
-                                      v-model="nodeDataDefault.parameter"></el-input>
-                            <el-button class="formatButton" type="primary"
+                                      v-model="nodeDataDefault.parameter">
+                            </el-input>
+                            <el-button class="formatButton" type="warning"
                                        style="margin: 5px 20px 5px 9.5%;float: left;width: 80%"
                                        @click="formatJson2()">格式化JSON
                             </el-button>
@@ -1497,7 +1495,7 @@
                         </p>
                     </el-form>
                 </div>
-                <div style="width: 48%;height: 90%;float: right;">
+                <div style="width: 48%;height: 80%;float: right;">
                     <el-form :model="nodeDataDefault">
                         <el-divider content-position="center">前置SQL查询信息配置</el-divider>
                         <p style="font-weight: bold;margin: 5px 2px 5px 5%">
@@ -1577,15 +1575,16 @@
                 </div>
             </div>
         </div>
+
         <div class="demo-drawer__footer">
             <el-button
                     @click="saveNode()"
-                    type="warning"
-                    style="width:50%;margin-left:25%;margin-top: 4%">
+                    type="primary"
+                    style="width:100%">
                 提交
             </el-button>
-        </div>
 
+        </div>
     </el-drawer>
     <el-drawer :close-on-click-modal="false" title="接口标记" size="40%" direction="rtl" custom-class="demo-drawer" :visible.sync="dialogDrawer2">
         <div class="demo-drawer__content">

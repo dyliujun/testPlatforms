@@ -500,8 +500,6 @@ var vm = new Vue({
                             })
                         }
                         this.apiSize = parseInt(data.body[0].data.totalCounts);
-                        console.log("this.filters--->", this.filters);
-                        console.log("this.apiSize--->", this.apiSize);
                         console.log("this.tableData--->", this.tableData);
                         console.log("this.allApiJsonList--->", this.allApiJsonList);
                         this.statisticsLoading = false;
