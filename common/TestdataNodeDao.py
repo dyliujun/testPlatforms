@@ -128,8 +128,8 @@ def getCounts():
 def filterApiUnlabeled():
     return mhNew.find("SELECT * FROM automation.swagger_api where remark in ('','未实现','标记未实现')", None)
 
-def filterApiByPath(path):
-    sql = "SELECT * FROM automation.swagger_api where path like '%"+path+"%';"
+def filterApiByPath(selectType, inputKey):
+    sql = "SELECT * FROM automation.swagger_api where "+selectType+" like '%"+inputKey+"%';"
     print(sql)
     return mhNew.find(sql, None)
 

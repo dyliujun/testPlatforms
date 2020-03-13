@@ -26,6 +26,14 @@
             margin: 1px;
             padding: 0;
         }
+        .el-select .el-input {
+            width: 140px;
+        }
+        .input-with-select .el-input-group__prepend {
+            background-color: #ecebff;
+            color: #3941ff;
+            font-weight: bolder;
+        }
 
         .el-tooltip__popper {
             max-width: 40%
@@ -707,10 +715,18 @@
                         <el-button type="warning" size="mini" style="margin-bottom: 3px" icon="el-icon-s-data">Swagger接口列表</el-button>
                         <el-button type="warning" size="mini" @click="filterApi()" style="margin-bottom: 3px" icon="el-icon-s-data">屏蔽已标记接口</el-button>
                         <el-button type="warning" size="mini" @click="unfilterApi()" style="margin-bottom: 3px" icon="el-icon-s-data">显示所有接口</el-button>
-                        <el-input size="small" placeholder="请输入接口URL" v-model="path2" class="input-with-select"
-                                  style="width: 400px">
-                        <el-button slot="append" icon="el-icon-search" @click="filterPath2()">搜索URL</el-button>
-                    </el-input>
+
+                        <el-input size="small" style="width: 700px;margin-left: 100px" placeholder="请输入搜索关键字" v-model="inputKey" class="input-with-select">
+                            <el-select style="font-weight: bold" v-model="selectType" slot="prepend" placeholder="请选择过滤类型">
+                              <el-option label="按URL过滤" value="path"></el-option>
+                              <el-option label="按微服务过滤" value="service_name"></el-option>
+                              <el-option label="按操作者过滤" value="author"></el-option>
+                              <el-option label="按标记过滤" value="remark"></el-option>
+                            </el-select>
+                            <el-button slot="append"  icon="el-icon-search" @click="filterPath2()">搜索</el-button>
+                        </el-input>
+
+
                     </span>
                     <div class="block" style="color:#faf8ff;margin-top:10px;padding: 3px ">
                         <el-pagination

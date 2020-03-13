@@ -36,6 +36,8 @@ var vm = new Vue({
             filtrate: '',
             filters: [],
             allApiJsonList:[],
+            inputKey:'',
+            selectType:'path',
 
             //分页大小
             page_size:15,
@@ -274,7 +276,10 @@ var vm = new Vue({
         },
         filterPath2(){
             this.statisticsLoading = true;
-            var dataPost = {"path": this.path2};
+            var dataPost = {
+                "selectType": this.selectType,
+                "inputKey": this.inputKey.trim()
+            };
             this.$http.post(this.url + '/filterPath2', dataPost).then(
                 function (data) {
                     this.page_size = 2000;

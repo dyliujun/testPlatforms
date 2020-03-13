@@ -698,9 +698,10 @@ def filterApi(request):
 
 @csrf_exempt
 def filterPath2(request):
-    path = json.loads(request.body)["path"]
-    response = [{"code": "200", "msg": "过滤成功", "data": filterApiByPath(path), "remarkList": getRemarkList()}]
-    print(filterApiByPath(path))
+    selectType = json.loads(request.body)["selectType"]
+    inputKey = json.loads(request.body)["inputKey"]
+    response = [{"code": "200", "msg": "过滤成功", "data": filterApiByPath(selectType, inputKey), "remarkList": getRemarkList()}]
+    print(filterApiByPath(selectType, inputKey))
     return JsonResponse(response, safe=False)
 
 @csrf_exempt
