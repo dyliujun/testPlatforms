@@ -433,15 +433,40 @@ var vm = new Vue({
             }
         },
         quickAdd(index, row) {
+            console.log("quickAdd-row",row);
             this.dialogDrawerQuickAddNode = true;
-            this.lableData = {
-                "id": row.id,
-                "remark": row.remark,
-                "author": row.author,
-                "order_id": row.order_id,
-                "flow_id": row.flow_id
-            };
-            console.log("quickAdd-lableData",this.lableData)
+            let flowId = "";
+            for (i=0;i<this.FlowIdList.length;i++){
+                if (this.FlowIdList[i].flow_name === row.service_name){
+                    flowId = this.FlowIdList[i].flowId
+                }
+            }
+            this.$http.post(this.url + '/getLastOrderId', {"flow_id":flowId}).then(
+                function(data) {
+                    if (data.body.code === "200") {
+                        console.log("lastOrderId+1",(data.body.lastOrderId+1));
+                        this.lableData = {
+                            "id": row.id,
+                            "remark": "已实现自动化",
+                            "author": row.author,
+                            "order_id": data.body.lastOrderId+1,
+                            "flow_id": flowId
+                        };
+                        console.log("quickAdd-lableData",this.lableData)
+                    }else{
+                        this.lableData = {
+                            "id": row.id,
+                            "remark": "已实现自动化",
+                            "author": row.author,
+                            "order_id": 0,
+                            "flow_id": flowId
+                        };
+                        console.log("quickAdd-lableData",this.lableData)
+                    }
+                }
+            );
+
+
         },
         quickAddOk() {
             dataPost = {
@@ -457,7 +482,7 @@ var vm = new Vue({
                     if (data.body[0].code === "200") {
                         this.$message({
                             showClose: true,
-                            message: '添加成功，请到测试流ID='+this.lableData.filtrateFlowId+'中查看',
+                            message: '添加成功，请到测试流ID='+this.lableData.flow_id+'中查看',
                             type: 'success'
                         });
                         for (i = 0; i < this.allApiJsonList.length; i++) {

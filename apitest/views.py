@@ -236,6 +236,17 @@ def emailChange(request):
     return JsonResponse(response, safe=False)
 
 
+
+
+@csrf_exempt
+def getLastOrderId(request):
+    flow_id = json.loads(request.body)["flow_id"]
+    order_id = TestdataNodeNew.objects.filter(flow_id__exact=flow_id).order_by("-order_id")[0].order_id
+    print("apitest-getLastOrderId-lastOrderId:", order_id)
+    response = {"code": "200", "msg": "操作成功", "lastOrderId": order_id}
+    return JsonResponse(response, safe=False)
+
+
 @csrf_exempt
 def getNodeData(request):
     flow_id = json.loads(request.body)["flow_id"]
@@ -497,6 +508,8 @@ def addNode(request):
 @csrf_exempt
 def quickAddNode(request):
     id = json.loads(request.body)["id"]
+    author = json.loads(request.body)["author"]
+    remark = json.loads(request.body)["remark"]
     flow_id = int(json.loads(request.body)["flow_id"])
     order_id = int(json.loads(request.body)["order_id"])
     node_id = TestdataNodeNew.objects.all().order_by("-node_id")[0].node_id + 1
@@ -552,6 +565,12 @@ def quickAddNode(request):
         create_time=create_time,
         update_time=update_time
     )
+    SwaggerApi.objects.filter(id=id).update(
+        remark=remark,
+        author=author,
+        updated=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    )
+
     response = [{"code": "200", "msg": "接口添加成功", "node_id": node_id}]
     return JsonResponse(response, safe=False)
 
