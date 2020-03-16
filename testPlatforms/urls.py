@@ -22,7 +22,7 @@ from apitest.views import apitest, getFlowData, getNodeData, getOutSql, getPreSq
     actionFlow, getEmail, emailChange, actionAllFlow, changeFlowState, changeNodeState, editDefaultVar, getDefaultVar, \
     deleteDefaultVar, addDefaultVar, getLog, lookDetailReport, lookSummaryReport, filterFlowName, \
     filterPath, saveUnStatisticsData, saveUnDoStatisticsData, transferFlowData, getApiCounts, manualStatistics, \
-    filterApi, saveRemark, filterPath2, getFlowDataByCreater
+    filterApi, saveRemark, filterPath2, getFlowDataByCreater, getFlowIdList, quickAddNode
 from performance.views import performance, \
     getPerformanceFlowData, getPerformanceNodeData, getPerformanceOutSql, getPerformancePreSql, getPerformancePostKey, \
     getPerformanceParameter, addPerformanceFlow, editPerformanceFlow, deletePerformanceFlow, deletePerformanceNode, \
@@ -120,5 +120,7 @@ urlpatterns = [
     url(r'filterApi', filterApi),
     url(r'saveRemark', saveRemark),
     url(r'filterPath2', filterPath2),
+    url(r'getFlowIdList', getFlowIdList),
+    url(r'quickAddNode', quickAddNode),
     # url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_URL}),
 ]

@@ -133,3 +133,27 @@ class Todo(models.Model):
     class Meta:
         managed = False
         db_table = 'todo'
+
+
+
+class SwaggerApi(models.Model):
+    service = models.CharField(max_length=255, blank=True, null=True)
+    service_name = models.CharField(max_length=255, blank=True, null=True)
+    tags = models.CharField(max_length=255, blank=True, null=True)
+    summary = models.CharField(max_length=255, blank=True, null=True)
+    path = models.CharField(max_length=255, blank=True, null=True)
+    type = models.CharField(max_length=255, blank=True, null=True)
+    method = models.CharField(max_length=255, blank=True, null=True)
+    request_parameter = models.TextField(blank=True, null=True)
+    responses = models.TextField(blank=True, null=True)
+    deleted = models.IntegerField(blank=True, null=True)
+    isauto = models.CharField(db_column='isAuto', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    swagger_url = models.CharField(max_length=255, blank=True, null=True)
+    author = models.CharField(max_length=255, blank=True, null=True)
+    remark = models.CharField(max_length=255, blank=True, null=True)
+    created = models.DateTimeField(blank=True, null=True)
+    updated = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'swagger_api'

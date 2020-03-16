@@ -44,7 +44,6 @@
             width: 200px;
             min-height: 400px;
         }
-
         .el-popover {
             background: rgb(177, 176, 176) !important;
         }
@@ -149,12 +148,11 @@
                           style="width: 400px">
                     <el-button slot="append" icon="el-icon-search" @click="filterPath()">搜索URL</el-button>
                 </el-input>
-                <div>
+                <div name="接口数据表">
                     <template>
-                        <el-table
+                        <el-table id="flowTable"
                                 v-loading="actionLoading"
                                 :element-loading-text="text"
-                                id="flowTable"
                                 ref="flowTableRef"
                                 :data="flowData"
                                 :header-cell-style="{background:'#836FFF',color:'#F0FFFF',padding:'3px'}"
@@ -257,10 +255,10 @@
                                               :placeholder="scope.row.apicount"
                                               v-model="scope.row.apicount"></el-input>
                                     <span class="span" style="display: block">
-                            {%verbatim%}
-                            {{scope.row.apicount}}
-                            {%endverbatim%}
-                        </span>
+                                        {%verbatim%}
+                                        {{scope.row.apicount}}
+                                        {%endverbatim%}
+                                    </span>
                                 </template>
                             </el-table-column>
                             <el-table-column label="负责人" prop="creater" width="120px" id="creater">
@@ -269,10 +267,10 @@
                                               :placeholder="scope.row.creater"
                                               v-model="scope.row.creater"></el-input>
                                     <span class="span" style="display: block">
-                            {%verbatim%}
-                            {{scope.row.creater}}
-                            {%endverbatim%}
-                        </span>
+                                        {%verbatim%}
+                                        {{scope.row.creater}}
+                                        {%endverbatim%}
+                                    </span>
                                 </template>
                             </el-table-column>
                             <el-table-column label="状态" prop="state" width="70px" id="state">
@@ -609,7 +607,7 @@
                         </el-table>
                     </template>
                 </div>
-                <div class="block" style="color:#faf8ff;margin-top:10px;padding: 3px ">
+                <div class="block" name="分页查询" style="color:#faf8ff;margin-top:10px;padding: 3px ">
                     <el-pagination
                             background
                             @size-change="handleSizeChange"
@@ -811,9 +809,15 @@
                         </el-table-column>
                         <el-table-column label="操作" width="auto" prop="operation">
                             <template slot-scope="scope">
-                                <el-button raw-type="button"
+                                <el-button raw-type="button" type="primary" size="mini"
+                                           icon="el-icon-magic-stick"
                                            @click="labeledApi(scope.$index,scope.row)">
-                                    标记接口
+                                    标记
+                                </el-button>
+                                <el-button raw-type="button" type="success" size="mini"
+                                           icon="el-icon-s-flag"
+                                           @click="quickAdd(scope.$index,scope.row)">
+                                    添加
                                 </el-button>
                             </template>
                         </el-table-column>
@@ -822,7 +826,7 @@
             </el-tab-pane>
         </el-tabs>
     </div>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="新增接口测试流"
+    <el-dialog title="新增接口测试流" :close-on-click-modal="false" style="font-weight: bold" 
                :visible.sync="dialogFormVisible">
         <el-form :model="flowDataDefault">
             <el-form-item label="测试流名称" :label-width="formLabelWidth">
@@ -875,7 +879,7 @@
             <el-button type="primary" @click="addFlowOk(flowDataDefault)">确 定</el-button>
         </div>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="配置全局默认变量"
+    <el-dialog title="配置全局默认变量" :close-on-click-modal="false" style="font-weight: bold" 
                :visible.sync="dialogDefaultVar">
         <el-button size="mini" class="save"
                    style="display: block;margin: 2px;padding: 5px;float: left"
@@ -933,22 +937,7 @@
             </el-table-column>
         </el-table>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="邮箱收件人配置(多个收件人以逗号隔开)"
-               :visible.sync="dialogEmailChange">
-        <el-form :model="flowDataDefault">
-            <el-form-item label="" :label-width="formLabelWidth">
-                <el-input v-model="recipients" autocomplete="off" :autosize="{ minRows: 5, maxRows: 20}" size="small"
-                          type="textarea"
-                          style="margin: 1px;width: 85%"
-                          placeholder="请输入收件人邮箱地址(多个收件人时以英文逗号隔开(例如：aaa@jielema.com,bbb@jielema.com))"></el-input>
-            </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogEmailChange = false">取 消</el-button>
-            <el-button type="primary" @click="emailChange(recipients)">确 定</el-button>
-        </div>
-    </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="新增接口" border
+    <el-dialog title="新增接口"  :close-on-click-modal="false" style="font-weight: bold" border
                :visible.sync="dialogTableVisible" width="1482px">
         <el-table
                 :data="nodeDataDefaultAdd"
@@ -1126,7 +1115,7 @@
             <el-button type="warning" @click="addNodeOk(nodeDataDefaultAdd)">再加一条</el-button>
         </div>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="复制接口" border
+    <el-dialog title="复制接口" :close-on-click-modal="false" style="font-weight: bold"  border
                :visible.sync="dialogCopyNode" width="1482px">
         <el-table
                 :data="nodeDataDefault"
@@ -1303,119 +1292,7 @@
             <el-button type="primary" @click="dialogCopyNode = false;copyNodeOk(nodeDataDefault)">确 定</el-button>
         </div>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="接口运行完成，请选择要查看的报告类型"
-               :visible.sync="dialogReport">
-        <el-button icon="el-icon-search"><a href="/lookSummaryReport" target="_blank">查看概要报告</a></el-button>
-        <el-button icon="el-icon-search"><a href="/lookDetailReport" target="_blank">查看详细报告</a></el-button>
-    </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="接口请求参数配置" :visible.sync="dialogParameter">
-        <el-input class="el-input-parameter" type="textarea"
-                  :autosize="{ minRows: 5, maxRows: 20}"
-                  style="display: block;width: auto"
-                  :placeholder="parameterData.value"
-                  v-model="parameterData.value"></el-input>
-        <el-button type="primary" style="margin: 10px"
-                   @click="saveParameter()">保存修改
-        </el-button>
-        <el-button type="info" style="margin: 10px"
-                   @click="pCancel()">
-            取消
-        </el-button>
-        <el-button class="formatButton" type="primary"
-                   style="margin: 10px;float: right"
-                   @click="formatJson(parameterData)">格式化JSON
-        </el-button>
-    </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="前置Sql配置" :visible.sync="dialogPreSql">
-        <el-form :model="preSqlData">
-            <el-form-item label="前置SQL开关" :label-width="formLabelWidth">
-                <el-select v-model="preSqlData.isexcute_pre_sql" placeholder="请选择是否开启前置SQL查询">
-                    <el-option label="开启前置SQl查询" value=1></el-option>
-                    <el-option label="关闭前置SQl查询" value=0></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="SQL语句" :label-width="formLabelWidth">
-                <el-input v-model="preSqlData.pre_sql_str"
-                          type="textarea"
-                          :autosize="{ minRows: 1, maxRows: 20}"
-                          :placeholder="preSqlData.pre_sql_str"></el-input>
-            </el-form-item>
-            <el-form-item label="传入变量" :label-width="formLabelWidth">
-                <el-input v-model="preSqlData.pre_sql_para"
-                          :placeholder="preSqlData.pre_sql_para"></el-input>
-            </el-form-item>
-            <el-form-item label="接收变量" :label-width="formLabelWidth">
-                <el-input v-model="preSqlData.pre_sql_out"
-                          :placeholder="preSqlData.pre_sql_out"></el-input>
-            </el-form-item>
-        </el-form>
-        <el-button type="info" style="margin: 10px"
-                   @click="pCancel()">
-            取消
-        </el-button>
-        <el-button type="primary" style="margin: 10px;float: right"
-                   @click="savePreSql()">保存修改
-        </el-button>
-    </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="后置Sql校验配置" :visible.sync="dialogOutSql">
-        <el-form :model="outSqlData">
-            <el-form-item label="SQL校验开关" :label-width="formLabelWidth">
-                <el-select v-model="outSqlData.ischechdb" placeholder="请选择是否开启SQL校验">
-                    <el-option label="开启SQL校验" value=1></el-option>
-                    <el-option label="关闭SQL校验" value=0></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="SQL语句" :label-width="formLabelWidth">
-                <el-input v-model="outSqlData.sql_str"
-                          type="textarea"
-                          :autosize="{ minRows: 1, maxRows: 20}"
-                          :placeholder="outSqlData.sql_str"></el-input>
-            </el-form-item>
-            <el-form-item label="传入变量" :label-width="formLabelWidth">
-                <el-input v-model="outSqlData.sql_para"
-                          :placeholder="outSqlData.sql_para"></el-input>
-            </el-form-item>
-            <el-form-item label="预期结果" :label-width="formLabelWidth">
-                <el-input v-model="outSqlData.expect_db"
-                          type="textarea"
-                          :autosize="{ minRows: 1, maxRows: 20}"
-                          :placeholder="outSqlData.expect_db"></el-input>
-            </el-form-item>
-        </el-form>
-        <el-button type="primary" style="margin: 10px;float: right"
-                   @click="saveOutSql()">保存修改
-        </el-button>
-        <el-button type="info" style="margin: 10px"
-                   @click="pCancel()">
-            取消
-        </el-button>
-    </el-dialog>
-    <el-dialog :close-on-click-modal="false" style="font-weight: bold" title="后置变量提取配置" :visible.sync="dialogPostKey">
-        <el-form :model="postKeyData">
-            <el-form-item label="提取变量名" :label-width="formLabelWidth">
-                <el-input v-model="postKeyData.post_keys"
-                          :placeholder="postKeyData.post_keys"></el-input>
-            </el-form-item>
-            <el-form-item label="提取表达式" :label-width="formLabelWidth">
-                <el-input v-model="postKeyData.post_keys_extractor"
-                          type="textarea"
-                          :autosize="{ minRows: 1, maxRows: 20}"
-                          :placeholder="postKeyData.post_keys_extractor"></el-input>
-            </el-form-item>
-            <el-form-item label="默认值" :label-width="formLabelWidth">
-                <el-input v-model="postKeyData.post_keys_default"
-                          :placeholder="postKeyData.post_keys_default"></el-input>
-            </el-form-item>
-        </el-form>
-        <el-button type="primary" style="margin: 10px;float: right"
-                   @click="savePostKey()">保存修改
-        </el-button>
-        <el-button type="info" style="margin: 10px"
-                   @click="pCancel()">
-            取消
-        </el-button>
-    </el-dialog>
-    <el-drawer :close-on-click-modal="false" :title="nodeDataDefault.node_name" size="100%" direction="rtl" custom-class="demo-drawer" :visible.sync="dialogDrawer">
+    <el-drawer title="接口编辑" :close-on-click-modal="false"  size="100%" direction="rtl" custom-class="demo-drawer" :visible.sync="dialogDrawer">
         <div class="demo-drawer__content">
             <div style="float: top">
                 <div style="width: 48%;height: 80%;float: left">
@@ -1575,7 +1452,6 @@
                 </div>
             </div>
         </div>
-
         <div class="demo-drawer__footer">
             <el-button
                     @click="saveNode()"
@@ -1583,10 +1459,121 @@
                     style="width:100%">
                 提交
             </el-button>
-
         </div>
     </el-drawer>
-    <el-drawer :close-on-click-modal="false" title="接口标记" size="40%" direction="rtl" custom-class="demo-drawer" :visible.sync="dialogDrawer2">
+    <el-dialog title="接口运行完成，请选择要查看的报告类型" :close-on-click-modal="false" style="font-weight: bold" 
+               :visible.sync="dialogReport">
+        <el-button icon="el-icon-search"><a href="/lookSummaryReport" target="_blank">查看概要报告</a></el-button>
+        <el-button icon="el-icon-search"><a href="/lookDetailReport" target="_blank">查看详细报告</a></el-button>
+    </el-dialog>
+    <el-dialog title="接口请求参数配置"  :close-on-click-modal="false" style="font-weight: bold" :visible.sync="dialogParameter">
+        <el-input class="el-input-parameter" type="textarea"
+                  :autosize="{ minRows: 5, maxRows: 20}"
+                  style="display: block;width: auto"
+                  :placeholder="parameterData.value"
+                  v-model="parameterData.value"></el-input>
+        <el-button type="primary" style="margin: 10px"
+                   @click="saveParameter()">保存修改
+        </el-button>
+        <el-button type="info" style="margin: 10px"
+                   @click="pCancel()">
+            取消
+        </el-button>
+        <el-button class="formatButton" type="primary"
+                   style="margin: 10px;float: right"
+                   @click="formatJson(parameterData)">格式化JSON
+        </el-button>
+    </el-dialog>
+    <el-dialog title="前置Sql配置"  :close-on-click-modal="false" style="font-weight: bold" :visible.sync="dialogPreSql">
+        <el-form :model="preSqlData">
+            <el-form-item label="前置SQL开关" :label-width="formLabelWidth">
+                <el-select v-model="preSqlData.isexcute_pre_sql" placeholder="请选择是否开启前置SQL查询">
+                    <el-option label="开启前置SQl查询" value=1></el-option>
+                    <el-option label="关闭前置SQl查询" value=0></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="SQL语句" :label-width="formLabelWidth">
+                <el-input v-model="preSqlData.pre_sql_str"
+                          type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 20}"
+                          :placeholder="preSqlData.pre_sql_str"></el-input>
+            </el-form-item>
+            <el-form-item label="传入变量" :label-width="formLabelWidth">
+                <el-input v-model="preSqlData.pre_sql_para"
+                          :placeholder="preSqlData.pre_sql_para"></el-input>
+            </el-form-item>
+            <el-form-item label="接收变量" :label-width="formLabelWidth">
+                <el-input v-model="preSqlData.pre_sql_out"
+                          :placeholder="preSqlData.pre_sql_out"></el-input>
+            </el-form-item>
+        </el-form>
+        <el-button type="info" style="margin: 10px"
+                   @click="pCancel()">
+            取消
+        </el-button>
+        <el-button type="primary" style="margin: 10px;float: right"
+                   @click="savePreSql()">保存修改
+        </el-button>
+    </el-dialog>
+    <el-dialog title="后置Sql校验配置" :close-on-click-modal="false" style="font-weight: bold"  :visible.sync="dialogOutSql">
+        <el-form :model="outSqlData">
+            <el-form-item label="SQL校验开关" :label-width="formLabelWidth">
+                <el-select v-model="outSqlData.ischechdb" placeholder="请选择是否开启SQL校验">
+                    <el-option label="开启SQL校验" value=1></el-option>
+                    <el-option label="关闭SQL校验" value=0></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="SQL语句" :label-width="formLabelWidth">
+                <el-input v-model="outSqlData.sql_str"
+                          type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 20}"
+                          :placeholder="outSqlData.sql_str"></el-input>
+            </el-form-item>
+            <el-form-item label="传入变量" :label-width="formLabelWidth">
+                <el-input v-model="outSqlData.sql_para"
+                          :placeholder="outSqlData.sql_para"></el-input>
+            </el-form-item>
+            <el-form-item label="预期结果" :label-width="formLabelWidth">
+                <el-input v-model="outSqlData.expect_db"
+                          type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 20}"
+                          :placeholder="outSqlData.expect_db"></el-input>
+            </el-form-item>
+        </el-form>
+        <el-button type="primary" style="margin: 10px;float: right"
+                   @click="saveOutSql()">保存修改
+        </el-button>
+        <el-button type="info" style="margin: 10px"
+                   @click="pCancel()">
+            取消
+        </el-button>
+    </el-dialog>
+    <el-dialog title="后置变量提取配置" :close-on-click-modal="false" style="font-weight: bold" :visible.sync="dialogPostKey">
+        <el-form :model="postKeyData">
+            <el-form-item label="提取变量名" :label-width="formLabelWidth">
+                <el-input v-model="postKeyData.post_keys"
+                          :placeholder="postKeyData.post_keys"></el-input>
+            </el-form-item>
+            <el-form-item label="提取表达式" :label-width="formLabelWidth">
+                <el-input v-model="postKeyData.post_keys_extractor"
+                          type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 20}"
+                          :placeholder="postKeyData.post_keys_extractor"></el-input>
+            </el-form-item>
+            <el-form-item label="默认值" :label-width="formLabelWidth">
+                <el-input v-model="postKeyData.post_keys_default"
+                          :placeholder="postKeyData.post_keys_default"></el-input>
+            </el-form-item>
+        </el-form>
+        <el-button type="primary" style="margin: 10px;float: right"
+                   @click="savePostKey()">保存修改
+        </el-button>
+        <el-button type="info" style="margin: 10px"
+                   @click="pCancel()">
+            取消
+        </el-button>
+    </el-dialog>
+    <el-drawer title="接口标记" :close-on-click-modal="false"  size="40%" direction="rtl" custom-class="demo-drawer" :visible.sync="dialogDrawer2">
         <div class="demo-drawer__content">
             <el-form :model="lableData">
                 <el-form-item label="" :label-width="formLabelWidth">
@@ -1620,8 +1607,75 @@
             </div>
         </div>
     </el-drawer>
+    <el-drawer title="快速添加接口" :close-on-click-modal="false"  size="40%" direction="rtl" custom-class="demo-drawer" :visible.sync="dialogDrawerQuickAddNode">
+        <div class="demo-drawer__content">
+            <el-form :model="lableData">
+                <el-form-item label="" :label-width="formLabelWidth">
+                    <p style="font-weight: bold">
+                        <el-tag style="float:left;margin: 1px" size="medium">选测试流</el-tag>
+                        <br style="margin: 10px">
+                        <el-select size="small" v-model="lableData.flow_id" placeholder="选择测试流">
+                            <el-option
+                                    v-for="item in FlowIdList"
+                                    :key="item.flow_name"
+                                    :label="item.flow_name"
+                                    :value="item.flowId">
+                            </el-option>
+                        </el-select>
+                    </p>
+                    <p style="font-weight: bold;margin: 1px">
+                        <el-tag style="float:left;margin: 1px" size="medium">执行顺序</el-tag>
+                        <br style="margin: 10px">
+                        <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口执行顺序ID"
+                                  v-model="lableData.order_id"></el-input>
+                    </p>
+                    <p style="font-weight: bold">
+                        <el-tag style="float:left;margin: 1px" size="medium">接口标记</el-tag>
+                        <br style="margin: 10px">
+                        <el-select size="small" style="margin: 1px" v-model="lableData.remark" placeholder="请标记接口备注信息">
+                            <el-option
+                                    v-for="item in filters"
+                                    :key="item.text"
+                                    :label="item.text"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </p>
+                    <p style="font-weight: bold;margin: 1px">
+                        <el-tag style="float:left;margin: 1px" size="medium">操作人员</el-tag>
+                        <br style="margin: 10px">
+                        <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入操作人名字"
+                                  v-model="lableData.author"></el-input>
+                    </p>
+
+                </el-form-item>
+                <el-form-item label="" :label-width="formLabelWidth">
+
+                </el-form-item>
+            </el-form>
+            <div class="demo-drawer__footer" style="margin-left: 16%">
+                <el-button @click="cancelForm">取 消</el-button>
+                <el-button @click="quickAddOk" type="primary">确 定</el-button>
+
+            </div>
+        </div>
+    </el-drawer>
+    <el-dialog title="邮箱收件人配置(多个收件人以逗号隔开)" :close-on-click-modal="false" style="font-weight: bold" 
+               :visible.sync="dialogEmailChange">
+        <el-form :model="flowDataDefault">
+            <el-form-item label="" :label-width="formLabelWidth">
+                <el-input v-model="recipients" autocomplete="off" :autosize="{ minRows: 5, maxRows: 20}" size="small"
+                          type="textarea"
+                          style="margin: 1px;width: 85%"
+                          placeholder="请输入收件人邮箱地址(多个收件人时以英文逗号隔开(例如：aaa@jielema.com,bbb@jielema.com))"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogEmailChange = false">取 消</el-button>
+            <el-button type="primary" @click="emailChange(recipients)">确 定</el-button>
+        </div>
+    </el-dialog>
 </div>
 <script src="../../static/js/apitest.js" type="text/javascript"></script>
 </body>
-
 </html>

@@ -5,7 +5,7 @@ import os
 from django.http import JsonResponse
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
-from apitest.models import TestdataNodeNew, TestdataFlowNew, ApiStatisticsNew
+from apitest.models import TestdataNodeNew, TestdataFlowNew, ApiStatisticsNew, SwaggerApi
 from apitest.readJmx import changeAciton, getEmailList, changeEmail, getDefaultVariable, addDefaultVariable, \
     editDefaultVariable, deleteDefaultVariable, removeFile, readText
 
@@ -52,6 +52,19 @@ def getFlowData(request):
     flowlistSize = len(TestdataFlowNew.objects.all().order_by("pk"))
     response = [{"code": "200", "msg": "邮箱获取成功", "flowData": flowData, "size": flowlistSize, "FlowIdList": FlowIdList}]
     return JsonResponse(response, safe=False)
+
+@csrf_exempt
+def getFlowIdList(request):
+    FlowIdList = []
+    for e in TestdataFlowNew.objects.all().order_by("pk"):
+        FlowIdList.insert(10000,
+                          {
+                            'flowId': e.pk,
+                            'flow_name': e.flow_name
+                          })
+    response = {"code": "200", "msg": "获取测试流列表成功", "FlowIdList": FlowIdList}
+    return JsonResponse(response, safe=False)
+
 
 @csrf_exempt
 def addFlow(request):
@@ -479,6 +492,71 @@ def addNode(request):
     )
     response = [{"code": "200", "msg": "接口添加成功", "node_id": node_id}]
     return JsonResponse(response, safe=False)
+
+
+@csrf_exempt
+def quickAddNode(request):
+    id = json.loads(request.body)["id"]
+    flow_id = int(json.loads(request.body)["flow_id"])
+    order_id = int(json.loads(request.body)["order_id"])
+    node_id = TestdataNodeNew.objects.all().order_by("-node_id")[0].node_id + 1
+    node_code = ""
+    node_name = SwaggerApi.objects.filter(id=id)[0].summary
+    method = SwaggerApi.objects.filter(id=id)[0].method
+    path = SwaggerApi.objects.filter(id=id)[0].path
+    parameter = SwaggerApi.objects.filter(id=id)[0].request_parameter
+    run_env = "test"
+    pre_keys = ""
+    sleep_time = 0
+    expect_response = "code\":200,\"msg\":\"操作成功"
+    state = 1
+    isexcute_pre_sql = 0
+    pre_sql_out = ""
+    pre_sql_str = ""
+    pre_sql_para = ""
+    expect_db = ""
+    ischechdb = 0
+    sql_para = ""
+    sql_str = ""
+    post_keys = ""
+    post_keys_extractor = ""
+    post_keys_default = ""
+    create_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    update_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    TestdataNodeNew.objects.create(
+        node_id=node_id,
+        order_id=int(order_id),
+        flow_id=flow_id,
+        node_code=node_code,
+        node_name=node_name,
+        method=method,
+        path=path,
+        parameter=parameter,
+        run_env=run_env,
+        pre_keys=pre_keys,
+        sleep_time=sleep_time,
+        expect_response=expect_response,
+        state=state,
+        isexcute_pre_sql=isexcute_pre_sql,
+        pre_sql_out=pre_sql_out,
+        pre_sql_para=pre_sql_para,
+        pre_sql_str=pre_sql_str,
+        expect_db=expect_db,
+        ischechdb=ischechdb,
+        sql_para=sql_para,
+        sql_str=sql_str,
+        post_keys=post_keys,
+        post_keys_extractor=post_keys_extractor,
+        post_keys_default=post_keys_default,
+        create_time=create_time,
+        update_time=update_time
+    )
+    response = [{"code": "200", "msg": "接口添加成功", "node_id": node_id}]
+    return JsonResponse(response, safe=False)
+
+
+
 
 
 @csrf_exempt

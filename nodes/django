@@ -12,7 +12,7 @@
     # 2. 将生成的py文件应用到数据库
     python manage.py migrate
     #3.逆向生成model文件、
-    python manage.py inspectdb > app/models.py
+    python manage.py inspectdb > models.py
 
 
 5.运行django
