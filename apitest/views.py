@@ -622,7 +622,7 @@ class Statistics:
         method = SwaggerApi.objects.filter(id=id)[0].method
         path = SwaggerApi.objects.filter(id=id)[0].path
         parameter = SwaggerApi.objects.filter(id=id)[0].request_parameter
-        run_env = "test"
+        run_env = "test,pre,prod,beta"
         pre_keys = ""
         sleep_time = 0
         expect_response = "code\":200,\"msg\":\"操作成功"

@@ -42,7 +42,7 @@ var vm = new Vue({
             order_id: "",
 
             //分页大小
-            page_size: 15,
+            page_size: 18,
             apiSize: 1001,
             pageSize: 18,
             FlowlistSize: 100,
@@ -1790,7 +1790,6 @@ var vm = new Vue({
             let checkedCount = value.length;
             this.isIndeterminate = checkedCount > 0
         },
-
 
 
         //定时任务
