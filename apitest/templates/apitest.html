@@ -88,7 +88,7 @@
     </style>
     <title>未来管家接口测试管理</title>
 </head>
-<body style="background-color: #c8c6d4">
+<body style="background-color: #f7f6ff">
 <div id="app" style="margin: 0">
     <el-menu
             :default-active="activeIndex2"
@@ -130,16 +130,14 @@
                 <el-button size="small" type="primary" @click="openSwagger()" style="margin: 10px;float: right">
                     进入swagger
                 </el-button>
-                <template>
-                    <el-select size="small" v-model="filtrate" @change="filtrateCreater" placeholder="筛选负责人">
-                        <el-option
-                                v-for="item in creater"
-                                :key="item.creater"
-                                :label="item.creater"
-                                :value="item.creater">
-                        </el-option>
-                    </el-select>
-                </template>
+                <el-select size="small" v-model="filtrate" @change="filtrateCreater" placeholder="筛选负责人">
+                    <el-option
+                            v-for="item in creater"
+                            :key="item.creater"
+                            :label="item.creater"
+                            :value="item.creater">
+                    </el-option>
+                </el-select>
                 <el-input size="small" placeholder="请输入测试流名称" v-model="flowName" class="input-with-select"
                           style="width: 400px">
                     <el-button slot="append" icon="el-icon-search" @click="filterFlowName()">搜索测试流</el-button>
@@ -327,7 +325,7 @@
                                     </el-button>
                                 </template>
                             </el-table-column>
-                            <el-table-column v-show="true" type="expand" width="140px" label="展开详情">
+                            <el-table-column label="展开详情" width="140px" type="expand" v-show="true"  >
                                 <template slot-scope="props">
                                     <div style="background-color: #5cffa2">
                                         <el-button size="mini" type="primary" @click="dialogTableVisible = true"
@@ -352,34 +350,35 @@
                                                 highlight-current-row="true"
                                                 :header-cell-style="{background:'#606266',color:'#FFFFFF',padding:0}"
                                                 cell-style="padding:2px,font-size: 10px">
-                                            <el-table-column label="步骤" width="75px"
+                                            <el-table-column label="步骤" prop="order_id"
                                                              sortable
                                                              resizable="true"
-                                                             prop="order_id">
+                                                             v-if="nodeDisplayList.order_id"
+                                                             width="75px">
                                                 <template slot-scope="scope">
-                                                    <el-input size="mini"
+                                                    <el-input class="nodeDisplayInput" size="mini"
                                                               style="display: none"
                                                               :placeholder="scope.row.order_id"
                                                               v-model="scope.row.order_id">
                                                     </el-input>
-                                                    <span class="span" style="display: block;font-weight: bold">
+                                                    <span class="nodeDisplaySpan" style="display: block;font-weight: bold">
                                                     {%verbatim%}
                                                         {{scope.row.order_id}}
                                                     {%endverbatim%}
                                                     </span>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="接口名称"
-                                                             width="160px"
-                                                             prop="node_name"
+                                            <el-table-column label="接口名称" prop="node_name"
+                                                             width="auto"
+                                                             v-if="nodeDisplayList.node_name"
                                                              resizable="true">
                                                 <template slot-scope="scope">
-                                                    <el-input size="mini" style="display: none"
+                                                    <el-input class="nodeDisplayInput" size="mini" style="display: none"
                                                               :placeholder="scope.row.node_name"
                                                               v-model="scope.row.node_name"></el-input>
                                                     <el-tooltip class="item" effect="dark"
                                                                 :content="scope.row.node_name" placement="top-start">
-                                                <span class="span" style="display: block;font-weight: bold;">
+                                                <span class="nodeDisplaySpan" style="display: block;font-weight: bold;">
                                                     {%verbatim%}
                                                         {{scope.row.node_name}}
                                                     {%endverbatim%}
@@ -387,104 +386,108 @@
                                                     </el-tooltip>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="请求方式"
+                                            <el-table-column label="请求方式" prop="method"
                                                              width="90px"
+                                                             v-if="nodeDisplayList.method"
                                                              show-overflow-tooltip
-                                                             resizable="true"
-                                                             prop="method">
+                                                             resizable="true">
                                                 <template slot-scope="scope">
-                                                    <el-input size="mini" style="display: none"
+                                                    <el-input class="nodeDisplayInput"  size="mini" style="display: none"
                                                               :placeholder="scope.row.method"
                                                               v-model="scope.row.method"></el-input>
-                                                    <span class="span" style="display: block">
-                                                {%verbatim%}
-                                                    {{scope.row.method}}
-                                                {%endverbatim%}
-                                            </span>
+                                                    <span class="nodeDisplaySpan" style="display: block">
+                                                        {%verbatim%}
+                                                            {{scope.row.method}}
+                                                        {%endverbatim%}
+                                                    </span>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="接口路径"
-                                                             width="200px"
-                                                             resizable="true"
-                                                             prop="path">
+                                            <el-table-column label="接口路径" prop="path"
+                                                             :v-if="nodeDisplayList.path"
+                                                             width="auto"
+                                                             resizable="true">
                                                 <template slot-scope="scope">
-                                                    <el-input size="mini" style="display: none"
+                                                    <el-input class="nodeDisplayInput" size="mini" style="display: none"
                                                               :placeholder="scope.row.path"
                                                               v-model="scope.row.path"></el-input>
                                                     <el-tooltip class="item" effect="dark" :content="scope.row.path"
                                                                 placement="top-start">
-                                                        <span class="span" style="display: block;font-weight: bold;">
+                                                        <span class="nodeDisplaySpan" style="display: block;font-weight: bold;">
                                                             {%verbatim%}
                                                                 {{scope.row.path}}
                                                             {%endverbatim%}
                                                         </span>
                                                     </el-tooltip>
+
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="请求参数"
+                                            <el-table-column label="请求参数" prop="parameter"
                                                              width="140px"
+                                                             v-if="nodeDisplayList.parameter"
                                                              show-overflow-tooltip
-                                                             prop="parameter"
                                                              resizable="true"
                                                              style="padding: 0">
                                                 <template slot-scope="scope">
-                                                    <el-input size="mini" style="display: none"
+                                                    <el-input class="nodeDisplayInput" size="mini" style="display: none"
                                                               :placeholder="scope.row.parameter"
                                                               v-model="scope.row.parameter">
                                                     </el-input>
-                                                    <el-button size="medium"
+                                                    <el-button class="parameterButton"
+                                                               size="medium"
                                                                style="color: chocolate;border:1px solid #c8c6d4;text-overflow: ellipsis;width: 120px;overflow: hidden;text-align: left"
-                                                               class="parameterButton"
                                                                slot="reference"
                                                                @click="getParameter(scope.$index, scope.row,scope.$event)">
                                                         {%verbatim%}
                                                         {{scope.row.parameter}}
                                                         {%endverbatim%}
                                                     </el-button>
-
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="请求参数变量"
-                                                             prop="pre_keys"
+                                            <el-table-column label="请求参数变量" prop="pre_keys"
+                                                             v-if="nodeDisplayList.pre_keys"
                                                              resizable="true">
                                                 <template slot-scope="scope">
-                                                    <el-input size="mini" style="display: none"
+                                                    <el-input class="nodeDisplayInput" size="mini" style="display: none"
                                                               :placeholder="scope.row.pre_keys"
                                                               v-model="scope.row.pre_keys"></el-input>
                                                     <el-tooltip class="item" effect="dark" :content="scope.row.pre_keys"
                                                                 placement="top-start">
-                                                <span class="span" style="display: block">
-                                                    {%verbatim%}
-                                                        {{scope.row.pre_keys}}
-                                                    {%endverbatim%}
-                                                </span>
+                                                        <span class="span_pre_keys" style="display: block">
+                                                            {%verbatim%}
+                                                                {{scope.row.pre_keys}}
+                                                            {%endverbatim%}
+                                                        </span>
                                                     </el-tooltip>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="等待时间" width="80px" show-overflow-tooltip
-                                                             prop="sleep_time"
+                                            <el-table-column label="等待时间" prop="sleep_time"
+                                                             width="80px"
+                                                             v-if="nodeDisplayList.sleep_time"
+                                                             show-overflow-tooltip
                                                              style="padding: 0">
                                                 <template slot-scope="scope">
-                                                    <el-input size="mini" style="display: none"
+                                                    <el-input class="nodeDisplayInput" size="mini" style="display: none"
                                                               :placeholder="scope.row.sleep_time"
                                                               v-model="scope.row.sleep_time"></el-input>
-                                                    <span class="span" style="display: block">
-                                                {%verbatim%}
-                                                    {{scope.row.sleep_time}}
-                                                {%endverbatim%}
-                                            </span>
+                                                    <span class="nodeDisplaySpan" style="display: block">
+                                                        {%verbatim%}
+                                                            {{scope.row.sleep_time}}
+                                                        {%endverbatim%}
+                                                    </span>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="期望结果" width="140px" prop="expect_response"
+                                            <el-table-column label="期望结果" prop="expect_response"
+                                                             width="auto"
+                                                             v-if="nodeDisplayList.expect_response"
                                                              resizable="true">
                                                 <template slot-scope="scope">
-                                                    <el-input size="mini" style="display: none"
+                                                    <el-input class="nodeDisplayInput" size="mini" style="display: none"
                                                               :placeholder="scope.row.expect_response"
                                                               v-model="scope.row.expect_response"></el-input>
                                                     <el-tooltip class="item" effect="dark"
                                                                 :content="scope.row.expect_response"
                                                                 placement="top-start">
-                                                        <span class="span" style="display: block">
+                                                        <span class="nodeDisplaySpan" style="display: block">
                                                             {%verbatim%}
                                                                 {{scope.row.expect_response}}
                                                             {%endverbatim%}
@@ -492,15 +495,16 @@
                                                     </el-tooltip>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="可运行环境" width="130px" prop="run_env"
-                                                             resizable="true">
+                                            <el-table-column label="可运行环境" prop="run_env"
+                                                             v-if="nodeDisplayList.run_env"
+                                                             width="130px" resizable="true">
                                                 <template slot-scope="scope">
-                                                    <el-input size="mini" style="display: none"
+                                                    <el-input class="nodeDisplayInput" size="mini" style="display: none"
                                                               :placeholder="scope.row.run_env"
                                                               v-model="scope.row.run_env"></el-input>
                                                     <el-tooltip class="item" effect="dark" :content="scope.row.run_env"
                                                                 placement="top-start">
-                                                        <span class="span" style="display: block">
+                                                        <span class="nodeDisplaySpan    " style="display: block">
                                                             {%verbatim%}
                                                                 {{scope.row.run_env}}
                                                             {%endverbatim%}
@@ -508,7 +512,10 @@
                                                     </el-tooltip>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="接口状态" prop="state" width="70px" id="state">
+                                            <el-table-column label="接口状态" prop="state"
+                                                             width="70px"
+                                                             v-if="nodeDisplayList.state"
+                                                             id="state">
                                                 <template slot-scope="scope">
                                                     <el-switch
                                                             v-model="scope.row.state"
@@ -520,10 +527,12 @@
                                                     </el-switch>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="前置sql" width="110px" class="preSqlbutton"
+                                            <el-table-column label="前置sql" prop="preSql"
+                                                             v-if="nodeDisplayList.preSql"
                                                              style="padding-bottom: 5px;"
                                                              show-overflow-tooltip
-                                                             prop="preSql">
+                                                             width="110px"
+                                                             class="preSqlbutton">
                                                 <template slot-scope="scope">
                                                     <el-button size="medium"
                                                                class="popoverButtonPre"
@@ -536,8 +545,10 @@
                                                     </el-button>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="Sql校验" width="110px" show-overflow-tooltip
-                                                             prop="outSqlData">
+                                            <el-table-column label="Sql校验" prop="outSqlData"
+                                                             width="110px"
+                                                             v-if="nodeDisplayList.outSqlData"
+                                                             show-overflow-tooltip>
                                                 <template slot-scope="scope">
                                                     <el-button size="medium"
                                                                class="popoverButton"
@@ -550,8 +561,10 @@
                                                     </el-button>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="后置变量提取" width="155px" show-overflow-tooltip
-                                                             prop="postKeyData">
+                                            <el-table-column label="后置变量提取" prop="postKeyData"
+                                                             width="155px"
+                                                             v-if="nodeDisplayList.postKeyData"
+                                                             show-overflow-tooltip>
                                                 <template slot-scope="scope">
                                                     <el-button size="medium"
                                                                class="popoverButtonPost"
@@ -564,14 +577,18 @@
                                                     </el-button>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column label="操作" width="180px" prop="parameter">
+                                            <el-table-column label="操作" prop="operation"
+                                                             v-if="nodeDisplayList.operation"
+                                                             width="180px" >
                                                 <template slot-scope="scope">
-                                                    <el-button size="mini" type="warning"
+                                                    <el-button size="mini" class="copy"
+                                                               type="warning"
                                                                style="margin: 2px;padding: 5px"
                                                                @click="copyApi(scope.$index,nodeData,scope.row)">
                                                         复制
                                                     </el-button>
-                                                    <el-button size="mini" type="danger"
+                                                    <el-button size="mini" class="delete"
+                                                               type="danger"
                                                                style="margin: 2px;padding: 5px"
                                                                @click="deleteNodeRow(scope.$index,nodeData,scope.row)">
                                                         删除
@@ -582,13 +599,13 @@
                                                                @click="saveNodeEdit(scope.$index, scope.row,scope.$event)">
                                                         保存
                                                     </el-button>
-                                                    <el-button size="mini" class="editNode" type="primary"
+                                                    <el-button size="mini" class="editNode"
+                                                               type="primary"
                                                                style="margin: 2px;padding: 5px;float: left"
                                                                @click="editNodeTable(scope.$index, scope.row,scope.$event)">
                                                         编辑
                                                     </el-button>
-                                                    <el-dialog
-                                                            title="删除接口"
+                                                    <el-dialog title="删除接口确认"
                                                             :visible.sync="deleteNodeDialogVisible"
                                                             width="30%">
                                                         <span style="color: coral">确定删除当前接口吗？删除后将不可恢复</span>
@@ -607,7 +624,7 @@
                         </el-table>
                     </template>
                 </div>
-                <div class="block" name="分页查询" style="color:#faf8ff;margin-top:10px;padding: 3px ">
+                <div name="分页查询" class="block" style="color:#faf8ff;margin-top:10px;padding: 3px ">
                     <el-pagination
                             background
                             @size-change="handleSizeChange"
@@ -826,7 +843,7 @@
             </el-tab-pane>
         </el-tabs>
     </div>
-    <el-dialog title="新增接口测试流" :close-on-click-modal="false" style="font-weight: bold" 
+    <el-dialog title="新增接口测试流" :close-on-click-modal="false" style="font-weight: bold"
                :visible.sync="dialogFormVisible">
         <el-form :model="flowDataDefault">
             <el-form-item label="测试流名称" :label-width="formLabelWidth">
@@ -1292,186 +1309,205 @@
             <el-button type="primary" @click="dialogCopyNode = false;copyNodeOk(nodeDataDefault)">确 定</el-button>
         </div>
     </el-dialog>
-    <el-drawer title="接口编辑" :close-on-click-modal="false"  size="100%" direction="rtl" custom-class="demo-drawer" :visible.sync="dialogDrawer">
-        <div class="demo-drawer__content">
-            <div style="float: top">
-                <div style="width: 48%;height: 80%;float: left">
+    <el-dialog title="编辑接口" :close-on-click-modal="false"
+               style="font-weight: bold"
+               border
+               :visible.sync="dialogEditNode"
+               width="1482px">
+        <el-table
+                :data="nodeDataDefault"
+                :header-cell-style="{background:'#606266',color:'#FFFFFF',padding:0}"
+                border>
+            <el-table-column property="date" label="基本配置" width="720px">
+                <template slot-scope="scope">
                     <el-form :model="nodeDataDefault">
-                        <el-divider content-position="center">接口基本参数编辑</el-divider>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin:5px;" size="medium">选测试流</el-tag>
-                            <el-select size="small" style="margin: 5px;width: 80%" v-model="filtrateFlowId" placeholder="选择测试流">
-                                <el-option
-                                        v-for="item in FlowIdList"
-                                        :key="item.flow_name"
-                                        :label="item.flow_name"
-                                        :value="item.flowId">
-                                </el-option>
-                            </el-select>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px;" size="medium">接口名称</el-tag>
-                            <el-input size="mini" style="margin: 5px;width: 80%" placeholder="请输入接口名称" v-model="nodeDataDefault.node_name"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">接口路径</el-tag>
-                            <el-input size="mini" style="margin: 5px;width: 80%" placeholder="请输入接口URL" v-model="nodeDataDefault.path"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">执行顺序</el-tag>
-                            <el-input size="mini" style="margin: 5px;width: 80%" placeholder="执行顺序" v-model="nodeDataDefault.order_id"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">请求方式</el-tag>
-                            <el-input size="mini" style="margin: 5px;width: 80%" placeholder="请求方式" v-model="nodeDataDefault.method"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">请求参数</el-tag>
-                            <el-input class="el-input-parameter" type="textarea"
-                                      size="mini"
-                                      style="margin: 5px 2px 5px 9.5%;display: block;width: 70%"
-                                      :autosize="{ minRows: 6, maxRows: 6}"
-                                      placeholder="请输入请求参数"
-                                      v-model="nodeDataDefault.parameter">
-                            </el-input>
-                            <el-button class="formatButton" type="warning"
-                                       style="margin: 5px 20px 5px 9.5%;float: left;width: 80%"
-                                       @click="formatJson2()">格式化JSON
-                            </el-button>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">入参变量</el-tag>
-                            <el-input size="mini" style="margin: 5px;width: 80%" placeholder="请输入请求参数变量" v-model="nodeDataDefault.pre_keys"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">等待时间</el-tag>
-                            <el-input size="mini" style="margin: 5px;width: 80%" placeholder="请输入接口请求后等待时间" v-model="nodeDataDefault.sleep_time"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">期望结果</el-tag>
-                            <el-input class="el-input-parameter" type="textarea"
-                                      size="mini"
-                                      style="margin: 5px;width: 80%"
-                                      :autosize="{ minRows: 1, maxRows: 4}"
-                                      placeholder="请输入期望结果"
-                                      v-model="nodeDataDefault.expect_response"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">运行环境</el-tag>
-                            <el-input size="mini" style="margin: 5px;width: 80%" placeholder="请输入可运行环境"
-                                      v-model="nodeDataDefault.run_env"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">接口状态</el-tag>
-                            <el-select size="mini" v-model="nodeDataDefault.state"
-                                       style="margin: 5px;width: 80%"
-                                       placeholder="请设置是否开启接口（1：启用/0：不启用）">
-                                <el-option label="开启接口" value=1></el-option>
-                                <el-option label="关闭接口" value=0></el-option>
-                            </el-select>
-                        </p>
+                        <div width="50%">
+                            <p style="font-weight: bold">
+                                <el-tag style="float:left;margin: 1px" size="medium">选测试流</el-tag>
+                                <el-select size="small" v-model="filtrateFlowId" placeholder="选择测试流">
+                                    <el-option
+                                            v-for="item in FlowIdList"
+                                            :key="item.flow_name"
+                                            :label="item.flow_name"
+                                            :value="item.flowId">
+                                    </el-option>
+                                </el-select>
+                            </p>
+                            <p style="font-weight: bold;margin: 1px">
+                                <el-tag style="float:left;margin: 1px" size="medium">接口名称</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口名称"
+                                          v-model="nodeDataDefault[0].node_name"></el-input>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">接口路径</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口请求路径"
+                                          v-model="nodeDataDefault[0].path"></el-input>
+                            </p>
+                            <p style="font-weight: bold">
+                                <el-tag style="float:left;margin: 1px" size="medium">执行顺序</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口测试执行顺序序号"
+                                          v-model="nodeDataDefault[0].order_id"></el-input>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">请求方式</el-tag>
+                                <el-select size="mini" v-model="nodeDataDefault[0].method"
+                                           style="margin: 1px;width: 78%"
+                                           placeholder="请选择请求方式">
+                                    <el-option label="POST" value="POST"></el-option>
+                                    <el-option label="GET" value="GET"></el-option>
+                                </el-select>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">请求参数</el-tag>
+                                <el-input :autosize="{ minRows: 13, maxRows: 20}" size="mini" type="textarea"
+                                          style="margin: 1px;width: 78%"
+                                          placeholder="请输入接口请求参数（JSON格式，变量以 $变量$形式输入）"
+                                          v-model="nodeDataDefault[0].parameter"></el-input>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">请求变量</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口请求引用的变量名称"
+                                          v-model="nodeDataDefault[0].pre_keys"></el-input>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">预期结果</el-tag>
+                                <el-input :autosize="{ minRows: 1, maxRows: 10}" size="mini"
+                                          style="margin: 1px;width: 78%"
+                                          type="textarea"
+                                          placeholder="请输入接口响应校验正则表达式（多个以|隔开）"
+                                          v-model="nodeDataDefault[0].expect_response"></el-input>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">运行环境</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入可运行环境"
+                                          v-model="nodeDataDefault[0].run_env"></el-input>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">接口状态</el-tag>
+                                <el-select size="mini" v-model="nodeDataDefault[0].state"
+                                           style="margin: 1px;width: 78%"
+                                           placeholder="请设置是否开启接口（1：启用/0：不启用）">
+                                    <el-option label="开启接口" value=1></el-option>
+                                    <el-option label="关闭接口" value=0></el-option>
+                                </el-select>
+                            </p>
+                        </div>
                     </el-form>
-                </div>
-                <div style="width: 48%;height: 80%;float: right;">
+                </template>
+            </el-table-column>
+            <el-table-column property="name" label="其他配置" width="720px">
+                <template slot-scope="scope">
                     <el-form :model="nodeDataDefault">
-                        <el-divider content-position="center">前置SQL查询信息配置</el-divider>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">前置开关</el-tag>
-                            <el-select size="mini" v-model="nodeDataDefault.isexcute_pre_sql"
-                                       style="margin: 5px;width: 80%"
-                                       placeholder="请设置是否开启前置sql查询（1：启用/0：不启用）">
-                                <el-option label="开启前置SQL查询" value=1></el-option>
-                                <el-option label="关闭前置SQL查询" value=0></el-option>
-                            </el-select>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">SQL语句</el-tag>
-                            <el-input :autosize="{ minRows: 1, maxRows: 10}" size="mini" type="textarea"
-                                      style="margin: 5px;width: 80%" placeholder="请输入前置查询SQL语句（变量用 $变量$ 格式引用）"
-                                      v-model="nodeDataDefault.pre_sql_str"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">SQL变量</el-tag>
-                            <el-input size="mini" style="margin: 5px;width: 80%" placeholder="请输入需要引用的变量名称"
-                                      v-model="nodeDataDefault.sql_para"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">接收变量</el-tag>
-                            <el-input size="mini" style="margin: 5px;width: 80%"
-                                      placeholder="请输入接收查询结果的变量名称（多个以分号隔开）"
-                                      v-model="nodeDataDefault.pre_sql_out"></el-input>
-                        </p>
-                        <el-divider content-position="center">后置SQL校验信息配置</el-divider>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">后置开关</el-tag>
-                            <el-select size="mini" v-model="nodeDataDefault.ischechdb"
-                                       style="margin: 5px;width: 80%"
-                                       placeholder="请设置是否开启后置sql查询（1：启用/0：不启用）">
-                                <el-option label="开启后置SQL校验" value=1></el-option>
-                                <el-option label="关闭后置SQL校验" value=0></el-option>
-                            </el-select>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">SQL语句</el-tag>
-                            <el-input :autosize="{ minRows: 1, maxRows: 10}" size="mini" type="textarea"
-                                      style="margin: 5px;width: 80%" placeholder="请输入后置查询SQL语句（变量用 $变量$ 格式引用）"
-                                      v-model="nodeDataDefault.sql_str"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">SQL变量</el-tag>
-                            <el-input size="mini" style="margin: 5px;width: 80%" placeholder="请输入需要引用的变量名称"
-                                      v-model="nodeDataDefault.pre_sql_para"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">SQL预期</el-tag>
-                            <el-input size="mini" style="margin: 5px;width:80%"
-                                      placeholder="请输入SQL校验预期结果（以Json格式输入）"
-                                      v-model="nodeDataDefault.expect_db"></el-input>
-                        </p>
-                        <el-divider content-position="center">接口请求后置变量提取配置</el-divider>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">后置变量</el-tag>
-                            <el-input size="mini" style="margin: 5px;width: 80%"
-                                      placeholder="请输入需要提取的参数接收变量（多个以分号隔开）"
-                                      v-model="nodeDataDefault.post_keys"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">提取公式</el-tag>
-                            <el-input :autosize="{ minRows: 1, maxRows: 10}" size="mini" type="textarea"
-                                      style="margin: 5px;width: 80%"
-                                      placeholder="请输入参数提取表达式（格式：$.data.xxx 多个以分号隔开）"
-                                      v-model="nodeDataDefault.post_keys_extractor"></el-input>
-                        </p>
-                        <p style="font-weight: bold;margin: 5px 2px 5px 5%">
-                            <el-tag style="font-weight: bold;float:left;margin: 5px" size="medium">默认取值</el-tag>
-                            <el-input size="mini" style="margin: 5px;width: 80%"
-                                      placeholder="请输入提取参数默认值（与提取变量个数和顺序匹配（如：0；0；0））"
-                                      v-model="nodeDataDefault.post_keys_default"></el-input>
-                        </p>
+                        <div width="50%">
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">等待时间</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%"
+                                          placeholder="请输入当前接口请求完成后需要等待时间间隔（单位：毫秒）"
+                                          v-model="nodeDataDefault[0].sleep_time"></el-input>
+                            </p>
+                            <el-divider content-position="center">前置SQL查询信息配置</el-divider>
+                            <p style="font-weight: bold;border: lime">
+                                <el-tag style="float:left;margin: 1px" size="medium">前置开关</el-tag>
+                                <el-select size="mini" v-model="nodeDataDefault[0].isexcute_pre_sql"
+                                           style="margin: 1px;width: 78%"
+                                           placeholder="请设置是否启用前置SQL查询（1：启用/0：不启用）">
+                                    <el-option label="开启前置SQL查询" value=1></el-option>
+                                    <el-option label="关闭前置SQL查询" value=0></el-option>
+                                </el-select>
+                            </p>
+                            <p style="font-weight: bold;border: lime">
+                                <el-tag style="float:left;margin: 1px" size="medium">SQL语句</el-tag>
+                                <el-input :autosize="{ minRows: 1, maxRows: 10}" size="mini" type="textarea"
+                                          style="margin: 1px;width: 78%" placeholder="请输入前置查询SQL语句（变量用 $变量$ 格式引用）"
+                                          v-model="nodeDataDefault[0].pre_sql_str"></el-input>
+                            </p>
+                            <p style="font-weight: bold;border: lime">
+                                <el-tag style="float:left;margin: 1px" size="medium">SQL变量</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入需要引用的变量名称"
+                                          v-model="nodeDataDefault[0].pre_sql_para"></el-input>
+                            </p>
+                            <p style="font-weight: bold;border: lime">
+                                <el-tag style="float:left;margin: 1px" size="medium">接收变量</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%"
+                                          placeholder="请输入接收查询结果的变量名称（多个以分号隔开）"
+                                          v-model="nodeDataDefault[0].pre_sql_out"></el-input>
+                            </p>
+                            <el-divider content-position="center">后置SQL校验信息配置</el-divider>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">后置开关</el-tag>
+                                <el-select size="mini" v-model="nodeDataDefault[0].ischechdb"
+                                           style="margin: 1px;width: 78%">
+                                    <el-option label="开启后置SQL校验" value=1></el-option>
+                                    <el-option label="关闭后置SQL校验" value=0></el-option>
+                                </el-select>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">SQL语句</el-tag>
+                                <el-input :autosize="{ minRows: 1, maxRows: 10}" size="mini" type="textarea"
+                                          style="margin: 1px;width: 78%" placeholder="请输入后置查询SQL语句（变量用 $变量$ 格式引用）"
+                                          v-model="nodeDataDefault[0].sql_str"></el-input>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">SQL变量</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入需要引用的变量名称"
+                                          v-model="nodeDataDefault[0].sql_para"></el-input>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">SQL预期</el-tag>
+                                <el-input size="mini" style="margin: 1px;width:78%"
+                                          placeholder="请输入SQL校验预期结果（以Json格式输入）"
+                                          v-model="nodeDataDefault[0].expect_db"></el-input>
+                            </p>
+                            <el-divider content-position="center">接口请求后置变量提取配置</el-divider>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">后置变量</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%"
+                                          placeholder="请输入需要提取的参数接收变量（多个以分号隔开）"
+                                          v-model="nodeDataDefault[0].post_keys"></el-input>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">提取公式</el-tag>
+                                <el-input :autosize="{ minRows: 1, maxRows: 10}" size="mini" type="textarea"
+                                          style="margin: 1px;width: 78%"
+                                          placeholder="请输入参数提取表达式（格式：$.data.xxx 多个以分号隔开）"
+                                          v-model="nodeDataDefault[0].post_keys_extractor"></el-input>
+                            </p>
+                            <p style="font-weight: bold;">
+                                <el-tag style="float:left;margin: 1px" size="medium">默认取值</el-tag>
+                                <el-input size="mini" style="margin: 1px;width: 78%"
+                                          placeholder="请输入提取参数默认值（与提取变量个数和顺序匹配（如：0；0；0））"
+                                          v-model="nodeDataDefault[0].post_keys_default"></el-input>
+                            </p>
+                        </div>
+
                     </el-form>
-                </div>
-            </div>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogEditNode = false">取 消</el-button>
+            <el-button type="primary" @click="dialogEditNode = false;saveNode()">确 定</el-button>
         </div>
-        <div class="demo-drawer__footer">
-            <el-button
-                    @click="saveNode()"
-                    type="primary"
-                    style="width:100%">
-                提交
-            </el-button>
-        </div>
-    </el-drawer>
-    <el-dialog title="接口运行完成，请选择要查看的报告类型" :close-on-click-modal="false" style="font-weight: bold" 
+    </el-dialog>
+    <el-dialog title="接口运行完成，请选择要查看的报告类型" :close-on-click-modal="false" style="font-weight: bold"
                :visible.sync="dialogReport">
         <el-button icon="el-icon-search"><a href="/lookSummaryReport" target="_blank">查看概要报告</a></el-button>
         <el-button icon="el-icon-search"><a href="/lookDetailReport" target="_blank">查看详细报告</a></el-button>
     </el-dialog>
     <el-dialog title="接口请求参数配置"  :close-on-click-modal="false" style="font-weight: bold" :visible.sync="dialogParameter">
+        <el-tag>请求参数</el-tag>
         <el-input class="el-input-parameter" type="textarea"
                   :autosize="{ minRows: 5, maxRows: 20}"
                   style="display: block;width: auto"
                   :placeholder="parameterData.value"
-                  v-model="parameterData.value"></el-input>
+                  v-model="parameterData.value">
+        </el-input>
+        <el-tag style="margin-top: 10px">参数变量</el-tag>
+        <el-input class="el-input-parameter"
+                  style="display: block;width: auto"
+                  :placeholder="parameterData.pre_keys"
+                  v-model="parameterData.pre_keys">
+        </el-input>
         <el-button type="primary" style="margin: 10px"
                    @click="saveParameter()">保存修改
         </el-button>
@@ -1628,6 +1664,18 @@
                         <br style="margin: 10px">
                         <el-input size="mini" style="margin: 1px;width: 78%" placeholder="请输入接口执行顺序ID"
                                   v-model="lableData.order_id"></el-input>
+                    </p>
+                    <p style="font-weight: bold;margin: 1px">
+                        <el-tag style="float:left;margin: 1px" size="medium">接口名称</el-tag>
+                        <br style="margin: 10px">
+                        <el-input size="mini" style="margin: 1px;width: 78%" :disabled="true" placeholder="未获取到接口名称"
+                                  v-model="lableData.summary"></el-input>
+                    </p>
+                    <p style="font-weight: bold;margin: 1px">
+                        <el-tag style="float:left;margin: 1px" size="medium">接口路径</el-tag>
+                        <br style="margin: 10px">
+                        <el-input size="mini" style="margin: 1px;width: 78%" :disabled="true" placeholder="未获取到url"
+                                  v-model="lableData.path"></el-input>
                     </p>
                     <p style="font-weight: bold">
                         <el-tag style="float:left;margin: 1px" size="medium">接口标记</el-tag>

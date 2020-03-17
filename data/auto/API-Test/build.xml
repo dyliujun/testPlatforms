@@ -20,7 +20,7 @@
     <target name="run">
         <antcall target="test" />
         <antcall target="report" />
-        <antcall target="sendEmail" />
+        <!--<antcall target="sendEmail" />-->
     </target>
 
     <target name="test">

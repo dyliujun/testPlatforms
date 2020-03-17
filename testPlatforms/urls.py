@@ -17,46 +17,75 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
 
-from apitest.views import apitest, getFlowData, getNodeData, getOutSql, getPreSql, getPostKey, getParameter, addFlow, \
-    editFlow, deleteFlow, addNode, editNode, savePostKey, editParameter, deleteNode, editOutSql, editPreSql, \
-    actionFlow, getEmail, emailChange, actionAllFlow, changeFlowState, changeNodeState, editDefaultVar, getDefaultVar, \
-    deleteDefaultVar, addDefaultVar, getLog, lookDetailReport, lookSummaryReport, filterFlowName, \
-    filterPath, saveUnStatisticsData, saveUnDoStatisticsData, transferFlowData, getApiCounts, manualStatistics, \
-    filterApi, saveRemark, filterPath2, getFlowDataByCreater, getFlowIdList, quickAddNode, getLastOrderId
-from performance.views import performance, \
-    getPerformanceFlowData, getPerformanceNodeData, getPerformanceOutSql, getPerformancePreSql, getPerformancePostKey, \
-    getPerformanceParameter, addPerformanceFlow, editPerformanceFlow, deletePerformanceFlow, deletePerformanceNode, \
-    addPerformanceNode, editPerformanceNode, savePerformancePostKey, editPerformanceParameter, editPerformanceOutSql, \
-    editPerformancePreSql, getPerformanceCreater, actionPerformanceFlow, getPerformanceEmail, performanceEmailChange, \
-    actionPerformanceAllFlow, changePerformanceFlowState, changePerformanceNodeState, deletePerformanceDefaultVar, \
-    addPerformanceDefaultVar, editPerformanceDefaultVar, getPerformanceDefaultVar, getPerformanceConfig,  \
-    savePerformanceConfig
+from apitest.views import Flow, Common, Node, Statistics, Configs
+
+from performance.views import *
 from plan.views import plan
-from sql.views import sqlIndex, register, clearModelCodeRecords, clearPhoneCodeRecords, changeCreatedTime, getUserInfo, \
-    getTokenInfo, getTodoInfo, getBuriedInfo
+from sql.views import *
 from task.views import startWork, startBeat
 urlpatterns = [
+
+    #Common
     path('admin/', admin.site.urls),
-    url(r'^index$', apitest),
-    url(r'getApiCounts', getApiCounts),
-    url(r'^getFlowData$', getFlowData),
-    url(r'getNodeData', getNodeData),
-    url(r'getOutSql', getOutSql),
-    url(r'getPreSql', getPreSql),
-    url(r'getPostKey', getPostKey),
-    url(r'getParameter', getParameter),
-    url(r'addFlow', addFlow),
-    url(r'editFlow', editFlow),
-    url(r'deleteFlow', deleteFlow),
-    url(r'deleteNode', deleteNode),
-    url(r'addNode', addNode),
-    url(r'editNode', editNode),
-    url(r'savePostKey', savePostKey),
-    url(r'editParameter', editParameter),
-    url(r'editOutSql', editOutSql),
-    url(r'editPreSql', editPreSql),
-    url(r'getFlowDataByCreater', getFlowDataByCreater),
-    url(r'actionFlow', actionFlow),
+    url(r'^index$', Common.apitest),
+    url(r'^$', Common.apitest),
+    url(r'actionFlow', Common.actionFlow),
+    url(r'actionAllFlow', Common.actionAllFlow),
+    url(r'lookDetailReport', Common.lookDetailReport),
+    url(r'lookSummaryReport', Common.lookSummaryReport),
+
+    #Flow
+    url(r'^getFlowData$', Flow.getFlowData),
+    url(r'addFlow', Flow.addFlow),
+    url(r'editFlow', Flow.editFlow),
+    url(r'deleteFlow', Flow.deleteFlow),
+    url(r'getFlowDataByCreater', Flow.getFlowDataByCreater),
+    url(r'changeFlowState', Flow.changeFlowState),
+    url(r'filterFlowName', Flow.filterFlowName),
+    url(r'getFlowIdList', Flow.getFlowIdList),
+    url(r'filterPath$', Flow.filterPath),
+
+    #Node
+    url(r'getNodeData', Node.getNodeData),
+    url(r'getOutSql', Node.getOutSql),
+    url(r'getPreSql', Node.getPreSql),
+    url(r'getPostKey', Node.getPostKey),
+    url(r'getParameter', Node.getParameter),
+    url(r'deleteNode', Node.deleteNode),
+    url(r'addNode', Node.addNode),
+    url(r'editNode', Node.editNode),
+    url(r'savePostKey', Node.savePostKey),
+    url(r'editParameter', Node.editParameter),
+    url(r'editOutSql', Node.editOutSql),
+    url(r'editPreSql', Node.editPreSql),
+    url(r'changeNodeState', Node.changeNodeState),
+
+
+    #Statistics
+    url(r'getApiCounts', Statistics.getApiCounts),
+    url(r'transferFlowData', Statistics.transferFlowData),
+    url(r'manualStatistics', Statistics.manualStatistics),
+    url(r'filterApi', Statistics.filterApi),
+    url(r'saveRemark', Statistics.saveRemark),
+    url(r'filterPath2', Statistics.filterPath2),
+    url(r'quickAddNode', Statistics.quickAddNode),
+    url(r'getLastOrderId', Statistics.getLastOrderId),
+
+    #Task
+    url(r'getBuriedInfo', getBuriedInfo),
+    url(r'startWork', startWork),
+    url(r'startBeat', startBeat),
+
+    #Config
+    url(r'getEmail', Configs.getEmail),
+    url(r'emailChange', Configs.emailChange),
+    url(r'deleteDefaultVar', Configs.deleteDefaultVar),
+    url(r'addDefaultVar', Configs.addDefaultVar),
+    url(r'editDefaultVar', Configs.editDefaultVar),
+    url(r'getDefaultVar', Configs.getDefaultVar),
+
+
+    #Other
     url(r'sqlIndex', sqlIndex),
     url(r'register', register),
     url(r'clearModelCodeRecords', clearModelCodeRecords),
@@ -65,18 +94,9 @@ urlpatterns = [
     url(r'getUserInfo', getUserInfo),
     url(r'getTokenInfo', getTokenInfo),
     url(r'getTodoInfo', getTodoInfo),
-    url(r'getEmail', getEmail),
-    url(r'emailChange', emailChange),
-    url(r'actionAllFlow', actionAllFlow),
-    url(r'changeFlowState', changeFlowState),
-    url(r'changeNodeState', changeNodeState),
-    url(r'deleteDefaultVar', deleteDefaultVar),
-    url(r'addDefaultVar', addDefaultVar),
-    url(r'editDefaultVar', editDefaultVar),
-    url(r'getDefaultVar', getDefaultVar),
-    url(r'getBuriedInfo', getBuriedInfo),
-    url(r'startWork', startWork),
-    url(r'startBeat', startBeat),
+    url(r'plan', plan),
+
+    #Performance
     url(r'performance', performance),
     url(r'getPerformanceFlowData', getPerformanceFlowData),
     url(r'getPerformanceNodeData', getPerformanceNodeData),
@@ -107,21 +127,6 @@ urlpatterns = [
     url(r'getPerformanceDefaultVar', getPerformanceDefaultVar),
     url(r'getPerformanceConfig', getPerformanceConfig),
     url(r'savePerformanceConfig', savePerformanceConfig),
-    url(r'plan', plan),
-    url(r'lookDetailReport', lookDetailReport),
-    url(r'lookSummaryReport', lookSummaryReport),
-    url(r'getLog', getLog),
-    url(r'filterFlowName', filterFlowName),
-    url(r'filterPath$', filterPath),
-    url(r'saveUnStatisticsData', saveUnStatisticsData),
-    url(r'saveUnDoStatisticsData', saveUnDoStatisticsData),
-    url(r'transferFlowData', transferFlowData),
-    url(r'manualStatistics', manualStatistics),
-    url(r'filterApi', filterApi),
-    url(r'saveRemark', saveRemark),
-    url(r'filterPath2', filterPath2),
-    url(r'getFlowIdList', getFlowIdList),
-    url(r'quickAddNode', quickAddNode),
-    url(r'getLastOrderId', getLastOrderId),
+
     # url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_URL}),
 ]

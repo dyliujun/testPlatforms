@@ -170,10 +170,34 @@ var vm = new Vue({
             preSqlData: [],
             parameterData: [],
             currentRow: '',
+            nodeDisplayList:{
+                "order_id": true,
+                "node_name": true,
+                "method": true,
+                "path": true,
+                "parameter": true,
+                "pre_keys": false,
+                "run_env": true,
+                "expect_response": true,
+                "sleep_time": true,
+                "state": true,
+                "preSql":true,
+                "outSqlData":true,
+                "postKeyData":true,
+                "operation":true,
+                "sqlConfig":false,
+            },
+
+            isIndeterminate: true,
+            checkAll: false,
 
             //loading开关
             statisticsLoading: false,
             statisticsLoading2: false,
+            actionLoading: false,
+            actionLoading2: false,
+
+            //dialog
             dialogDrawer: false,
             dialogDrawer2: false,
             dialogDrawerQuickAddNode: false,
@@ -190,12 +214,13 @@ var vm = new Vue({
             deleteNodeDialogVisible: false,
             dialogDefaultVar: false,
             dialogCopyNode: false,
+            dialogEditNode: false,
             dialogTableVisible: false,
-            actionLoading: false,
-            actionLoading2: false
+            dialogTableDisplay: false
         }
     },
     methods: {
+        //公共
         handleClick(targetName) {
             if (targetName.name === "apitest") {
                 this.activeName = targetName.name;
@@ -284,6 +309,102 @@ var vm = new Vue({
                 );
             }
         },
+        handleSelect(key, keyPath) {
+            console.log(key, keyPath);
+        },
+        expandChange(row, expandedRows, index) {
+            this.loading = true;
+            this.actionLoading2 = true;
+            if (expandedRows.length > 1) {
+                this.expands = [];
+                if (row) {
+                    this.expands.splice(index, 1);
+                }
+                this.$refs.flowTableRef.toggleRowExpansion(expandedRows[0]);
+                this.nodeFlowId = row.pk;
+                this.filtrateFlowId = row.pk;
+                console.log("expandChange-nodeFlowId", this.nodeFlowId);
+                var dataPost = { "flow_id": row.pk };
+                this.$http.post(this.url + '/getNodeData', dataPost).then(
+                    function(data) {
+                        this.nodeData = data.body;
+                        this.currentRow = '';
+                        this.actionLoading2 = false;
+                    }
+                );
+            } else {
+                this.expands = [];
+                this.nodeFlowId = row.pk;
+                this.filtrateFlowId = row.pk;
+                console.log("expandChange-nodeFlowId", this.nodeFlowId);
+                var dataPost = { "flow_id": row.pk };
+                this.$http.post(this.url + '/getNodeData', dataPost).then(
+                    function(data) {
+                        this.nodeData = data.body;
+                        this.currentRow = '';
+                        this.actionLoading2 = false;
+                    }
+                );
+            }
+        },
+        actionFlow(index, row) {
+            this.actionLoading2 = true;
+            var dataPost = {
+                "flow_id": row.pk,
+            };
+            this.$http.post(this.url + '/actionFlow', dataPost).then(
+                function(data) {
+                    var responData = data.status;
+                    if (responData === 200 || responData === '200') {
+                        this.actionLoading2 = false;
+                        this.$message({
+                            showClose: true,
+                            message: '测试流接口执行成功，结果请查收邮件',
+                            type: 'success'
+                        });
+                        this.dialogReport = true;
+                    } else {
+                        this.actionLoading2 = false;
+                        this.$message({
+                            showClose: true,
+                            message: '很遗憾，接口执行失败',
+                            type: 'error'
+                        });
+                        this.dialogReport = true;
+                    }
+                }
+            );
+        },
+        actionAllFlow() {
+            var dataPost = {};
+            this.actionLoading = true;
+            this.$http.post(this.url + '/actionAllFlow', dataPost).then(
+                function(data) {
+                    var responData = data.status;
+                    if (responData === 200 || responData === '200') {
+                        this.actionLoading = false;
+                        this.$message({
+                            showClose: true,
+                            message: '测试流接口执行成功，结果请查收邮件',
+                            type: 'success'
+                        });
+                        this.dialogReport = true;
+                    } else {
+                        this.actionLoading = false;
+                        this.$message({
+                            showClose: true,
+                            message: '很遗憾，接口执行失败',
+                            type: 'error'
+                        });
+                        this.dialogReport = true;
+                    }
+                }
+            );
+
+
+        },
+
+        //统计
         filterPath2() {
             this.statisticsLoading = true;
             var dataPost = {
@@ -434,6 +555,8 @@ var vm = new Vue({
         },
         quickAdd(index, row) {
             console.log("quickAdd-row",row);
+            console.log("quickAdd-row.path",row.path);
+            console.log("quickAdd-row.summary",row.summary);
             this.dialogDrawerQuickAddNode = true;
             let flowId = "";
             for (i=0;i<this.FlowIdList.length;i++){
@@ -450,6 +573,8 @@ var vm = new Vue({
                             "remark": "已实现自动化",
                             "author": row.author,
                             "order_id": data.body.lastOrderId+1,
+                            "summary": row.summary,
+                            "path": row.path,
                             "flow_id": flowId
                         };
                         console.log("quickAdd-lableData",this.lableData)
@@ -459,6 +584,8 @@ var vm = new Vue({
                             "remark": "已实现自动化",
                             "author": row.author,
                             "order_id": 0,
+                            "summary": row.summary,
+                            "path": row.path,
                             "flow_id": flowId
                         };
                         console.log("quickAdd-lableData",this.lableData)
@@ -539,11 +666,6 @@ var vm = new Vue({
         transferFlowData(row) {
             var fromFlowId = row.pk;
         },
-        jumpSwagger(row) {
-            console.log("jumpSwagger—flow_name:", row.flow_name)
-            window.open("http://47.112.0.183:8801/swagger-ui.html?urls.primaryName=" + row.flow_name, "_blank")
-                // window.open(row.swagger_url, "_blank");
-        },
         openSwagger() {
             window.open("http://47.112.0.183:8801/swagger-ui.html", "_blank");
         },
@@ -597,139 +719,8 @@ var vm = new Vue({
                 }
             );
         },
-        filterPath() {
-            var dataPost = { "path": this.path.trim() };
-            this.$http.post(this.url + '/filterPath', dataPost).then(
-                function(data) {
-                    this.flowData = data.body[0].flowData;
-                    this.pageSize = 200;
-                }
-            );
-        },
-        filterFlowName() {
-            var dataPost = { "flow_name": this.flowName.trim() };
-            this.$http.post(this.url + '/filterFlowName', dataPost).then(
-                function(data) {
-                    this.flowData = data.body[0].flowData;
-                    this.pageSize = 200;
-                }
-            );
-        },
-        filtrateCreater() {
-            var dataPost = {
-                "creater": this.filtrate,
-                "page_size": 200
-            };
-            this.$http.post(this.url + '/getFlowDataByCreater', dataPost).then(
-                function(data) {
-                    var responData = data.status;
-                    if (responData === 200 || responData === '200') {
-                        this.flowData = data.body;
-                        this.pageSize = 200;
-                    } else {
-                        this.$message({
-                            showClose: true,
-                            message: '很遗憾，筛选失败',
-                            type: 'error'
-                        });
-                    }
-                }
-            );
-
-        },
         filterTag(value, row) {
             return row.remark === value;
-        },
-        copyApi(nodeData, index, row) {
-            this.nodeDataDefault = [row];
-            console.log("this.nodeDataDefault--->", this.nodeDataDefault);
-            this.dialogCopyNode = true;
-        },
-        addApi(nodeData, index, row) {
-            this.nodeDataDefault = [row];
-            console.log("this.nodeDataDefault--->", this.nodeDataDefault);
-            this.dialogTableVisible = true
-        },
-        startTask() {
-            this.$http.get(this.url + '/startTask').then(
-                function(data) {
-                    this.$message({
-                        showClose: true,
-                        message: 'Beat服务启动成功',
-                        type: 'success'
-                    });
-                }
-            );
-            this.$http.get(this.url + '/startWork').then(
-                function(data) {
-                    this.$message({
-                        showClose: true,
-                        message: 'Work服务启动成功',
-                        type: 'success'
-                    });
-                }
-            );
-        },
-        startWork() {
-            this.$http.get(this.url + '/startWork').then(
-                function(data) {
-                    this.$message({
-                        showClose: true,
-                        message: '恭喜你，Work服务启动成功',
-                        type: 'success'
-                    });
-                }
-            );
-        },
-        getDefaultVar() {
-            this.$http.get(this.url + '/getDefaultVar').then(
-                function(data) {
-                    this.varListData = data.body[0].varList;
-                }
-            );
-        },
-        handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
-            console.log("page_size:", val);
-            this.pageSize = val;
-            var dataPost = { "page_id": 1, "page_size": this.pageSize };
-            this.$http.post(this.url + '/getFlowData', dataPost).then(
-                function(data) {
-                    var responData = data.status;
-                    if (responData === 200 || responData === '200') {
-                        this.flowData = data.body[0].flowData;
-                        this.FlowIdList = data.body[0].FlowIdList;
-                    } else {
-                        this.$message({
-                            showClose: true,
-                            message: '很遗憾，切换分页失败',
-                            type: 'error'
-                        });
-                    }
-
-                }
-            );
-
-        },
-        handleCurrentChange(val) {
-            console.log(`当前页: ${val}`);
-            var dataPost = { "page_id": val, "page_size": this.pageSize };
-            this.$http.post(this.url + '/getFlowData', dataPost).then(
-                function(data) {
-                    var responData = data.status;
-                    if (responData === 200 || responData === '200') {
-                        this.FlowIdList = data.body[0].FlowIdList;
-                        this.flowData = data.body[0].flowData;
-                    } else {
-                        this.$message({
-                            showClose: true,
-                            message: '很遗憾，切换分页失败',
-                            type: 'error'
-                        });
-                    }
-
-                }
-            );
         },
         handleCurrentChange2(val) {
             console.log(`当前页: ${val}`);
@@ -782,46 +773,55 @@ var vm = new Vue({
                 }
             );
         },
-        handleOpen(key, keyPath) {
-            console.log(key, keyPath);
+        formatJson2() {
+            text = this.nodeDataDefault.parameter;
+            console.log(text);
+            if (text.indexOf("$") !== -1) {
+                this.nodeDataDefault.parameter = JSON.stringify(JSON.parse(text.replace(/\:\$/g, "\:\"\$").replace(/\$\,/g, "\$\"\,").replace(/\$\}/g, "\$\"\}").replace(/\[\$/g, "\[\"\$").replace(/\$\]/g, "\$\"\]")), null, 2);
+            } else {
+                this.nodeDataDefault.parameter = JSON.stringify(JSON.parse(text), null, 2);
+            }
         },
-        handleClose(key, keyPath) {
-            console.log(key, keyPath);
+
+        //测试流
+        jumpSwagger(row) {
+            console.log("jumpSwagger—flow_name:", row.flow_name)
+            window.open("http://47.112.0.183:8801/swagger-ui.html?urls.primaryName=" + row.flow_name, "_blank")
+                // window.open(row.swagger_url, "_blank");
         },
-        savePostKey() {
-            console.log("node_id", this.postKeyData.node_id);
-            console.log("postKeyData", this.postKeyData);
+        filterPath() {
+            var dataPost = { "path": this.path.trim() };
+            this.$http.post(this.url + '/filterPath', dataPost).then(
+                function(data) {
+                    this.flowData = data.body[0].flowData;
+                    this.pageSize = 200;
+                }
+            );
+        },
+        filterFlowName() {
+            var dataPost = { "flow_name": this.flowName.trim() };
+            this.$http.post(this.url + '/filterFlowName', dataPost).then(
+                function(data) {
+                    this.flowData = data.body[0].flowData;
+                    this.pageSize = 200;
+                }
+            );
+        },
+        filtrateCreater() {
             var dataPost = {
-                "node_id": this.postKeyData.node_id,
-                "post_keys": this.postKeyData.post_keys,
-                "post_keys_extractor": this.postKeyData.post_keys_extractor,
-                "post_keys_default": this.postKeyData.post_keys_default
+                "creater": this.filtrate,
+                "page_size": 200
             };
-            this.$http.post(this.url + '/savePostKey', dataPost).then(
+            this.$http.post(this.url + '/getFlowDataByCreater', dataPost).then(
                 function(data) {
                     var responData = data.status;
-                    console.log("responData=", responData);
                     if (responData === 200 || responData === '200') {
-                        console.log("this.nodeData=", this.nodeData);
-                        var nodeTable = document.getElementById('nodeTable');
-                        var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
-                        console.log('post_keys=', this.postKeyData.post_keys);
-                        if (this.postKeyData.post_keys != null || this.postKeyData.post_keys > 0 || this.postKeyData.post_keys !== "") {
-                            currentRow.getElementsByClassName("popoverButtonPost")[0].innerHTML = this.postKeyData.post_keys;
-                        } else {
-                            currentRow.getElementsByClassName("popoverButtonPost")[0].innerHTML = '无后置变量';
-                        }
-                        console.log("postKeyData=", this.postKeyData);
-                        this.$message({
-                            showClose: true,
-                            message: '恭喜你，后置变量提取设置成功',
-                            type: 'success'
-                        });
-                        this.dialogPostKey = false;
+                        this.flowData = data.body;
+                        this.pageSize = 200;
                     } else {
                         this.$message({
                             showClose: true,
-                            message: '很抱歉，后置变量提取设置失败',
+                            message: '很遗憾，筛选失败',
                             type: 'error'
                         });
                     }
@@ -829,223 +829,48 @@ var vm = new Vue({
             );
 
         },
-        saveParameter() {
-            var dataPost = {
-                "node_id": this.parameterData.key,
-                "parameter": this.parameterData.value
-            };
-            this.$http.post(this.url + '/editParameter', dataPost).then(
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+            console.log("page_size:", val);
+            this.pageSize = val;
+            var dataPost = { "page_id": 1, "page_size": this.pageSize };
+            this.$http.post(this.url + '/getFlowData', dataPost).then(
                 function(data) {
                     var responData = data.status;
                     if (responData === 200 || responData === '200') {
-                        for (i = 0; i < this.nodeData.length; i++) {
-                            if (this.parameterData.key === this.nodeData[i].pk) {
-                                this.nodeData[i].parameter = this.parameterData.value
-                            }
-                        }
-                        var nodeTable = document.getElementById('nodeTable');
-                        var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
-                        currentRow.getElementsByClassName("parameterButton")[0].innerHTML = this.parameterData.value;
-                        this.$message({
-                            showClose: true,
-                            message: '保存成功',
-                            type: 'success'
-                        });
-                        this.dialogParameter = false;
+                        this.flowData = data.body[0].flowData;
+                        this.FlowIdList = data.body[0].FlowIdList;
                     } else {
                         this.$message({
                             showClose: true,
-                            message: '很遗憾，保存失败',
+                            message: '很遗憾，切换分页失败',
                             type: 'error'
                         });
-                        this.dialogParameter = false;
                     }
 
                 }
             );
+
         },
-        saveOutSql() {
-            var dataPost = {
-                "node_id": this.outSqlData.node_id,
-                "ischechdb": this.outSqlData.ischechdb,
-                "sql_str": this.outSqlData.sql_str,
-                "sql_para": this.outSqlData.sql_para,
-                "expect_db": this.outSqlData.expect_db
-            };
-            this.$http.post(this.url + '/editOutSql', dataPost).then(
+        handleCurrentChange(val) {
+            console.log(`当前页: ${val}`);
+            var dataPost = { "page_id": val, "page_size": this.pageSize };
+            this.$http.post(this.url + '/getFlowData', dataPost).then(
                 function(data) {
                     var responData = data.status;
                     if (responData === 200 || responData === '200') {
-                        var nodeTable = document.getElementById('nodeTable');
-                        var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
-                        if (this.outSqlData.ischechdb === '1' || this.outSqlData.ischechdb === 1) {
-                            currentRow.getElementsByClassName("popoverButton")[0].innerHTML = '已开启';
-                        } else if (this.outSqlData.ischechdb === '0' || this.outSqlData.ischechdb === 0) {
-                            currentRow.getElementsByClassName("popoverButton")[0].innerHTML = '已关闭';
-                        } else {
-                            currentRow.getElementsByClassName("popoverButton")[0].innerHTML = '未配置';
-                        }
-                        this.dialogOutSql = false;
-                        this.$message({
-                            showClose: true,
-                            message: '保存成功',
-                            type: 'success'
-                        });
+                        this.FlowIdList = data.body[0].FlowIdList;
+                        this.flowData = data.body[0].flowData;
                     } else {
                         this.$message({
                             showClose: true,
-                            message: '很遗憾，保存失败',
+                            message: '很遗憾，切换分页失败',
                             type: 'error'
                         });
                     }
+
                 }
             );
-        },
-        savePreSql() {
-            var dataPost = {
-                "node_id": this.preSqlData.node_id,
-                "isexcute_pre_sql": this.preSqlData.isexcute_pre_sql,
-                "pre_sql_str": this.preSqlData.pre_sql_str,
-                "pre_sql_para": this.preSqlData.pre_sql_para,
-                "pre_sql_out": this.preSqlData.pre_sql_out,
-            };
-            this.$http.post(this.url + '/editPreSql', dataPost).then(
-                function(data) {
-                    var responData = data.status;
-                    if (responData === 200 || responData === '200') {
-                        var nodeTable = document.getElementById('nodeTable');
-                        var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
-                        if (this.preSqlData.isexcute_pre_sql === '1' || this.preSqlData.isexcute_pre_sql === 1) {
-                            currentRow.getElementsByClassName("popoverButtonPre")[0].innerHTML = '已开启';
-                        } else if (this.preSqlData.isexcute_pre_sql === '0' || this.preSqlData.isexcute_pre_sql === 0) {
-                            currentRow.getElementsByClassName("popoverButtonPre")[0].innerHTML = '已关闭';
-                        } else {
-                            currentRow.getElementsByClassName("popoverButtonPre")[0].innerHTML = '未配置';
-                        }
-                        this.dialogPreSql = false;
-                        this.$message({
-                            showClose: true,
-                            message: '保存成功',
-                            type: 'success'
-                        });
-                    } else {
-                        this.$message({
-                            showClose: true,
-                            message: '很遗憾，保存失败',
-                            type: 'error'
-                        });
-                    }
-                }
-            );
-        },
-        formatState: function(row, column) {
-            console.log(typeof row.state);
-            return row.state === 1 || row.state === '1' ? "已开启" : row.state === 0 || row.state === '0' ? "已关闭" : "未设置"
-        },
-        formatPreSql: function(row, column) {
-            return row.isexcute_pre_sql === 1 || row.isexcute_pre_sql === '1' ? '已开启' : row.isexcute_pre_sql === 0 || row.isexcute_pre_sql === '0' ? '已关闭' : '未配置'
-        },
-        formatOutSql: function(row, column) {
-            return row.ischechdb === 1 || row.ischechdb === '1' ? '已开启' : row.ischechdb === 0 || row.ischechdb === '0' ? '已关闭' : '未配置'
-        },
-        formatStateNode: function(row, column) {
-            console.log("row", row);
-            return row.state === 1 || row.state === '1' ? '已开启接口' : row.state === 0 || row.state === '0' ? '已关闭接口' : '未设置接口状态'
-        },
-        formatPostKey: function(row, formatPostKey) {
-            return row.post_keys != null && row.post_keys.length > 0 && row.post_keys !== "" ? row.post_keys : '无后置变量';
-        },
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        filterHandler(value, row, column) {
-            const property = column['prop'];
-            return row[property] === value;
-        },
-        getOutSql(index, row, even) {
-            this.currentRow = document.getElementById('nodeTable').getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row ")[0];
-            console.log('getOutSql-index', index);
-            console.log('getOutSql-this.currentRow', this.currentRow);
-            this.outSqlData = '';
-            this.dialogOutSql = true;
-            var dataPost = { "node_id": row.pk };
-            this.$http.post(this.url + '/getOutSql', dataPost).then(
-                function(data) {
-                    var responData = data.body;
-                    console.log("responData=", responData);
-                    this.outSqlData = {
-                        "node_id": row.pk,
-                        "ischechdb": responData[0].ischechdb,
-                        "sql_str": responData[0].sql_str,
-                        "sql_para": responData[0].sql_para,
-                        "expect_db": responData[0].expect_db
-                    };
-                    console.log("outSqlData=", this.outSqlData);
-                }
-            )
-        },
-        getPreSql(index, row) {
-            this.currentRow = document.getElementById('nodeTable').getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row ")[0];
-            console.log('getPreSql-index', index);
-            console.log('getPreSql-row', row);
-            console.log('getPreSql-this.currentRow', this.currentRow);
-            this.dialogPreSql = true;
-            this.preSqlData = '';
-            var dataPost = { "node_id": row.pk };
-            this.$http.post(this.url + '/getPreSql', dataPost).then(
-                function(data) {
-                    var responData = data.body;
-                    console.log("responData=", responData);
-                    this.preSqlData = {
-                        "node_id": row.pk,
-                        "isexcute_pre_sql": responData[0].isexcute_pre_sql,
-                        "pre_sql_str": responData[0].pre_sql_str,
-                        "pre_sql_para": responData[0].pre_sql_para,
-                        "pre_sql_out": responData[0].pre_sql_out
-                    };
-                    console.log("preSqlData=", this.preSqlData);
-                }
-            );
-        },
-        getPostKey(index, row) {
-            this.currentRow = document.getElementById('nodeTable').getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row ")[0];
-            console.log('getPostKey-index', index);
-            console.log('getPostKey-this.currentRow', this.currentRow);
-            this.postKeyData = '';
-            this.dialogPostKey = true;
-            var dataPost = { "node_id": row.pk };
-            this.$http.post(this.url + '/getPostKey', dataPost).then(
-                function(data) {
-                    var responData = data.body;
-                    console.log("responData=", responData);
-                    this.postKeyData = {
-                        "node_id": row.pk,
-                        "post_keys": responData[0].post_keys,
-                        "post_keys_extractor": responData[0].post_keys_extractor,
-                        "post_keys_default": responData[0].post_keys_default
-                    };
-                    console.log("postKeyDataGet=", this.postKeyData);
-                }
-            )
-        },
-        getParameter(index, row) {
-            this.currentRow = document.getElementById('nodeTable').getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row ")[0];
-            this.dialogParameter = true;
-            this.parameterData = '';
-            console.log('getParameter-index', index);
-            console.log('getParameter-this.currentRow', this.currentRow);
-            var dataPost = { "node_id": row.pk };
-            this.$http.post(this.url + '/getParameter', dataPost).then(
-                function(data) {
-                    var responData = data.body;
-                    console.log("responData=", responData);
-                    this.parameterData = {
-                        "key": row.pk,
-                        "value": responData[0].parameter
-                    };
-                    console.log("parameterData=", this.parameterData);
-                }
-            )
         },
         addFlowRow(flowData) {
             flowData.push({
@@ -1105,32 +930,6 @@ var vm = new Vue({
                     }
                 );
             }
-        },
-        addNodeRow(nodeData) {
-            nodeData.push({
-                "order_id": nodeData.length + 1,
-                "node_name": "",
-                "method": "",
-                "path": "",
-                "parameter": "",
-                "run_env": "",
-                "pre_keys": "",
-                "sleep_time": "",
-                "state": "0",
-                "expect_response": "",
-                "isexcute_pre_sql": "0",
-                "pre_sql_str": "",
-                "pre_sql_para": "",
-                "pre_sql_out": "",
-                "ischechdb": "0",
-                "sql_str": "",
-                "sql_para": "",
-                "expect_db": "",
-                'post_keys': "",
-                'post_keys_extractor': "",
-                'post_keys_default': "",
-                "pk": nodeData.length + 1
-            })
         },
         saveFlowEdit(index, row) {
             var flowTable = document.getElementById('flowTable');
@@ -1201,30 +1000,6 @@ var vm = new Vue({
                 }
             );
         },
-        changeNodeState(row) {
-            var dataPost = {
-                "state": row.state,
-                "node_id": row.pk
-            };
-            this.$http.post(this.url + '/changeNodeState', dataPost).then(
-                function(data) {
-                    var responData = data.status;
-                    if (responData === 200 || responData === '200') {
-                        this.$message({
-                            showClose: true,
-                            message: '配置接口状态成功',
-                            type: 'success'
-                        });
-                    } else {
-                        this.$message({
-                            showClose: true,
-                            message: '配置接口状态失败',
-                            type: 'error'
-                        });
-                    }
-                }
-            );
-        },
         dbEditFlowTable(index, row) {
             var flowTable = document.getElementById('flowTable');
             console.log("flowTable", flowTable);
@@ -1261,24 +1036,388 @@ var vm = new Vue({
             console.log("row", row);
             console.log("index", index);
         },
+        addFlowCancel() {
+            document.body.click();
+        },
+        deleteFlowRow(index, rows, row) {
+            console.log(row);
+            this.deleteFlowId = row.pk;
+            console.log(this.deleteFlowId);
+            console.log(index);
+            rows.splice(index, 1);
+            this.deleteFlowDialogVisible = true;
+        },
+        deleteFlowOk() {
+            this.loading = true;
+            console.log(this.deleteFlowId);
+            var dataPost = {
+                "flow_id": this.deleteFlowId,
+            };
+            this.$http.post(this.url + '/deleteFlow', dataPost).then(
+                function(data) {
+                    var responData = data.status;
+                    if (responData === 200 || responData === '200') {
+                        this.$message({
+                            showClose: true,
+                            message: '恭喜你，删除成功',
+                            type: 'success'
+                        });
+                        this.deleteFlowDialogVisible = false;
+                        window.location.reload();
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: '很遗憾，删除失败，快查查原因吧',
+                            type: 'error'
+                        });
+                    }
+                }
+            );
+        },
+        rowClick(row, column, event) {
+            console.log("this.currentRow=", this.currentRow);
+            console.log("column=", column);
+            this.currentRow = document.getElementById('nodeTable').getElementsByClassName("current-row")[0];
+            console.log("this.currentRow2=", this.currentRow);
+            this.currentRow = document.getElementById('nodeTable').getElementsByClassName("current-row")[0];
+            console.log("this.currentRow3=", this.currentRow);
+        },
+
+        //接口
+        copyApi(nodeData, index, row) {
+            this.nodeDataDefault = [row];
+            console.log("this.nodeDataDefault--->", this.nodeDataDefault);
+            this.dialogCopyNode = true;
+        },
+        addApi(nodeData, index, row) {
+            this.nodeDataDefault = [row];
+            console.log("this.nodeDataDefault--->", this.nodeDataDefault);
+            this.dialogTableVisible = true
+        },
+        savePostKey() {
+            console.log("node_id", this.postKeyData.node_id);
+            console.log("postKeyData", this.postKeyData);
+            var dataPost = {
+                "node_id": this.postKeyData.node_id,
+                "post_keys": this.postKeyData.post_keys,
+                "post_keys_extractor": this.postKeyData.post_keys_extractor,
+                "post_keys_default": this.postKeyData.post_keys_default
+            };
+            this.$http.post(this.url + '/savePostKey', dataPost).then(
+                function(data) {
+                    var responData = data.status;
+                    console.log("responData=", responData);
+                    if (responData === 200 || responData === '200') {
+                        console.log("this.nodeData=", this.nodeData);
+                        var nodeTable = document.getElementById('nodeTable');
+                        var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
+                        console.log('post_keys=', this.postKeyData.post_keys);
+                        if (this.postKeyData.post_keys != null || this.postKeyData.post_keys > 0 || this.postKeyData.post_keys !== "") {
+                            currentRow.getElementsByClassName("popoverButtonPost")[0].innerHTML = this.postKeyData.post_keys;
+                        } else {
+                            currentRow.getElementsByClassName("popoverButtonPost")[0].innerHTML = '无后置变量';
+                        }
+                        console.log("postKeyData=", this.postKeyData);
+                        this.$message({
+                            showClose: true,
+                            message: '恭喜你，后置变量提取设置成功',
+                            type: 'success'
+                        });
+                        this.dialogPostKey = false;
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: '很抱歉，后置变量提取设置失败',
+                            type: 'error'
+                        });
+                    }
+                }
+            );
+
+        },
+        formatPostKey: function(row, formatPostKey) {
+            return row.post_keys != null && row.post_keys.length > 0 && row.post_keys !== "" ? row.post_keys : '无后置变量';
+        },
+        getPostKey(index, row) {
+            this.currentRow = document.getElementById('nodeTable').getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row ")[0];
+            console.log('getPostKey-index', index);
+            console.log('getPostKey-this.currentRow', this.currentRow);
+            this.postKeyData = '';
+            this.dialogPostKey = true;
+            var dataPost = { "node_id": row.pk };
+            this.$http.post(this.url + '/getPostKey', dataPost).then(
+                function(data) {
+                    var responData = data.body;
+                    console.log("responData=", responData);
+                    this.postKeyData = {
+                        "node_id": row.pk,
+                        "post_keys": responData[0].post_keys,
+                        "post_keys_extractor": responData[0].post_keys_extractor,
+                        "post_keys_default": responData[0].post_keys_default
+                    };
+                    console.log("postKeyDataGet=", this.postKeyData);
+                }
+            )
+        },
+        saveParameter() {
+            var dataPost = {
+                "node_id": this.parameterData.key,
+                "parameter": this.parameterData.value,
+                "pre_keys": this.parameterData.pre_keys
+            };
+            this.$http.post(this.url + '/editParameter', dataPost).then(
+                function(data) {
+                    var responData = data.status;
+                    if (responData === 200 || responData === '200') {
+                        for (i = 0; i < this.nodeData.length; i++) {
+                            if (this.parameterData.key === this.nodeData[i].pk) {
+                                this.nodeData[i].parameter = this.parameterData.value;
+                                this.nodeData[i].pre_keys = this.parameterData.pre_keys
+                            }
+                        }
+                        var nodeTable = document.getElementById('nodeTable');
+                        var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
+                        currentRow.getElementsByClassName("parameterButton")[0].innerHTML = this.parameterData.value;
+                        // currentRow.getElementsByClassName("span_pre_keys")[0].innerHTML = this.parameterData.pre_keys;
+                        this.$message({
+                            showClose: true,
+                            message: '保存成功',
+                            type: 'success'
+                        });
+                        this.dialogParameter = false;
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: '很遗憾，保存失败',
+                            type: 'error'
+                        });
+                        this.dialogParameter = false;
+                    }
+
+                }
+            );
+        },
+        getParameter(index, row) {
+            this.currentRow = document.getElementById('nodeTable').getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row ")[0];
+            this.dialogParameter = true;
+            this.parameterData = '';
+            console.log('getParameter-index', index);
+            console.log('getParameter-this.currentRow', this.currentRow);
+            var dataPost = { "node_id": row.pk };
+            this.$http.post(this.url + '/getParameter', dataPost).then(
+                function(data) {
+                    var responData = data.body;
+                    console.log("getParameter-responData:", responData);
+                    this.parameterData = {
+                        "key": row.pk,
+                        "value": responData[0].parameter,
+                        "pre_keys": responData[0].pre_keys
+                    };
+                }
+            )
+        },
+        saveOutSql() {
+            var dataPost = {
+                "node_id": this.outSqlData.node_id,
+                "ischechdb": this.outSqlData.ischechdb,
+                "sql_str": this.outSqlData.sql_str,
+                "sql_para": this.outSqlData.sql_para,
+                "expect_db": this.outSqlData.expect_db
+            };
+            this.$http.post(this.url + '/editOutSql', dataPost).then(
+                function(data) {
+                    var responData = data.status;
+                    if (responData === 200 || responData === '200') {
+                        var nodeTable = document.getElementById('nodeTable');
+                        var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
+                        if (this.outSqlData.ischechdb === '1' || this.outSqlData.ischechdb === 1) {
+                            currentRow.getElementsByClassName("popoverButton")[0].innerHTML = '已开启';
+                        } else if (this.outSqlData.ischechdb === '0' || this.outSqlData.ischechdb === 0) {
+                            currentRow.getElementsByClassName("popoverButton")[0].innerHTML = '已关闭';
+                        } else {
+                            currentRow.getElementsByClassName("popoverButton")[0].innerHTML = '未配置';
+                        }
+                        this.dialogOutSql = false;
+                        this.$message({
+                            showClose: true,
+                            message: '保存成功',
+                            type: 'success'
+                        });
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: '很遗憾，保存失败',
+                            type: 'error'
+                        });
+                    }
+                }
+            );
+        },
+        formatOutSql: function(row, column) {
+            return row.ischechdb === 1 || row.ischechdb === '1' ? '已开启' : row.ischechdb === 0 || row.ischechdb === '0' ? '已关闭' : '未配置'
+        },
+        getOutSql(index, row, even) {
+            this.currentRow = document.getElementById('nodeTable').getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row ")[0];
+            console.log('getOutSql-index', index);
+            console.log('getOutSql-this.currentRow', this.currentRow);
+            this.outSqlData = '';
+            this.dialogOutSql = true;
+            var dataPost = { "node_id": row.pk };
+            this.$http.post(this.url + '/getOutSql', dataPost).then(
+                function(data) {
+                    var responData = data.body;
+                    console.log("responData=", responData);
+                    this.outSqlData = {
+                        "node_id": row.pk,
+                        "ischechdb": responData[0].ischechdb,
+                        "sql_str": responData[0].sql_str,
+                        "sql_para": responData[0].sql_para,
+                        "expect_db": responData[0].expect_db
+                    };
+                    console.log("outSqlData=", this.outSqlData);
+                }
+            )
+        },
+        savePreSql() {
+            var dataPost = {
+                "node_id": this.preSqlData.node_id,
+                "isexcute_pre_sql": this.preSqlData.isexcute_pre_sql,
+                "pre_sql_str": this.preSqlData.pre_sql_str,
+                "pre_sql_para": this.preSqlData.pre_sql_para,
+                "pre_sql_out": this.preSqlData.pre_sql_out,
+            };
+            this.$http.post(this.url + '/editPreSql', dataPost).then(
+                function(data) {
+                    var responData = data.status;
+                    if (responData === 200 || responData === '200') {
+                        var nodeTable = document.getElementById('nodeTable');
+                        var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
+                        if (this.preSqlData.isexcute_pre_sql === '1' || this.preSqlData.isexcute_pre_sql === 1) {
+                            currentRow.getElementsByClassName("popoverButtonPre")[0].innerHTML = '已开启';
+                        } else if (this.preSqlData.isexcute_pre_sql === '0' || this.preSqlData.isexcute_pre_sql === 0) {
+                            currentRow.getElementsByClassName("popoverButtonPre")[0].innerHTML = '已关闭';
+                        } else {
+                            currentRow.getElementsByClassName("popoverButtonPre")[0].innerHTML = '未配置';
+                        }
+                        this.dialogPreSql = false;
+                        this.$message({
+                            showClose: true,
+                            message: '保存成功',
+                            type: 'success'
+                        });
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: '很遗憾，保存失败',
+                            type: 'error'
+                        });
+                    }
+                }
+            );
+        },
+        formatPreSql: function(row, column) {
+            return row.isexcute_pre_sql === 1 || row.isexcute_pre_sql === '1' ? '已开启' : row.isexcute_pre_sql === 0 || row.isexcute_pre_sql === '0' ? '已关闭' : '未配置'
+        },
+        getPreSql(index, row) {
+            this.currentRow = document.getElementById('nodeTable').getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row ")[0];
+            console.log('getPreSql-index', index);
+            console.log('getPreSql-row', row);
+            console.log('getPreSql-this.currentRow', this.currentRow);
+            this.dialogPreSql = true;
+            this.preSqlData = '';
+            var dataPost = { "node_id": row.pk };
+            this.$http.post(this.url + '/getPreSql', dataPost).then(
+                function(data) {
+                    var responData = data.body;
+                    console.log("responData=", responData);
+                    this.preSqlData = {
+                        "node_id": row.pk,
+                        "isexcute_pre_sql": responData[0].isexcute_pre_sql,
+                        "pre_sql_str": responData[0].pre_sql_str,
+                        "pre_sql_para": responData[0].pre_sql_para,
+                        "pre_sql_out": responData[0].pre_sql_out
+                    };
+                    console.log("preSqlData=", this.preSqlData);
+                }
+            );
+        },
+        formatState: function(row, column) {
+            console.log(typeof row.state);
+            return row.state === 1 || row.state === '1' ? "已开启" : row.state === 0 || row.state === '0' ? "已关闭" : "未设置"
+        },
+        formatStateNode: function(row, column) {
+            console.log("row", row);
+            return row.state === 1 || row.state === '1' ? '已开启接口' : row.state === 0 || row.state === '0' ? '已关闭接口' : '未设置接口状态'
+        },
+        addNodeRow(nodeData) {
+            nodeData.push({
+                "order_id": nodeData.length + 1,
+                "node_name": "",
+                "method": "",
+                "path": "",
+                "parameter": "",
+                "run_env": "",
+                "pre_keys": "",
+                "sleep_time": "",
+                "state": "0",
+                "expect_response": "",
+                "isexcute_pre_sql": "0",
+                "pre_sql_str": "",
+                "pre_sql_para": "",
+                "pre_sql_out": "",
+                "ischechdb": "0",
+                "sql_str": "",
+                "sql_para": "",
+                "expect_db": "",
+                'post_keys': "",
+                'post_keys_extractor': "",
+                'post_keys_default': "",
+                "pk": nodeData.length + 1
+            })
+        },
+        changeNodeState(row) {
+            var dataPost = {
+                "state": row.state,
+                "node_id": row.pk
+            };
+            this.$http.post(this.url + '/changeNodeState', dataPost).then(
+                function(data) {
+                    var responData = data.status;
+                    if (responData === 200 || responData === '200') {
+                        this.$message({
+                            showClose: true,
+                            message: '配置接口状态成功',
+                            type: 'success'
+                        });
+                    } else {
+                        this.$message({
+                            showClose: true,
+                            message: '配置接口状态失败',
+                            type: 'error'
+                        });
+                    }
+                }
+            );
+        },
         editNodeTable(index, row) {
-            this.dialogDrawer = true;
-            this.nodeDataDefault = row;
+            this.dialogEditNode = true;
+            this.nodeDataDefault = [row];
             this.filtrateFlowId = row.flow_id;
         },
         dbEditNodeTable(index, row) {
             console.log("this.filtrateFlowId--->", this.filtrateFlowId);
             console.log("index--->", index);
+            console.log("row--->", row);
             console.log("this.currentRow--->", this.currentRow);
-            console.log("this.nodeData--->", this.nodeData);
             for (i = 0; i < this.nodeData.length; i++) {
                 if (index.pk === this.nodeData[i].pk) {
                     this.nodeData[i].parameter = index.parameter
                 }
             }
-            var nodeTable = document.getElementById('nodeTable');
-            var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
-            for (var i = 0; i < currentRow.children.length - 5; i++) {
+            const nodeTable = document.getElementById('nodeTable');
+            const currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
+
+            for (i = 0; i < currentRow.children.length - 5; i++) {
                 var cell = currentRow.children[i].getElementsByClassName('cell')[0];
                 var elInput = cell.children[0];
                 var elSpan = cell.children[1];
@@ -1286,8 +1425,8 @@ var vm = new Vue({
                 elSpan.style.display = 'none';
                 cell.style.color = 'blue';
             }
-            currentRow.children[13].getElementsByClassName('saveNode')[0].style.display = 'block';
-            currentRow.children[13].getElementsByClassName('editNode')[0].style.display = 'none';
+            currentRow.getElementsByClassName('saveNode')[0].style.display = 'block';
+            currentRow.getElementsByClassName('editNode')[0].style.display = 'none';
         },
         saveNode() {
             console.log("nodeDataDefault--->", this.nodeDataDefault);
@@ -1403,8 +1542,8 @@ var vm = new Vue({
                             type: 'success'
                         });
                         currentRow.getElementsByClassName("parameterButton")[0].innerHTML = row.parameter;
-                        currentRow.children[13].getElementsByClassName('saveNode')[0].style.display = 'none';
-                        currentRow.children[13].getElementsByClassName('editNode')[0].style.display = 'block';
+                        currentRow.getElementsByClassName('saveNode')[0].style.display = 'none';
+                        currentRow.getElementsByClassName('editNode')[0].style.display = 'block';
                     } else {
                         this.$message({
                             showClose: true,
@@ -1415,31 +1554,6 @@ var vm = new Vue({
                 }
             );
             this.currentRow = currentRow;
-        },
-        emailChange() {
-            var dataPost = {
-                "email": this.recipients
-            };
-            this.$http.post(this.url + '/emailChange', dataPost).then(
-                function(data) {
-                    var responData = data.status;
-                    if (responData === 200 || responData === '200') {
-                        this.$message({
-                            showClose: true,
-                            message: '恭喜你，邮箱修改成功',
-                            type: 'success'
-                        });
-                        this.dialogEmailChange = false;
-                    } else {
-                        this.$message({
-                            showClose: true,
-                            message: '很遗憾，邮箱修改失败',
-                            type: 'error'
-                        });
-                        this.dialogEmailChange = false;
-                    }
-                }
-            );
         },
         addNodeOk(nodeDataDefaultAdd) {
             this.loading = true;
@@ -1613,11 +1727,13 @@ var vm = new Vue({
                 );
             }
         },
-        addFlowCancel() {
-            document.body.click();
-        },
-        addNodeCancel() {
-            document.body.click();
+        formatJson(parameterData) {
+            text = parameterData.value;
+            if (text.indexOf("$") !== -1) {
+                this.parameterData.value = JSON.stringify(JSON.parse(text.replace(/\:\$/g, "\:\"\$").replace(/\$\,/g, "\$\"\,").replace(/\$\}/g, "\$\"\}").replace(/\[\$/g, "\[\"\$").replace(/\$\]/g, "\$\"\]")), null, 2);
+            } else {
+                this.parameterData.value = JSON.stringify(JSON.parse(text), null, 2);
+            }
         },
         pCancel(row) {
             document.body.click();
@@ -1628,92 +1744,8 @@ var vm = new Vue({
             this.dialogManualStatistics = false;
             this.dialogUnDoStatistics = false;
         },
-        expandChange(row, expandedRows, index) {
-            this.loading = true;
-            this.actionLoading2 = true;
-            if (expandedRows.length > 1) {
-                this.expands = [];
-                if (row) {
-                    this.expands.splice(index, 1);
-                }
-                this.$refs.flowTableRef.toggleRowExpansion(expandedRows[0]);
-                this.nodeFlowId = row.pk;
-                this.filtrateFlowId = row.pk;
-                console.log("expandChange-nodeFlowId", this.nodeFlowId);
-                var dataPost = { "flow_id": row.pk };
-                this.$http.post(this.url + '/getNodeData', dataPost).then(
-                    function(data) {
-                        this.nodeData = data.body;
-                        this.currentRow = '';
-                        this.actionLoading2 = false;
-                    }
-                );
-            } else {
-                this.expands = [];
-                this.nodeFlowId = row.pk;
-                this.filtrateFlowId = row.pk;
-                console.log("expandChange-nodeFlowId", this.nodeFlowId);
-                var dataPost = { "flow_id": row.pk };
-                this.$http.post(this.url + '/getNodeData', dataPost).then(
-                    function(data) {
-                        this.nodeData = data.body;
-                        this.currentRow = '';
-                        this.actionLoading2 = false;
-                    }
-                );
-            }
-        },
-        formatJson(parameterData) {
-            text = parameterData.value;
-            if (text.indexOf("$") !== -1) {
-                this.parameterData.value = JSON.stringify(JSON.parse(text.replace(/\:\$/g, "\:\"\$").replace(/\$\,/g, "\$\"\,").replace(/\$\}/g, "\$\"\}").replace(/\[\$/g, "\[\"\$").replace(/\$\]/g, "\$\"\]")), null, 2);
-            } else {
-                this.parameterData.value = JSON.stringify(JSON.parse(text), null, 2);
-            }
-        },
-        formatJson2() {
-            text = this.nodeDataDefault.parameter;
-            console.log(text);
-            if (text.indexOf("$") !== -1) {
-                this.nodeDataDefault.parameter = JSON.stringify(JSON.parse(text.replace(/\:\$/g, "\:\"\$").replace(/\$\,/g, "\$\"\,").replace(/\$\}/g, "\$\"\}").replace(/\[\$/g, "\[\"\$").replace(/\$\]/g, "\$\"\]")), null, 2);
-            } else {
-                this.nodeDataDefault.parameter = JSON.stringify(JSON.parse(text), null, 2);
-            }
-        },
-        deleteFlowRow(index, rows, row) {
-            console.log(row);
-            this.deleteFlowId = row.pk;
-            console.log(this.deleteFlowId);
-            console.log(index);
-            rows.splice(index, 1);
-            this.deleteFlowDialogVisible = true;
-        },
-        deleteFlowOk() {
-            this.loading = true;
-            console.log(this.deleteFlowId);
-            var dataPost = {
-                "flow_id": this.deleteFlowId,
-            };
-            this.$http.post(this.url + '/deleteFlow', dataPost).then(
-                function(data) {
-                    var responData = data.status;
-                    if (responData === 200 || responData === '200') {
-                        this.$message({
-                            showClose: true,
-                            message: '恭喜你，删除成功',
-                            type: 'success'
-                        });
-                        this.deleteFlowDialogVisible = false;
-                        window.location.reload();
-                    } else {
-                        this.$message({
-                            showClose: true,
-                            message: '很遗憾，删除失败，快查查原因吧',
-                            type: 'error'
-                        });
-                    }
-                }
-            );
+        addNodeCancel() {
+            document.body.click();
         },
         deleteNodeRow(index, rows, row) {
             this.deleteNodeId = row.pk;
@@ -1746,92 +1778,87 @@ var vm = new Vue({
                 }
             );
         },
-        rowClick(row, column, event) {
-            console.log("this.currentRow=", this.currentRow);
-            console.log("column=", column);
-            this.currentRow = document.getElementById('nodeTable').getElementsByClassName("current-row")[0];
-            console.log("this.currentRow2=", this.currentRow);
-            this.currentRow = document.getElementById('nodeTable').getElementsByClassName("current-row")[0];
-            console.log("this.currentRow3=", this.currentRow);
-        },
-        getLog() {
-            console.log("====getLog===");
-            i = 0;
-            while (i < 3) {
-                var dataPost = {};
-                this.$http.post(this.url + '/getLog', dataPost).then(
-                    function(data) {
-                        var responData = data.status;
-                        if (responData === 200 || responData === '200') {
-                            var t = data.body[0].log;
-                            var texts = t.split('==>');
-                            for (var i = 0; i < len(texts); i++) {
-                                this.text = texts[i]
-                            }
+        handleCheckAllChange(val) {
+            console.log("handleCheckAllChange-val",val);
+            console.log("handleCheckAllChange-this.nodeDisplayList",this.nodeDisplayList);
 
-                        } else {
-
-                        }
-                    }
-                );
-                i++;
-            }
+            this.isIndeterminate = false;
         },
-        actionFlow(index, row) {
-            this.actionLoading2 = true;
+        handleCheckedHeaderChange(value) {
+            console.log("handleCheckedHeaderChange-val",value);
+            console.log("handleCheckedHeaderChange-this.nodeDisplayList",this.nodeDisplayList);
+            let checkedCount = value.length;
+            this.isIndeterminate = checkedCount > 0
+        },
+
+
+
+        //定时任务
+        startTask() {
+            this.$http.get(this.url + '/startTask').then(
+                function(data) {
+                    this.$message({
+                        showClose: true,
+                        message: 'Beat服务启动成功',
+                        type: 'success'
+                    });
+                }
+            );
+            this.$http.get(this.url + '/startWork').then(
+                function(data) {
+                    this.$message({
+                        showClose: true,
+                        message: 'Work服务启动成功',
+                        type: 'success'
+                    });
+                }
+            );
+        },
+        startWork() {
+            this.$http.get(this.url + '/startWork').then(
+                function(data) {
+                    this.$message({
+                        showClose: true,
+                        message: '恭喜你，Work服务启动成功',
+                        type: 'success'
+                    });
+                }
+            );
+        },
+
+        //接口配置
+        getDefaultVar() {
+            this.$http.get(this.url + '/getDefaultVar').then(
+                function(data) {
+                    this.varListData = data.body[0].varList;
+                }
+            );
+        },
+        emailChange() {
             var dataPost = {
-                "flow_id": row.pk,
+                "email": this.recipients
             };
-            this.$http.post(this.url + '/actionFlow', dataPost).then(
+            this.$http.post(this.url + '/emailChange', dataPost).then(
                 function(data) {
                     var responData = data.status;
                     if (responData === 200 || responData === '200') {
-                        this.actionLoading2 = false;
                         this.$message({
                             showClose: true,
-                            message: '测试流接口执行成功，结果请查收邮件',
+                            message: '恭喜你，邮箱修改成功',
                             type: 'success'
                         });
-                        this.dialogReport = true;
+                        this.dialogEmailChange = false;
                     } else {
-                        this.actionLoading2 = false;
                         this.$message({
                             showClose: true,
-                            message: '很遗憾，接口执行失败',
+                            message: '很遗憾，邮箱修改失败',
                             type: 'error'
                         });
-                        this.dialogReport = true;
+                        this.dialogEmailChange = false;
                     }
                 }
             );
         },
-        actionAllFlow() {
-            var dataPost = {};
-            this.actionLoading = true;
-            this.$http.post(this.url + '/actionAllFlow', dataPost).then(
-                function(data) {
-                    var responData = data.status;
-                    if (responData === 200 || responData === '200') {
-                        this.actionLoading = false;
-                        this.$message({
-                            showClose: true,
-                            message: '测试流接口执行成功，结果请查收邮件',
-                            type: 'success'
-                        });
-                        this.dialogReport = true;
-                    } else {
-                        this.actionLoading = false;
-                        this.$message({
-                            showClose: true,
-                            message: '很遗憾，接口执行失败',
-                            type: 'error'
-                        });
-                        this.dialogReport = true;
-                    }
-                }
-            );
 
-
-        }
     }
 });

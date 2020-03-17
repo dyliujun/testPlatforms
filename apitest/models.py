@@ -20,7 +20,7 @@ class ApiStatisticsNew(models.Model):
 
 class TestdataFlowNew(models.Model):
     flow_id = models.AutoField(primary_key=True)
-    flow_code = models.IntegerField(max_length=20)
+    flow_code = models.IntegerField()
     flow_name = models.CharField(max_length=255, blank=True, null=True)
     priority = models.IntegerField(blank=True, null=True)
     account = models.CharField(max_length=255)
