@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: '#app',
     mounted: function() {
-        var dataPost = { "page_id": 1, "page_size": 18 };
+        var dataPost = { "page_id": 1, "page_size": 30 };
         this.$http.post(this.url + '/getFlowData', dataPost).then(
             function(data) {
                 this.FlowlistSize = data.body[0].size;
@@ -42,9 +42,9 @@ var vm = new Vue({
             order_id: "",
 
             //分页大小
-            page_size: 18,
+            page_size: 30,
             apiSize: 1001,
-            pageSize: 18,
+            pageSize: 30,
             FlowlistSize: 100,
             currentPage: 1,
 
@@ -225,7 +225,7 @@ var vm = new Vue({
             if (targetName.name === "apitest") {
                 this.activeName = targetName.name;
                 console.log(this.activeName);
-                var dataPost = { "page_id": 1, "page_size": 18 };
+                var dataPost = { "page_id": 1, "page_size": 30 };
                 this.$http.post(this.url + '/getFlowData', dataPost).then(
                     function(data) {
                         this.FlowlistSize = data.body[0].size;
@@ -238,7 +238,7 @@ var vm = new Vue({
             } else if (targetName.name === "config") {
                 this.activeName = targetName.name;
                 console.log(this.activeName);
-                var dataPost = { "page_id": 1, "page_size": 15 };
+                var dataPost = { "page_id": 1, "page_size": 30 };
                 this.$http.post(this.url + '/getFlowData', dataPost).then(
                     function(data) {
                         this.FlowlistSize = data.body[0].size;
@@ -255,7 +255,7 @@ var vm = new Vue({
                 this.statisticsLoading = true;
                 dataPost = {
                     "page_id": 1,
-                    "page_size": 15
+                    "page_size": 30
                 };
                 this.$http.post(this.url + '/getApiCounts', dataPost).then(
                     function(data) {
@@ -676,7 +676,7 @@ var vm = new Vue({
             this.allApiJsonList = [];
             var dataPost = {
                 "page_id": 1,
-                "page_size": 15
+                "page_size": 30
             };
             this.$http.post(this.url + '/manualStatistics', dataPost).then(
                 function(data) {
@@ -726,7 +726,7 @@ var vm = new Vue({
             console.log(`当前页: ${val}`);
             var dataPost = {
                 "page_id": val,
-                "page_size": 15
+                "page_size": 30
             };
             this.$http.post(this.url + '/getApiCounts', dataPost).then(
                 function(data) {
@@ -1431,29 +1431,29 @@ var vm = new Vue({
         saveNode() {
             console.log("nodeDataDefault--->", this.nodeDataDefault);
             var dataPost = {
-                "order_id": this.nodeDataDefault.order_id,
+                "order_id": this.nodeDataDefault[0].order_id,
                 "flow_id": this.filtrateFlowId,
-                "node_name": this.nodeDataDefault.node_name,
-                "method": this.nodeDataDefault.method,
-                "path": this.nodeDataDefault.path.trim(),
-                "parameter": this.nodeDataDefault.parameter,
-                "run_env": this.nodeDataDefault.run_env,
-                "pre_keys": this.nodeDataDefault.pre_keys,
-                "sleep_time": this.nodeDataDefault.sleep_time,
-                "state": this.nodeDataDefault.state,
-                "expect_response": this.nodeDataDefault.expect_response,
-                "isexcute_pre_sql": this.nodeDataDefault.isexcute_pre_sql,
-                "pre_sql_str": this.nodeDataDefault.pre_sql_str,
-                "pre_sql_para": this.nodeDataDefault.pre_sql_para,
-                "pre_sql_out": this.nodeDataDefault.pre_sql_out,
-                "ischechdb": this.nodeDataDefault.ischechdb,
-                "sql_str": this.nodeDataDefault.sql_str,
-                "sql_para": this.nodeDataDefault.sql_para,
-                "expect_db": this.nodeDataDefault.expect_db,
-                'post_keys': this.nodeDataDefault.post_keys,
-                'post_keys_extractor': this.nodeDataDefault.post_keys_extractor,
-                'post_keys_default': this.nodeDataDefault.post_keys_default,
-                "pk": this.nodeDataDefault.pk
+                "node_name": this.nodeDataDefault[0].node_name,
+                "method": this.nodeDataDefault[0].method,
+                "path": this.nodeDataDefault[0].path,
+                "parameter": this.nodeDataDefault[0].parameter,
+                "run_env": this.nodeDataDefault[0].run_env,
+                "pre_keys": this.nodeDataDefault[0].pre_keys,
+                "sleep_time": this.nodeDataDefault[0].sleep_time,
+                "state": this.nodeDataDefault[0].state,
+                "expect_response": this.nodeDataDefault[0].expect_response,
+                "isexcute_pre_sql": this.nodeDataDefault[0].isexcute_pre_sql,
+                "pre_sql_str": this.nodeDataDefault[0].pre_sql_str,
+                "pre_sql_para": this.nodeDataDefault[0].pre_sql_para,
+                "pre_sql_out": this.nodeDataDefault[0].pre_sql_out,
+                "ischechdb": this.nodeDataDefault[0].ischechdb,
+                "sql_str": this.nodeDataDefault[0].sql_str,
+                "sql_para": this.nodeDataDefault[0].sql_para,
+                "expect_db": this.nodeDataDefault[0].expect_db,
+                'post_keys': this.nodeDataDefault[0].post_keys,
+                'post_keys_extractor': this.nodeDataDefault[0].post_keys_extractor,
+                'post_keys_default': this.nodeDataDefault[0].post_keys_default,
+                "pk": this.nodeDataDefault[0].pk
             };
             this.$http.post(this.url + '/editNode', dataPost).then(
                 function(data) {
@@ -1465,15 +1465,16 @@ var vm = new Vue({
                             message: '恭喜你，保存成功',
                             type: 'success'
                         });
-                        this.dialogDrawer = false;
+
+                        var nodeTable = document.getElementById('nodeTable');
+                        var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
                         if (this.filtrateFlowId !== this.nodeFlowId) {
-                            window.location.reload();
+                            // window.location.reload();
+                            currentRow.remove()
                         } else {
-                            var nodeTable = document.getElementById('nodeTable');
-                            var currentRow = nodeTable.getElementsByClassName('el-table__body')[0].getElementsByClassName("current-row")[0];
                             currentRow.getElementsByClassName("parameterButton")[0].innerHTML = this.nodeDataDefault.parameter;
-                            this.dialogDrawer = false;
                         }
+                        this.dialogDrawer = false;
                     } else {
                         this.$message({
                             showClose: true,
@@ -1511,7 +1512,7 @@ var vm = new Vue({
                 "flow_id": this.filtrateFlowId,
                 "node_name": row.node_name,
                 "method": row.method,
-                "path": row.path.trim(),
+                "path": row.path,
                 "parameter": row.parameter,
                 "run_env": row.run_env,
                 "pre_keys": row.pre_keys,
@@ -1569,7 +1570,7 @@ var vm = new Vue({
                     "flow_id": this.filtrateFlowId,
                     "node_name": nodeDataDefaultAdd[0].node_name,
                     "method": nodeDataDefaultAdd[0].method,
-                    "path": nodeDataDefaultAdd[0].path.trim(),
+                    "path": nodeDataDefaultAdd[0].path,
                     "parameter": nodeDataDefaultAdd[0].parameter,
                     "run_env": nodeDataDefaultAdd[0].run_env,
                     "pre_keys": nodeDataDefaultAdd[0].pre_keys,
@@ -1607,7 +1608,7 @@ var vm = new Vue({
                                     "flow_id": this.filtrateFlowId,
                                     "node_name": nodeDataDefaultAdd[0].node_name,
                                     "method": nodeDataDefaultAdd[0].method,
-                                    "path": nodeDataDefaultAdd[0].path.trim(),
+                                    "path": nodeDataDefaultAdd[0].path,
                                     "parameter": nodeDataDefaultAdd[0].parameter,
                                     "run_env": nodeDataDefaultAdd[0].run_env,
                                     "pre_keys": nodeDataDefaultAdd[0].pre_keys,
@@ -1653,7 +1654,7 @@ var vm = new Vue({
                     "flow_id": this.filtrateFlowId,
                     "node_name": nodeDataDefault[0].node_name,
                     "method": nodeDataDefault[0].method,
-                    "path": nodeDataDefault[0].path.trim(),
+                    "path": nodeDataDefault[0].path,
                     "parameter": nodeDataDefault[0].parameter,
                     "run_env": nodeDataDefault[0].run_env,
                     "pre_keys": nodeDataDefault[0].pre_keys,

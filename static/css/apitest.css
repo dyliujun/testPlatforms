@@ -1,0 +1,73 @@
+.el-table .cell {
+    padding-right: 10px;
+    overflow: inherit;
+    text-overflow: ellipsis;
+}
+
+.el-checkbox {
+    margin: 1px;
+    padding: 0;
+}
+
+.el-select .el-input {
+    width: 140px;
+}
+
+.input-with-select .el-input-group__prepend {
+    background-color: #ecebff;
+    color: #3941ff;
+    font-weight: bolder;
+}
+
+.el-tooltip__popper {
+    max-width: 40%
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+}
+
+.el-popover {
+    background: rgb(177, 176, 176) !important;
+}
+
+span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: 2px;
+    padding: 2px;
+}
+
+.el-checkbox__label {
+    display: inline-flex;
+}
+
+.popover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 1px;
+    z-index: 1060;
+    display: block;
+    max-width: 276px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-style: normal;
+    font-weight: 500;
+    line-height: 2.4;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: none;
+    text-transform: none;
+    letter-spacing: normal;
+    word-break: normal;
+    word-spacing: normal;
+    white-space: normal;
+    line-break: auto;
+    font-size: .875rem;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: padding-box;
+}

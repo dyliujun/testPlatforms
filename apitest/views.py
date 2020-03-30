@@ -230,7 +230,7 @@ class Flow:
         flowDataList = []
         new_id=[]
         newFlowDataList=[]
-        for id in TestdataNodeNew.objects.filter(path__exact=path).order_by("pk"):
+        for id in TestdataNodeNew.objects.filter(path__icontains=path).order_by("pk"):
             for e in TestdataFlowNew.objects.filter(flow_id__exact=id.flow_id).order_by("pk"):
                 flowDataList.insert(10000,
                                     {

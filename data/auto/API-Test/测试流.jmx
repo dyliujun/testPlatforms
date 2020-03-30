@@ -121,7 +121,7 @@
           <stringProp name="checkQuery"></stringProp>
           <stringProp name="connectionAge">5000</stringProp>
           <stringProp name="dataSource">dbcheckpool</stringProp>
-          <stringProp name="dbUrl">jdbc:mysql://47.115.35.45:3306?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true</stringProp>
+          <stringProp name="dbUrl">jdbc:mysql://192.168.241.13:3306?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true</stringProp>
           <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
           <boolProp name="keepAlive">true</boolProp>
           <stringProp name="password">12345678</stringProp>
@@ -136,7 +136,7 @@
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="获取流程数据" enabled="true">
           <stringProp name="dataSource">dbcheckpool</stringProp>
           <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="query">select flow_id,flow_name,account,password from automation.testdata_flow_new where run_env like &apos;%${envname}%&apos; and state = 1 and flow_id = 21 order by flow_code</stringProp>
+          <stringProp name="query">select flow_id,flow_name,account,password from automation.testdata_flow_new where run_env like &apos;%${envname}%&apos; and state = 1 and flow_id = 6 order by flow_code</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="variableNames">flow_id,flow_name,account,password</stringProp>
@@ -383,7 +383,7 @@ if(vars.get(&quot;envname&quot;).equals(&quot;test&quot;) &amp;&amp; vars.get(&q
 	if(pre_sql != null &amp;&amp; pre_sql.length()&gt;0)
 	{
 		String pre_sql_paras = vars.get(&quot;pre_sql_para_&quot;+vars.get(&quot;N&quot;));
-		
+
 		/*如果有参数字段需要处理，替换处理参数字段的值为变量的值*/
 		if(pre_sql_paras != null &amp;&amp; pre_sql_paras.length()&gt;0){
 			pre_sql_paras = pre_sql_paras.trim();
@@ -444,7 +444,7 @@ if(vars.get(&quot;post_keys_default_&quot;+n) == null || vars.get(&quot;post_key
 	vars.put(&quot;post_keys_default_&quot;+n,&quot;NULL&quot;);
 	}
 
-/*判断请求是get还是post，如果是get请求不支持body传参需要把参数化放到url路径中*/ 
+/*判断请求是get还是post，如果是get请求不支持body传参需要把参数化放到url路径中*/
 String urlPath = vars.get(&quot;path_&quot;+n);
 if(vars.get(&quot;method_&quot;+n).equalsIgnoreCase(&quot;GET&quot;)){
 	urlPath = urlPath + &quot;?&quot; + para;
@@ -488,7 +488,7 @@ if(vars.get(&quot;envname&quot;).equals(&quot;test&quot;) &amp;&amp; vars.get(&q
 	if(sql != null &amp;&amp; sql.length()&gt;0)
 	{
 		String sql_paras = vars.get(&quot;sql_para_&quot;+vars.get(&quot;N&quot;));
-		
+
 		/*如果有参数字段需要处理，替换处理参数字段的值为变量的值*/
 		if(sql_paras != null &amp;&amp; sql_paras.length()&gt;0){
 			sql_paras = sql_paras.trim();
@@ -539,7 +539,7 @@ if(expect_values != null &amp;&amp; expect_values.length()&gt;0)
   }
   String[] expect_item = expect_values.split(&quot;\\|&quot;);
   for (int i = 0; i &lt; expect_item.length; i++){
-  	
+
       if(!response.contains(expect_item[i]))
       {
         isok = false;

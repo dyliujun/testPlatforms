@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="Shortcut Icon" href="../../static/icon/guanjiaIcon.jpg" type="image/x-icon" />
+    <link rel="Shortcut Icon" href="../../static/icon/guanjiaIcon.jpg" type="image/x-icon"/>
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
@@ -23,13 +23,16 @@
             overflow: inherit;
             text-overflow: ellipsis;
         }
+
         .el-checkbox {
             margin: 1px;
             padding: 0;
         }
+
         .el-select .el-input {
             width: 140px;
         }
+
         .input-with-select .el-input-group__prepend {
             background-color: #ecebff;
             color: #3941ff;
@@ -44,6 +47,7 @@
             width: 200px;
             min-height: 400px;
         }
+
         .el-popover {
             background: rgb(177, 176, 176) !important;
         }
@@ -56,9 +60,11 @@
             margin-left: 2px;
             padding: 2px;
         }
+
         .el-checkbox__label {
             display: inline-flex;
         }
+
         .popover {
             position: absolute;
             top: 0;
@@ -118,9 +124,9 @@
         <button type="button" class="btn btn-danger" style="line-height: 2.8;position: absolute;right: 1px;">退出登陆
         </button>
     </el-menu>
-    <div style="margin: 1px 1px 0 1px ;padding: 0">
-        <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="接口测试流管理" name="apitest">
+    <div style="margin: 1px 1px 0 1px ;padding: 0" >
+        <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick" style="background-color: #ebe2f9">
+            <el-tab-pane label="接口测试流管理" name="apitest" >
                 <el-button size="small" type="primary" @click="dialogFormVisible = true"
                            style="margin:10px;font-weight: bolder">+添加接口测试流
                 </el-button>
@@ -138,40 +144,43 @@
                             :value="item.creater">
                     </el-option>
                 </el-select>
-                <el-input size="small" placeholder="请输入测试流名称" v-model="flowName" class="input-with-select"
+                <el-input size="small" placeholder="请输入测试流名称" v-model="flowName" @keyup.enter.native="filterFlowName"
+                          class="input-with-select"
                           style="width: 400px">
                     <el-button slot="append" icon="el-icon-search" @click="filterFlowName()">搜索测试流</el-button>
                 </el-input>
-                <el-input size="small" placeholder="请输入接口URL" v-model="path" class="input-with-select"
+                <el-input size="small" placeholder="请输入接口URL" v-model="path" @keyup.enter.native="filterPath"
+                          class="input-with-select"
                           style="width: 400px">
                     <el-button slot="append" icon="el-icon-search" @click="filterPath()">搜索URL</el-button>
                 </el-input>
                 <div name="接口数据表">
                     <template>
                         <el-table id="flowTable"
-                                v-loading="actionLoading"
-                                :element-loading-text="text"
-                                ref="flowTableRef"
-                                :data="flowData"
-                                :header-cell-style="{background:'#836FFF',color:'#F0FFFF',padding:'3px'}"
-                                border
-                                stripe
-                                size="mini"
-                                highlight-current-row="true"
-                                row-style="height:20px"
-                                cell-style="padding:4px"
-                                style="width:auto"
-                                @expand-change="expandChange"
-                                @cell-dblclick="dbEditFlowTable">
-                            <el-table-column label="测试流 ID" size="small" prop="flow_code" id="flow_code" width="90px">
+                                  v-loading="actionLoading"
+                                  :element-loading-text="text"
+                                  ref="flowTableRef"
+                                  :data="flowData"
+                                  :header-cell-style="{background:'#836FFF',color:'#F0FFFF',padding:'3px'}"
+                                  border
+                                  height="75VH"
+                                  stripe
+                                  size="mini"
+                                  highlight-current-row="true"
+                                  row-style="height:20px"
+                                  cell-style="padding:4px"
+                                  style="width:auto"
+                                  @expand-change="expandChange"
+                                  @cell-dblclick="dbEditFlowTable">
+                            <el-table-column label="序号" size="small" prop="flow_code" id="flow_code" width="80px">
                                 <template slot-scope="scope">
                                     <el-input style="display: none;margin: 0;padding: 0"
                                               :placeholder="scope.row.flow_code"
                                               v-model="scope.row.flow_code"></el-input>
                                     <span class="span" style="display: block;font-weight: bold;color: #3557ff">
-                                        {%verbatim%}
-                                        {{scope.row.flow_code}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.flow_code }}
+                                        {% endverbatim %}
                                     </span>
                                 </template>
                             </el-table-column>
@@ -181,9 +190,9 @@
                                               :placeholder="scope.row.flow_name"
                                               v-model="scope.row.flow_name"></el-input>
                                     <span class="span" style="display: block;font-weight: bold;">
-                                            {%verbatim%}
-                                            {{scope.row.flow_name}}
-                                            {%endverbatim%}
+                                            {% verbatim %}
+                                                {{ scope.row.flow_name }}
+                                            {% endverbatim %}
                                     </span>
                                 </template>
                             </el-table-column>
@@ -193,9 +202,9 @@
                                               :placeholder="scope.row.account"
                                               v-model="scope.row.account"></el-input>
                                     <span class="span" style="display: block">
-                                        {%verbatim%}
-                                        {{scope.row.account}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.account }}
+                                        {% endverbatim %}
                                     </span>
                                 </template>
                             </el-table-column>
@@ -205,9 +214,9 @@
                                               :placeholder="scope.row.password"
                                               v-model="scope.row.password"></el-input>
                                     <span class="span" style="display: block">
-                                        {%verbatim%}
-                                        {{scope.row.password}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.password }}
+                                        {% endverbatim %}
                                     </span>
                                 </template>
                             </el-table-column>
@@ -217,9 +226,9 @@
                                               :placeholder="scope.row.priority"
                                               v-model="scope.row.priority"></el-input>
                                     <span class="span" style="display: block">
-                                        {%verbatim%}
-                                        {{scope.row.priority}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.priority }}
+                                        {% endverbatim %}
                                     </span>
                                 </template>
                             </el-table-column>
@@ -229,9 +238,9 @@
                                               :placeholder="scope.row.run_env"
                                               v-model="scope.row.run_env"></el-input>
                                     <span class="span" style="display: block">
-                                        {%verbatim%}
-                                        {{scope.row.run_env}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.run_env }}
+                                        {% endverbatim %}
                                     </span>
                                 </template>
                             </el-table-column>
@@ -241,9 +250,9 @@
                                               :placeholder="scope.row.swagger_url"
                                               v-model="scope.row.swagger_url"></el-input>
                                     <span class="span" style="display: block" @click="jumpSwagger(scope.row)">
-                                        {%verbatim%}
-                                        {{scope.row.swagger_url}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.swagger_url }}
+                                        {% endverbatim %}
                                     </span>
                                 </template>
                             </el-table-column>
@@ -253,9 +262,9 @@
                                               :placeholder="scope.row.apicount"
                                               v-model="scope.row.apicount"></el-input>
                                     <span class="span" style="display: block">
-                                        {%verbatim%}
-                                        {{scope.row.apicount}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.apicount }}
+                                        {% endverbatim %}
                                     </span>
                                 </template>
                             </el-table-column>
@@ -265,9 +274,9 @@
                                               :placeholder="scope.row.creater"
                                               v-model="scope.row.creater"></el-input>
                                     <span class="span" style="display: block">
-                                        {%verbatim%}
-                                        {{scope.row.creater}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.creater }}
+                                        {% endverbatim %}
                                     </span>
                                 </template>
                             </el-table-column>
@@ -325,7 +334,7 @@
                                     </el-button>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="展开详情" width="140px" type="expand" v-show="true"  >
+                            <el-table-column label="展开详情" width="140px" type="expand" v-show="true">
                                 <template slot-scope="props">
                                     <div style="background-color: #5cffa2">
                                         <el-button size="mini" type="primary" @click="dialogTableVisible = true"
@@ -333,23 +342,23 @@
                                             +添加接口
                                         </el-button>
                                         <el-table :data="nodeData"
-                                                ref="nodeTable"
-                                                v-loading="actionLoading2"
-                                                element-loading-text="接口运行中..."
-                                                element-loading-spinner="el-icon-loading"
-                                                element-loading-background="rgba(0, 0, 0, 0.8)"
-                                                id="nodeTable"
-                                                class="nodeTable"
-                                                stripe
-                                                height="550px"
-                                                border=true
-                                                size="mini"
-                                                :default-sort="{prop: 'order_id', order: 'ascending'}"
-                                                @row-click="rowClick"
-                                                @cell-dblclick="dbEditNodeTable"
-                                                highlight-current-row="true"
-                                                :header-cell-style="{background:'#606266',color:'#FFFFFF',padding:0}"
-                                                cell-style="padding:2px,font-size: 10px">
+                                                  ref="nodeTable"
+                                                  v-loading="actionLoading2"
+                                                  element-loading-text="接口运行中..."
+                                                  element-loading-spinner="el-icon-loading"
+                                                  element-loading-background="rgba(0, 0, 0, 0.8)"
+                                                  id="nodeTable"
+                                                  class="nodeTable"
+                                                  stripe
+                                                  height="550px"
+                                                  border=true
+                                                  size="mini"
+                                                  :default-sort="{prop: 'order_id', order: 'ascending'}"
+                                                  @row-click="rowClick"
+                                                  @cell-dblclick="dbEditNodeTable"
+                                                  highlight-current-row="true"
+                                                  :header-cell-style="{background:'#606266',color:'#FFFFFF',padding:0}"
+                                                  cell-style="padding:2px,font-size: 10px">
                                             <el-table-column label="步骤" prop="order_id"
                                                              sortable
                                                              resizable="true"
@@ -361,10 +370,11 @@
                                                               :placeholder="scope.row.order_id"
                                                               v-model="scope.row.order_id">
                                                     </el-input>
-                                                    <span class="nodeDisplaySpan" style="display: block;font-weight: bold">
-                                                    {%verbatim%}
-                                                        {{scope.row.order_id}}
-                                                    {%endverbatim%}
+                                                    <span class="nodeDisplaySpan"
+                                                          style="display: block;font-weight: bold">
+                                                    {% verbatim %}
+                                                        {{ scope.row.order_id }}
+                                                    {% endverbatim %}
                                                     </span>
                                                 </template>
                                             </el-table-column>
@@ -379,9 +389,9 @@
                                                     <el-tooltip class="item" effect="dark"
                                                                 :content="scope.row.node_name" placement="top-start">
                                                 <span class="nodeDisplaySpan" style="display: block;font-weight: bold;">
-                                                    {%verbatim%}
-                                                        {{scope.row.node_name}}
-                                                    {%endverbatim%}
+                                                    {% verbatim %}
+                                                        {{ scope.row.node_name }}
+                                                    {% endverbatim %}
                                                 </span>
                                                     </el-tooltip>
                                                 </template>
@@ -392,13 +402,13 @@
                                                              show-overflow-tooltip
                                                              resizable="true">
                                                 <template slot-scope="scope">
-                                                    <el-input class="nodeDisplayInput"  size="mini" style="display: none"
+                                                    <el-input class="nodeDisplayInput" size="mini" style="display: none"
                                                               :placeholder="scope.row.method"
                                                               v-model="scope.row.method"></el-input>
                                                     <span class="nodeDisplaySpan" style="display: block">
-                                                        {%verbatim%}
-                                                            {{scope.row.method}}
-                                                        {%endverbatim%}
+                                                        {% verbatim %}
+                                                            {{ scope.row.method }}
+                                                        {% endverbatim %}
                                                     </span>
                                                 </template>
                                             </el-table-column>
@@ -412,10 +422,11 @@
                                                               v-model="scope.row.path"></el-input>
                                                     <el-tooltip class="item" effect="dark" :content="scope.row.path"
                                                                 placement="top-start">
-                                                        <span class="nodeDisplaySpan" style="display: block;font-weight: bold;">
-                                                            {%verbatim%}
-                                                                {{scope.row.path}}
-                                                            {%endverbatim%}
+                                                        <span class="nodeDisplaySpan"
+                                                              style="display: block;font-weight: bold;">
+                                                            {% verbatim %}
+                                                                {{ scope.row.path }}
+                                                            {% endverbatim %}
                                                         </span>
                                                     </el-tooltip>
 
@@ -437,9 +448,9 @@
                                                                style="color: chocolate;border:1px solid #c8c6d4;text-overflow: ellipsis;width: 120px;overflow: hidden;text-align: left"
                                                                slot="reference"
                                                                @click="getParameter(scope.$index, scope.row,scope.$event)">
-                                                        {%verbatim%}
-                                                        {{scope.row.parameter}}
-                                                        {%endverbatim%}
+                                                        {% verbatim %}
+                                                            {{ scope.row.parameter }}
+                                                        {% endverbatim %}
                                                     </el-button>
                                                 </template>
                                             </el-table-column>
@@ -453,9 +464,9 @@
                                                     <el-tooltip class="item" effect="dark" :content="scope.row.pre_keys"
                                                                 placement="top-start">
                                                         <span class="span_pre_keys" style="display: block">
-                                                            {%verbatim%}
-                                                                {{scope.row.pre_keys}}
-                                                            {%endverbatim%}
+                                                            {% verbatim %}
+                                                                {{ scope.row.pre_keys }}
+                                                            {% endverbatim %}
                                                         </span>
                                                     </el-tooltip>
                                                 </template>
@@ -470,9 +481,9 @@
                                                               :placeholder="scope.row.sleep_time"
                                                               v-model="scope.row.sleep_time"></el-input>
                                                     <span class="nodeDisplaySpan" style="display: block">
-                                                        {%verbatim%}
-                                                            {{scope.row.sleep_time}}
-                                                        {%endverbatim%}
+                                                        {% verbatim %}
+                                                            {{ scope.row.sleep_time }}
+                                                        {% endverbatim %}
                                                     </span>
                                                 </template>
                                             </el-table-column>
@@ -488,9 +499,9 @@
                                                                 :content="scope.row.expect_response"
                                                                 placement="top-start">
                                                         <span class="nodeDisplaySpan" style="display: block">
-                                                            {%verbatim%}
-                                                                {{scope.row.expect_response}}
-                                                            {%endverbatim%}
+                                                            {% verbatim %}
+                                                                {{ scope.row.expect_response }}
+                                                            {% endverbatim %}
                                                         </span>
                                                     </el-tooltip>
                                                 </template>
@@ -505,9 +516,9 @@
                                                     <el-tooltip class="item" effect="dark" :content="scope.row.run_env"
                                                                 placement="top-start">
                                                         <span class="nodeDisplaySpan    " style="display: block">
-                                                            {%verbatim%}
-                                                                {{scope.row.run_env}}
-                                                            {%endverbatim%}
+                                                            {% verbatim %}
+                                                                {{ scope.row.run_env }}
+                                                            {% endverbatim %}
                                                         </span>
                                                     </el-tooltip>
                                                 </template>
@@ -539,9 +550,9 @@
                                                                style="color: chocolate;border:1px solid #c8c6d4;text-overflow: ellipsis;width: 90px;overflow: hidden;text-align: left"
                                                                slot="reference"
                                                                @click="getPreSql(scope.$index, scope.row,scope.$event)">
-                                                        {%verbatim%}
-                                                            {{formatPreSql(scope.row,preSqlData)}}
-                                                        {%endverbatim%}
+                                                        {% verbatim %}
+                                                            {{ formatPreSql(scope.row,preSqlData) }}
+                                                        {% endverbatim %}
                                                     </el-button>
                                                 </template>
                                             </el-table-column>
@@ -555,9 +566,9 @@
                                                                style="color: chocolate;border:1px solid #c8c6d4;text-overflow: ellipsis;width: 90px;overflow: hidden;text-align: left"
                                                                slot="reference"
                                                                @click="getOutSql(scope.$index, scope.row,scope.$event)">
-                                                        {%verbatim%}
-                                                            {{formatOutSql(scope.row,outSqlData)}}
-                                                        {%endverbatim%}
+                                                        {% verbatim %}
+                                                            {{ formatOutSql(scope.row,outSqlData) }}
+                                                        {% endverbatim %}
                                                     </el-button>
                                                 </template>
                                             </el-table-column>
@@ -571,15 +582,15 @@
                                                                style="color: chocolate;border:1px solid #c8c6d4;text-overflow: ellipsis;width: 120px;overflow: hidden;text-align: left"
                                                                slot="reference"
                                                                @click="getPostKey(scope.$index, scope.row,scope.$event)">
-                                                        {%verbatim%}
-                                                            {{formatPostKey(scope.row,postKeyData)}}
-                                                        {%endverbatim%}
+                                                        {% verbatim %}
+                                                            {{ formatPostKey(scope.row,postKeyData) }}
+                                                        {% endverbatim %}
                                                     </el-button>
                                                 </template>
                                             </el-table-column>
                                             <el-table-column label="操作" prop="operation"
                                                              v-if="nodeDisplayList.operation"
-                                                             width="180px" >
+                                                             width="180px">
                                                 <template slot-scope="scope">
                                                     <el-button size="mini" class="copy"
                                                                type="warning"
@@ -606,8 +617,8 @@
                                                         编辑
                                                     </el-button>
                                                     <el-dialog title="删除接口确认"
-                                                            :visible.sync="deleteNodeDialogVisible"
-                                                            width="30%">
+                                                               :visible.sync="deleteNodeDialogVisible"
+                                                               width="30%">
                                                         <span style="color: coral">确定删除当前接口吗？删除后将不可恢复</span>
                                                         <span slot="footer" class="dialog-footer">
                                                     <el-button @click="deleteNodeDialogVisible = false">取 消</el-button>
@@ -624,13 +635,16 @@
                         </el-table>
                     </template>
                 </div>
-                <div name="分页查询" class="block" style="color:#faf8ff;margin-top:10px;padding: 3px ">
+                <div name="分页查询" class="block"
+                     style="color:#e7e5f3;
+                     background-image: linear-gradient(to bottom right, #e85cff, #6fffda);
+                     margin-top:10px;
+                     padding: 3px ">
                     <el-pagination
                             background
                             @size-change="handleSizeChange"
                             @current-change="handleCurrentChange"
                             :current-page="currentPage"
-                            :page-sizes="[20, 30, 50, 100]"
                             :page-size=pageSize
                             layout="total, prev, pager, next"
                             :total=FlowlistSize>
@@ -656,7 +670,8 @@
                          name="statistics">
                 <div style="margin-left: 5%">
                     <span class="span" style="display: block;font-weight: bold;color: #3557ff">
-                        <el-button type="primary" size="mini" @click="manualStatistics()" style="margin-bottom: 3px" icon="el-icon-s-data">手动统计接口</el-button>
+                        <el-button type="primary" size="mini" @click="manualStatistics()" style="margin-bottom: 3px"
+                                   icon="el-icon-s-data">手动统计接口</el-button>
                     </span>
                     <el-table :data="tableData"
                               v-loading="statisticsLoading"
@@ -672,55 +687,57 @@
                               cell-style="padding:4px"
                               style="width: 92.6%"
                               :header-cell-style="{background:'#C8C6D4',color:'#0E0513',padding:'3px'}">
-                        <el-table-column label="微服务数量" size="small" prop="serviceCounts" id="serviceCounts" width="auto">
+                        <el-table-column label="微服务数量" size="small" prop="serviceCounts" id="serviceCounts"
+                                         width="auto">
                             <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
-                                        {%verbatim%}
-                                        {{scope.row.serviceCounts}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.serviceCounts }}
+                                        {% endverbatim %}
                                     </span>
                             </template>
                         </el-table-column>
                         <el-table-column label="接口总数" size="small" prop="totalCounts" id="totalCounts" width="auto">
                             <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
-                                        {%verbatim%}
-                                        {{scope.row.totalCounts}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.totalCounts }}
+                                        {% endverbatim %}
                                     </span>
                             </template>
                         </el-table-column>
                         <el-table-column label="已实现接口数" size="small" prop="id" id="id" width="auto">
                             <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
-                                        {%verbatim%}
-                                        {{scope.row.doneCounts}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.doneCounts }}
+                                        {% endverbatim %}
                                     </span>
                             </template>
                         </el-table-column>
                         <el-table-column label="未实现接口数" size="small" prop="id" id="id" width="auto">
                             <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
-                                        {%verbatim%}
-                                        {{scope.row.undoneCounts}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.undoneCounts }}
+                                        {% endverbatim %}
                                     </span>
                             </template>
                         </el-table-column>
                         <el-table-column label="无需实现接口(废弃/测试/提醒/微信等)" size="small" prop="id" id="id" width="auto">
                             <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
-                                        {%verbatim%}
-                                        {{scope.row.skipApiCounts}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.skipApiCounts }}
+                                        {% endverbatim %}
                                     </span>
                             </template>
                         </el-table-column>
                         <el-table-column label="覆盖率" size="small" prop="progress" id="progress" width="auto">
                             <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
-                                        <el-progress :text-inside="true" :stroke-width="26" :percentage="scope.row.progress" status="success"></el-progress>
+                                        <el-progress :text-inside="true" :stroke-width="26"
+                                                     :percentage="scope.row.progress" status="success"></el-progress>
                                     </span>
                             </template>
                         </el-table-column>
@@ -730,16 +747,21 @@
                 <div style="margin-left: 5%">
                     <span class="span" style="display: block;font-weight: bold;color: #3557ff">
                         <el-button type="primary" size="mini" style="margin-bottom: 3px" icon="el-icon-s-unfold">Swagger接口列表:</el-button>
-                        <el-button type="warning" size="mini" @click="filterApi()" style="margin-bottom: 3px;margin-left: 20px" icon="el-icon-s-data">屏蔽已标记接口</el-button>
-                        <el-button type="warning" size="mini" @click="unfilterApi()" style="margin-bottom: 3px" icon="el-icon-s-data">显示所有接口</el-button>
-                        <el-input size="small" style="width: 700px;margin-left: 100px" placeholder="请输入搜索关键字" v-model="inputKey" class="input-with-select">
-                            <el-select style="font-weight: bold" v-model="selectType" slot="prepend" placeholder="请选择过滤类型">
+                        <el-button type="warning" size="mini" @click="filterApi()"
+                                   style="margin-bottom: 3px;margin-left: 20px"
+                                   icon="el-icon-s-data">屏蔽已标记接口</el-button>
+                        <el-button type="warning" size="mini" @click="unfilterApi()" style="margin-bottom: 3px"
+                                   icon="el-icon-s-data">显示所有接口</el-button>
+                        <el-input size="small" style="width: 700px;margin-left: 100px" placeholder="请输入搜索关键字"
+                                  v-model="inputKey" @keyup.enter.native="filterPath2" class="input-with-select">
+                            <el-select style="font-weight: bold" v-model="selectType" slot="prepend"
+                                       placeholder="请选择过滤类型">
                               <el-option label="按URL过滤" value="path"></el-option>
                               <el-option label="按微服务过滤" value="service_name"></el-option>
                               <el-option label="按操作者过滤" value="author"></el-option>
                               <el-option label="按标记过滤" value="remark"></el-option>
                             </el-select>
-                            <el-button slot="append"  icon="el-icon-search" @click="filterPath2()">搜索</el-button>
+                            <el-button slot="append" icon="el-icon-search" @click="filterPath2()">搜索</el-button>
                         </el-input>
                     </span>
                     <div class="block" style="color:#faf8ff;margin-top:10px;padding: 3px ">
@@ -770,57 +792,57 @@
                         <el-table-column label="序号" size="small" prop="id" id="id" width="90px">
                             <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
-                                        {%verbatim%}
-                                        {{scope.row.id}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.id }}
+                                        {% endverbatim %}
                                     </span>
                             </template>
                         </el-table-column>
                         <el-table-column label="微服务名称" size="small" prop="service_name" id="service_name" width="auto">
                             <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
-                                        {%verbatim%}
-                                        {{scope.row.service_name}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.service_name }}
+                                        {% endverbatim %}
                                     </span>
                             </template>
                         </el-table-column>
                         <el-table-column label="接口名称" size="small" prop="summary" id="summary" width="auto">
                             <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
-                                        {%verbatim%}
-                                        {{scope.row.summary}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.summary }}
+                                        {% endverbatim %}
                                     </span>
                             </template>
                         </el-table-column>
                         <el-table-column label="接口URL" size="small" prop="path" id="path" width="450px">
                             <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
-                                        {%verbatim%}
-                                        {{scope.row.path}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.path }}
+                                        {% endverbatim %}
                                     </span>
                             </template>
                         </el-table-column>
                         <el-table-column label="操作者" size="small" prop="author" id="author" width="auto">
                             <template slot-scope="scope">
                                     <span class="span" style="display: block;font-weight: bold;color: #0e0513">
-                                        {%verbatim%}
-                                        {{scope.row.author}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.author }}
+                                        {% endverbatim %}
                                     </span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="备注" size="small"  prop="remark" id="remark" width="auto"
-                                :filters="filters"
-                                :filter-method="filterTag"
-                                filter-placement="bottom-end">
+                        <el-table-column label="备注" size="small" prop="remark" id="remark" width="auto"
+                                         :filters="filters"
+                                         :filter-method="filterTag"
+                                         filter-placement="bottom-end">
                             <template slot-scope="scope">
                                     <span style="display: block;font-weight: bold;color: #2b83e9;overflow:unset">
-                                        {%verbatim%}
-                                        {{scope.row.remark}}
-                                        {%endverbatim%}
+                                        {% verbatim %}
+                                            {{ scope.row.remark }}
+                                        {% endverbatim %}
                                     </span>
                             </template>
                         </el-table-column>
@@ -896,7 +918,7 @@
             <el-button type="primary" @click="addFlowOk(flowDataDefault)">确 定</el-button>
         </div>
     </el-dialog>
-    <el-dialog title="配置全局默认变量" :close-on-click-modal="false" style="font-weight: bold" 
+    <el-dialog title="配置全局默认变量" :close-on-click-modal="false" style="font-weight: bold"
                :visible.sync="dialogDefaultVar">
         <el-button size="mini" class="save"
                    style="display: block;margin: 2px;padding: 5px;float: left"
@@ -911,9 +933,9 @@
                     <el-input style="display: none;margin: 0;padding: 0" :placeholder="scope.row.argumentName"
                               v-model="scope.row.argumentName"></el-input>
                     <span class="span" style="display: block;font-weight: bold;color: #3557ff">
-                                {%verbatim%}
-                                {{scope.row.argumentName}}
-                                {%endverbatim%}
+                                {% verbatim %}
+                                    {{ scope.row.argumentName }}
+                                {% endverbatim %}
                             </span>
                 </template>
             </el-table-column>
@@ -922,9 +944,9 @@
                     <el-input style="display: none;margin: 0;padding: 0" :placeholder="scope.row.argumentValue"
                               v-model="scope.row.argumentValue"></el-input>
                     <span class="span" style="display: block;color: #0e0513">
-                                {%verbatim%}
-                                {{scope.row.argumentValue}}
-                                {%endverbatim%}
+                                {% verbatim %}
+                                    {{ scope.row.argumentValue }}
+                                {% endverbatim %}
                             </span>
                 </template>
             </el-table-column>
@@ -954,7 +976,7 @@
             </el-table-column>
         </el-table>
     </el-dialog>
-    <el-dialog title="新增接口"  :close-on-click-modal="false" style="font-weight: bold" border
+    <el-dialog title="新增接口" :close-on-click-modal="false" style="font-weight: bold" border
                :visible.sync="dialogTableVisible" width="1482px">
         <el-table
                 :data="nodeDataDefaultAdd"
@@ -1132,7 +1154,7 @@
             <el-button type="warning" @click="addNodeOk(nodeDataDefaultAdd)">再加一条</el-button>
         </div>
     </el-dialog>
-    <el-dialog title="复制接口" :close-on-click-modal="false" style="font-weight: bold"  border
+    <el-dialog title="复制接口" :close-on-click-modal="false" style="font-weight: bold" border
                :visible.sync="dialogCopyNode" width="1482px">
         <el-table
                 :data="nodeDataDefault"
@@ -1494,7 +1516,7 @@
         <el-button icon="el-icon-search"><a href="/lookSummaryReport" target="_blank">查看概要报告</a></el-button>
         <el-button icon="el-icon-search"><a href="/lookDetailReport" target="_blank">查看详细报告</a></el-button>
     </el-dialog>
-    <el-dialog title="接口请求参数配置"  :close-on-click-modal="false" style="font-weight: bold" :visible.sync="dialogParameter">
+    <el-dialog title="接口请求参数配置" :close-on-click-modal="false" style="font-weight: bold" :visible.sync="dialogParameter">
         <el-tag>请求参数</el-tag>
         <el-input class="el-input-parameter" type="textarea"
                   :autosize="{ minRows: 5, maxRows: 20}"
@@ -1520,7 +1542,7 @@
                    @click="formatJson(parameterData)">格式化JSON
         </el-button>
     </el-dialog>
-    <el-dialog title="前置Sql配置"  :close-on-click-modal="false" style="font-weight: bold" :visible.sync="dialogPreSql">
+    <el-dialog title="前置Sql配置" :close-on-click-modal="false" style="font-weight: bold" :visible.sync="dialogPreSql">
         <el-form :model="preSqlData">
             <el-form-item label="前置SQL开关" :label-width="formLabelWidth">
                 <el-select v-model="preSqlData.isexcute_pre_sql" placeholder="请选择是否开启前置SQL查询">
@@ -1551,7 +1573,7 @@
                    @click="savePreSql()">保存修改
         </el-button>
     </el-dialog>
-    <el-dialog title="后置Sql校验配置" :close-on-click-modal="false" style="font-weight: bold"  :visible.sync="dialogOutSql">
+    <el-dialog title="后置Sql校验配置" :close-on-click-modal="false" style="font-weight: bold" :visible.sync="dialogOutSql">
         <el-form :model="outSqlData">
             <el-form-item label="SQL校验开关" :label-width="formLabelWidth">
                 <el-select v-model="outSqlData.ischechdb" placeholder="请选择是否开启SQL校验">
@@ -1609,7 +1631,8 @@
             取消
         </el-button>
     </el-dialog>
-    <el-drawer title="接口标记" :close-on-click-modal="false"  size="40%" direction="rtl" custom-class="demo-drawer" :visible.sync="dialogDrawer2">
+    <el-drawer title="接口标记" :close-on-click-modal="false" size="40%" direction="rtl" custom-class="demo-drawer"
+               :visible.sync="dialogDrawer2">
         <div class="demo-drawer__content">
             <el-form :model="lableData">
                 <el-form-item label="" :label-width="formLabelWidth">
@@ -1643,7 +1666,8 @@
             </div>
         </div>
     </el-drawer>
-    <el-drawer title="快速添加接口" :close-on-click-modal="false"  size="40%" direction="rtl" custom-class="demo-drawer" :visible.sync="dialogDrawerQuickAddNode">
+    <el-drawer title="快速添加接口" :close-on-click-modal="false" size="40%" direction="rtl" custom-class="demo-drawer"
+               :visible.sync="dialogDrawerQuickAddNode">
         <div class="demo-drawer__content">
             <el-form :model="lableData">
                 <el-form-item label="" :label-width="formLabelWidth">
@@ -1708,7 +1732,7 @@
             </div>
         </div>
     </el-drawer>
-    <el-dialog title="邮箱收件人配置(多个收件人以逗号隔开)" :close-on-click-modal="false" style="font-weight: bold" 
+    <el-dialog title="邮箱收件人配置(多个收件人以逗号隔开)" :close-on-click-modal="false" style="font-weight: bold"
                :visible.sync="dialogEmailChange">
         <el-form :model="flowDataDefault">
             <el-form-item label="" :label-width="formLabelWidth">

@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': 'automation',
         'USER': 'gjdev',
         'PASSWORD': '12345678',
-        'HOST': '47.115.35.45',
+        'HOST': '192.168.241.13',
         'PORT': '3306'
 
     },
@@ -92,7 +92,7 @@ DATABASES = {
         'NAME': 'thirdparty',
         'USER': 'gjdev',
         'PASSWORD': '12345678',
-        'HOST': '47.115.35.45',
+        'HOST': '192.168.241.13',
         'PORT': '3306'
     },
     'user': {
@@ -100,7 +100,7 @@ DATABASES = {
         'NAME': 'user',
         'USER': 'gjdev',
         'PASSWORD': '12345678',
-        'HOST': '47.115.35.45',
+        'HOST': '192.168.241.13',
         'PORT': '3306'
     },
     'plan': {
@@ -108,7 +108,7 @@ DATABASES = {
         'NAME': 'plan',
         'USER': 'gjdev',
         'PASSWORD': '12345678',
-        'HOST': '47.115.35.45',
+        'HOST': '192.168.241.13',
         'PORT': '3306'
     }
 
