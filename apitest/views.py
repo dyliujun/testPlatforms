@@ -600,10 +600,13 @@ class Configs:
 class Statistics:
     @csrf_exempt
     def getLastOrderId(request):
-        flow_id = json.loads(request.body)["flow_id"]
         try:
-            order_id = TestdataNodeNew.objects.filter(flow_id__exact=flow_id).order_by("-order_id")[0].order_id
-        except IndexError:
+            flow_id = json.loads(request.body)["flow_id"]
+            try:
+                order_id = TestdataNodeNew.objects.filter(flow_id__exact=flow_id).order_by("-order_id")[0].order_id
+            except IndexError:
+                order_id = 0
+        except ValueError:
             order_id = 0
         print("apitest-getLastOrderId-lastOrderId:", order_id)
         response = {"code": "200", "msg": "操作成功", "lastOrderId": order_id}
